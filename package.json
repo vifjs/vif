@@ -1,0 +1,11 @@
+{
+    "scripts": {
+        "watch": "rollup --config rollup.config.js --watch",
+        "build": "rollup --config rollup.config.js",
+        "publish": "rollup --config rollup.config.js"
+    },
+    "devDependencies": {
+        "@rollup/plugin-terser": "^0.4.4",
+        "rollup": "^4.9.5"
+    }
+}
