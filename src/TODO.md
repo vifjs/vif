@@ -24,3 +24,12 @@ Lorsqu'il y a plus de 3 appels à `this` dans une même fonction, alors l'option
 The first 4kb reactive componant librairie !
 
 A smooth mix of Alpine, Lit and Sjs. Including lazy loading and router. With a ridiculous size of 4kb.
+
+# Publish commande
+
+-   Run tests (if there are any)
+-   Update version in package.json according to Semver
+-   Create a git tag according to Semver
+-   Push the package to Github
+-   Push the package to npm
+-   Create release notes for every update
