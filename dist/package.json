@@ -1,0 +1,30 @@
+{
+    "name": "vifjs",
+    "version": "0.0.1",
+    "description": "The 2kb full featured reactive components library",
+    "keywords": [
+        "javascript",
+        "reactive",
+        "hydration",
+        "signal",
+        "state",
+        "revif",
+        "components",
+        "web-components",
+        "es6 components",
+        "attribute"
+    ],
+    "main": "vif.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": {
+        "name": "Enzo Aicardi",
+        "url": "https://enzo.aicardi.pro"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vifjs/vif"
+    },
+    "license": "GPL-3.0-only"
+}

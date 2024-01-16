@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Garbage testing</title>
+        <!-- <script src="../../../dist/vif.js"></script> -->
+        <script type="module" src="./components.js" defer></script>
+    </head>
+    <body>
+        <h1>Primary tests here</h1>
+        <p>
+            Here we do the primary testings, all files in this folder must be
+            deleted after theses tests.
+        </p>
+        <div class="freezer"></div>
+
+        <main>
+            <x-app>
+                <a href="?name=jack" x-on:click="navigate">nav NAME</a>
+                <a href="?id=5" x-on:click="navigate">nav ID</a>
+                <template x-route="name=([a-z]+)">
+                    correct route for name:
+                    <span x-text="params()[1]"></span>
+                </template>
+            </x-app>
+            <x-p></x-p>
+            <basic-element></basic-element>
+        </main>
+    </body>
+</html>

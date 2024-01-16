@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <x-app>
+            <p>
+                Bienvenue sur votre magasin
+                <span x-text="shop().name">boutique</span>
+            </p>
+            <h1>Retrouvez la liste de vos produits ci dessous</h1>
+
+            <div>
+                Merci de garder le SEO tout en permettant d'utiliser des
+                variables globales
+            </div>
+
+            <!-- 
+                Cette approche comporte certains problèmes, premièrement
+                le passage des variables est difficile au travers de x-link
+                la balise A ne comporte pas d'attribut href ce qui n'est pas
+                idéal pour les crawlers
+             -->
+            <x-link x-href="'/store?id=' + shop().id">
+                <a href="/store?id=5" x-href="">Lien vers l'identifiant</a>
+            </x-link>
+
+            <!-- 
+                Approche idéale pour le SEO mais lors du click l'utilisateur sera redirigé
+             -->
+            <a href="/store?id=5" x-href="'/store?id=' + shop().id">
+                Lien vers l'identifiant
+            </a>
+
+            <!-- 
+                Approche idéale mais suppose que la méthode navigate est ajoutée au composant
+                pour cela il faut une méthode Vif.navigate qui prend un paramettre qui peut
+                etre : une URL (type string), un event (type non-string) si event alors on
+                recupere le href de la currentTarget et on preventDefault l'evenement
+             -->
+            <a
+                href="/store?id=5"
+                x-href="'/store?id=' + shop().id"
+                x-on:click="navigate"
+            >
+                Lien vers l'identifiant
+            </a>
+
+            <!--
+                Semble être la meilleure idée car on peut y passer les
+                variables du composant, et aussi passer les paramètres
+                à des composants autonomes
+            -->
+            <template x-route="/store\?id=([0-9])" params="['id']">
+                identifiant <span x-text="params().id">id</span>
+                Liste des produits les plus demandés
+                <x-page-store x-params="params()"></x-page-store>
+            </template>
+
+            <!-- 
+                Dans les deux cas suivant le principal problème reste
+                l'encapsulation, chaque composant x-route et x-page-store
+                ne laissent pas passer les variables du composant père
+                et il serait trop fastidieu de repasser toutes les variables
+                sous forme d'attributs x-route
+             -->
+            <x-route path="/store\?id=([0-9])" params="['id']">
+                identifiant <span x-text="params().id">id</span>
+                Liste des produits les plus demandés
+                <x-page-store x-params="params()"></x-page-store>
+            </x-route>
+
+            <x-page-store
+                x-route="/store\?id=([0-9])"
+                params="['id']"
+            ></x-page-store>
+
+            <x-products>
+                <!-- for [array] -->
+                <x-card x-values="item()"> </x-card>
+            </x-products>
+
+            <!--
+                Cette première approche est assez verbeuse, mais semble
+                avoir la commodité d'une mise en place rapide et fiable
+                cependant on créer de nouvelles "parties" de DOM à chaque
+                fois, ce qui peut ne pas être optimum au niveau des
+                performances, c'est un détail mais à réfléchir
+             -->
+            <template x-if="Array.isArray(array())">
+                <template x-for="array()"> </template>
+            </template>
+
+            <!-- 
+                Cette approche, moins verbeuse, plus lisible, semble être
+                la meilleure approche, mais cela necessite un plan d'action
+                robuste pour etre mise en place, avec un ordre de priorité
+                for < route < if
+
+                Dans ce cas de figure l'ordre devient extremement important
+                pour les performances, x-if doit toujours etre avant x-for
+                de meme pour x-route...
+             -->
+            <template x-if="Array.isArray(array())" x-for="array()" item="item">
+            </template>
+        </x-app>
+    </body>
+</html>
