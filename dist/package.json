@@ -2,6 +2,8 @@
     "name": "vifjs",
     "version": "0.0.1",
     "description": "The 2kb full featured reactive components library",
+    "homepage": "https://vifjs.dev",
+    "bugs": "https://github.com/vifjs/vif/issues",
     "keywords": [
         "javascript",
         "reactive",
