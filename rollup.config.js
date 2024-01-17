@@ -23,13 +23,14 @@ export default formats.map(function ([format, mode]) {
                     properties: {
                         reserved: [
                             "connectedCallback",
-                            "handler",
-                            "onMount",
                             "onUnmount",
                             "component",
-                            "effect",
-                            "ref",
+                            "onMount",
+                            "handler",
+                            "route",
                             "data",
+                            "deps",
+                            "ref",
                         ],
                     },
                 },
