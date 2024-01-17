@@ -73,7 +73,7 @@ export class xElement extends HTMLElement {
          * myClassReturnedByDefine.prototype.onMount = function(){ stuff here... }
          * @type {Function}
          */
-        self.onMount(datas);
+        self.onMount.call(datas);
 
         // render the component logic
         self.render();
@@ -89,7 +89,7 @@ export class xElement extends HTMLElement {
          * myClassReturnedByDefine.prototype.onUnmount = function(){ stuff here... }
          * @type {Function}
          */
-        self.onUnmount(self.datas);
+        self.onUnmount.call(self.datas);
 
         self.unHydrate();
     }
