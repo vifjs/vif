@@ -53,10 +53,7 @@ export const signal = (value) => {
     currentSignal.reactives = new Set();
 
     /**
-     * reference to reactives dependencies, expose :
-     * - effect.add(callback)
-     * - effect.delete(callback)
-     * - ...
+     * reference to reactives dependencies
      * @type {VIF.Dependencies.Reactives}
      */
     currentSignal.effect = currentSignal.reactives;
