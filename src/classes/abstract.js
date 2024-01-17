@@ -2,6 +2,7 @@
     TODO -> explain
 */
 
+import { observerDispatch } from "../features/observe.js";
 import { immutableChildrenOf } from "../utils/shortcuts.js";
 import { isDefined } from "../utils/tests.js";
 import { VIF } from "../utils/types.js";
@@ -82,6 +83,9 @@ export const xAbstract = {
 
                 // we add the current element into the component trail
                 (trail || self.trail).add(element);
+
+                // dispatch the element tagName to the observer
+                observerDispatch && observerDispatch(element.tagName);
             }
 
             if (!trail) {
@@ -136,6 +140,7 @@ export const xAbstract = {
     unHydrate() {
         /** @type {VIF.Reactive|VIF.Element} */
         for (const reactive of this.trail) {
+            // prevent errors on custom reactives functions and non-defined xElements
             reactive.disconnectCallback && reactive.disconnectCallback();
         }
         // clear the trail dependencies

@@ -19,7 +19,6 @@ import {
     attributeNameSubstring,
     immutableChildrenOf,
 } from "../utils/shortcuts.js";
-import { observerDispatch } from "../features/observe.js";
 
 /**
  * Create a xElement template schema
@@ -44,11 +43,6 @@ export const createTemplateSchema = (nodeList) => {
             reactive: isxtemplate || isxelement,
             attrs: new Map(),
         };
-
-        if (isxelement && observerDispatch) {
-            // dispatch the element tagName to the observer
-            observerDispatch(element.tagName);
-        }
 
         /** @type {number} */
         let index = element.attributes.length;
@@ -115,7 +109,7 @@ export const createTemplateSchema = (nodeList) => {
         }
 
         // if the definition is not empty we add it to the schema
-        if (definition.attrs.size || definition.schema) {
+        if (definition.attrs.size || definition.schema || isxelement) {
             schema.push(definition);
         }
     }
