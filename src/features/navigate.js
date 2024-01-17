@@ -10,14 +10,14 @@ let currentLocation = location;
 const getFormattedRoute = () =>
     currentLocation.pathname + currentLocation.search;
 
-// signal of the currentRoute
-export const currentRoute = signal(getFormattedRoute());
+// signal of the current route
+export const route = signal(getFormattedRoute());
 
-// add listener on popstate to update the currentRoute
+// add listener on popstate to update the current route
 // every time user get back or forward in history.
 addEventListener("popstate", () => {
     currentLocation = location;
-    currentRoute(getFormattedRoute());
+    route(getFormattedRoute());
 });
 
 /**
@@ -36,8 +36,8 @@ export const navigate = (data) => {
             currentLocation = newLocation;
             // update the history based on new location
             history.pushState({}, "", currentLocation);
-            // update the currentRoute signal based on new location
-            currentRoute(getFormattedRoute());
+            // update the current route signal based on new location
+            return route(getFormattedRoute());
         }
     }
 
@@ -54,6 +54,4 @@ export const navigate = (data) => {
             return navigate(link);
         }
     }
-
-    return getFormattedRoute();
 };

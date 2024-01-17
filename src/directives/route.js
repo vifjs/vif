@@ -2,7 +2,7 @@
     Route directive for templates
 */
 
-import { currentRoute } from "../features/navigate.js";
+import { route } from "../features/navigate.js";
 import { reactive } from "../reactivity/signal.js";
 import {
     addPart,
@@ -27,7 +27,7 @@ export const routeDirective = (context, element, expression) => {
     let previousValue = null;
 
     return reactive(() => {
-        const params = currentRoute().match(regex) || null;
+        const params = route().match(regex) || null;
 
         if (params !== previousValue) {
             // if there is a previousValue this means that the dom element
