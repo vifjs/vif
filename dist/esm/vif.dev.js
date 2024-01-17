@@ -2,6 +2,10 @@
     All VIF types definitions via JSDoc, used in major IDEs
 */
 
+
+
+
+
 // Element prototype
 // -- Element
 /**
@@ -213,6 +217,7 @@ class xHandler {
     TODO -> explain
 */
 
+
 /** @type {{elementTag: function}} */
 let observerMemo = {};
 let observerDispatch = null;
@@ -267,6 +272,7 @@ const attributeNameSubstring = (attribute, start) =>
     X- tags
 */
 
+
 /**
  * Test if the attribute is reactive
  * @param {HTMLElement.attribute} attribute
@@ -279,7 +285,8 @@ const isXAttribute = (attribute) => attribute.name.indexOf("x-") === 0;
  * @param {HTMLElement.attribute} attribute
  * @returns {boolean}
  */
-const isXEventAttribute = (attribute) => attribute.name.indexOf("x-on:") === 0;
+const isXEventAttribute = (attribute) =>
+    attribute.name.indexOf("x-on:") === 0;
 
 /**
  * Test if the element is a vif custom element
@@ -306,6 +313,7 @@ const isDefined = (element) =>
 /*
     TODO -> explain
 */
+
 
 const xAbstract = {
     setup(datas) {
@@ -452,6 +460,7 @@ const xAbstract = {
     TODO -> explain
 */
 
+
 function xManager(datas) {
     this.setup(datas);
 }
@@ -462,6 +471,7 @@ xManager.prototype = xAbstract;
     Vif signals implementation based on S.js
     https://github.com/adamhaile/S/blob/master/src/S.ts
 */
+
 
 /**
  * The current running reactive function
@@ -764,6 +774,7 @@ const textDirective = (context, element, expression) => {
     4 - the result of the expression based on the context is used to update the directive
 */
 
+
 /**
  * Set HTMLElement attribute from the expression result
  * @type {VIF.Directive}
@@ -801,6 +812,7 @@ const attributeDirective = (attributeName) => {
         expression with the new context (contains all this... values)
     4 - the result of the expression based on the context is used to update the directive
 */
+
 
 /**
  * Set Vif component datas from the expression result
@@ -861,6 +873,7 @@ const dataDirective = (context, element, expression, attributeName) => {
     https://github.com/alpinejs/alpine/blob/main/packages/alpinejs/src/evaluator.js
 */
 
+
 /**
  * evaluated expressions cache
  * @type {{string: VIF.Expression}}
@@ -917,6 +930,7 @@ const generateFunctionFromString = (expression) => {
 /*
     Vif reconcile algorithm implementation based on signals
 */
+
 
 /**
  * reconcile algorithm implementation
@@ -991,6 +1005,7 @@ const forDirective = (context, element, expression) => {
     Fait partie des attr directives
 */
 
+
 /*
     TODO -> explain
 */
@@ -1021,6 +1036,7 @@ const ifDirective = (context, element, expression) => {
 /*
     TODO -> explain
 */
+
 
 let currentLocation = location;
 
@@ -1078,6 +1094,7 @@ const navigate = (data) => {
     Route directive for templates
 */
 
+
 /*
     TODO -> explain
 */
@@ -1121,6 +1138,7 @@ const routeDirective = (context, element, expression) => {
         expression with the new context (contains all this... values)
     4 - the result of the expression based on the context is used to update the directive
 */
+
 
 /** @returns {Comment} */
 const createFlag = () => elementCloneNode(xcomment);
@@ -1267,6 +1285,7 @@ const templateDirective = (attributeName) => {
     This makes the analysis of a new template much more efficient.
 */
 
+
 /**
  * Create a xElement template schema
  * @param {NodeList} nodeList
@@ -1373,6 +1392,7 @@ const createTemplateSchema = (nodeList) => {
 TODO -> traduire
     xElement est une classe qui étend xAbstract afin de créer des customElements possédant leurs propres cycles de vie définis par les utilisateurs
 */
+
 
 class xElement extends HTMLElement {
     constructor() {
@@ -1575,6 +1595,7 @@ Object.assign(xElement.prototype, xAbstract);
     and checks that the element does not already exist in the registry
 */
 
+
 /**
  * keep track of defined components
  * @type {{elementTag: class}}
@@ -1613,8 +1634,13 @@ const define = (name, renderFunction) => {
     }
 */
 
+
 /**
- * @type {{define: VIF.Method.Define, signal: VIF.Method.Signal, observe: VIF.Method.Observe, navigate: VIF.Method.Navigate, route: VIF.Signal}}
+ * @property {VIF.Method.Define} define Function used to define a customElement
+ * @property {VIF.Method.Signal} signal Function used to create a signal that can trigger changes through reactives functions
+ * @property {VIF.Method.Observe} observe Function used to observe the first addition of an x-element to the DOM
+ * @property {VIF.Method.Navigate} navigate Function used to navigate between routes with browser history
+ * @property {VIF.Signal} route Signal related to the current route
  */
 const Vif = {
     define,
