@@ -53,13 +53,13 @@ export const signal = (value) => {
     currentSignal.reactives = new Set();
 
     /**
-     * reference reactives dependencies, expose :
-     * - effect.add(callback)
-     * - effect.delete(callback)
+     * reference to reactives dependencies, expose :
+     * - deps.add(callback)
+     * - deps.delete(callback)
      * - ...
      * @type {VIF.Dependencies.Reactives}
      */
-    currentSignal.effect = currentSignal.reactives;
+    currentSignal.deps = currentSignal.reactives;
 
     // return the signal setter/getter function
     return currentSignal;
