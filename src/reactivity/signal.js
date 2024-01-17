@@ -54,12 +54,12 @@ export const signal = (value) => {
 
     /**
      * reference to reactives dependencies, expose :
-     * - deps.add(callback)
-     * - deps.delete(callback)
+     * - effect.add(callback)
+     * - effect.delete(callback)
      * - ...
      * @type {VIF.Dependencies.Reactives}
      */
-    currentSignal.deps = currentSignal.reactives;
+    currentSignal.effect = currentSignal.reactives;
 
     // return the signal setter/getter function
     return currentSignal;
