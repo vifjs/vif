@@ -1,4 +1,5 @@
 import terser from "@rollup/plugin-terser";
+import fs from "node:fs";
 
 /** @type {[{format: string, ext: string}]} */
 const formats = [
@@ -15,8 +16,15 @@ export default formats.map(function ([format, ext]) {
             file: `dist/${format}/vif${ext}.js`,
             format: format,
             name: "Vif",
+            minifyInternalExports: ext !== ".dev",
+            banner:
+                ext === ".dev" &&
+                fs
+                    .readFileSync("src/utils/types.js", "utf-8")
+                    .toString()
+                    .replace(/^import [^;]+;/gm, ""),
         },
-        plugins: [
+        plugins: ext !== ".dev" && [
             terser({
                 mangle: {
                     properties: {
@@ -32,9 +40,6 @@ export default formats.map(function ([format, ext]) {
                             "ref",
                         ],
                     },
-                },
-                output: {
-                    comments: ext === ".dev",
                 },
             }),
         ],
