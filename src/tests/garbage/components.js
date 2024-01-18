@@ -9,6 +9,17 @@ const prev = [...Array(8000)].map((_) => Math.ceil(Math.random() * 10));
 const next = [...Array(20)].map((_) => Math.ceil(Math.random() * 1000));
 const final = [...Array(4000)].map((_) => Math.ceil(Math.random() * 1000));
 
+Vif.locales({
+    fr: {
+        FR: () => import("./fr.js"),
+        default: "FR",
+    },
+    default: "fr",
+});
+setTimeout(() => {
+    console.log(Vif.i18n());
+}, 2000);
+
 // let o = performance.now();
 
 // function freeze() {
@@ -94,6 +105,7 @@ Vif.observe({
 
 Vif.define("app", function (signal) {
     this.navigate = Vif.navigate;
+    this.i18n = Vif.i18n;
 
     return this.component;
 });

@@ -21,7 +21,7 @@
                 <a href="?id=5" x-on:click="navigate">nav ID</a>
                 <template x-route="name=([a-z]+)">
                     correct route for name:
-                    <span x-text="params()[1]"></span>
+                    <span x-text="i18n().name"></span>
                 </template>
             </x-app>
             <x-p></x-p>
