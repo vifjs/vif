@@ -124,6 +124,16 @@ import { xManager } from "../classes/manager.js";
  * @returns {any} Returns the variable value
  */
 
+// Locales
+// -- Action
+/**
+ * @typedef {()=>import(string)} VIF.Locale.Action Function used to import a .js locale file
+ */
+// -- Definition
+/**
+ * @typedef {{identifier: VIF.Locale.Action|VIF.Locale.Definition}} VIF.Locale.Definition Object containing locales as keys and Functions or Objects as values
+ */
+
 // Methods
 // -- Define
 /**
@@ -181,6 +191,13 @@ import { xManager } from "../classes/manager.js";
  * Function used to observe the first addition of an x-element to the DOM
  * @callback VIF.Method.Observe
  * @param {{elementTag: function}} actions Object with tagNames as keys and functions as values
+ */
+// -- i18n
+/**
+ * Function used to define locales, update locale or display translations
+ * @callback VIF.Method.I18n
+ * @param {undefined|string|VIF.Locale.Definition} param "undefined" return the current translations | "string" update the current locale | "VIF.Locale.Definition" setup the locales definitions
+ * @property {Function} onload Execute a callback after translations have been loaded
  */
 
 export const VIF = {};

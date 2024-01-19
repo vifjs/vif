@@ -9,17 +9,6 @@ const prev = [...Array(8000)].map((_) => Math.ceil(Math.random() * 10));
 const next = [...Array(20)].map((_) => Math.ceil(Math.random() * 1000));
 const final = [...Array(4000)].map((_) => Math.ceil(Math.random() * 1000));
 
-Vif.locales({
-    fr: {
-        FR: () => import("./fr.js"),
-        default: "FR",
-    },
-    default: "fr",
-});
-setTimeout(() => {
-    console.log(Vif.i18n());
-}, 2000);
-
 // let o = performance.now();
 
 // function freeze() {
@@ -103,11 +92,28 @@ Vif.observe({
     "X-THREE": () => console.log("x-three found"),
 });
 
-Vif.define("app", function (signal) {
-    this.navigate = Vif.navigate;
-    this.i18n = Vif.i18n;
+Vif.i18n({
+    fr: {
+        FR: () => import("./fr.js"),
+        default: "FR",
+    },
+    en: {
+        EN: () => import("./en.js"),
+        default: "EN",
+    },
+    default: "fr",
+});
 
-    return this.component;
+Vif.i18n.onLoad(() => {
+    Vif.define("app", function (signal) {
+        this.navigate = Vif.navigate;
+        this.i18n = Vif.i18n;
+
+        return this.component;
+    });
+    setTimeout(() => {
+        Vif.i18n("en-FR");
+    }, 1500);
 });
 
 setTimeout(() => {

@@ -9,8 +9,8 @@
 
 import { define } from "./define.js";
 import { navigate, route } from "./features/navigate.js";
-import { i18n, locales } from "./features/language.js";
 import { observe } from "./features/observe.js";
+import { i18n } from "./features/language.js";
 import { signal } from "./reactivity/signal.js";
 import { VIF } from "./utils/types.js";
 
@@ -20,8 +20,7 @@ import { VIF } from "./utils/types.js";
  * @property {VIF.Method.Observe} observe Function used to observe the first addition of an x-element to the DOM
  * @property {VIF.Method.Navigate} navigate Function used to navigate between routes with browser history
  * @property {VIF.Signal} route Signal related to the current route
- * @property {TODO} locales TODO
- * @property {TODO} i18n TODO
+ * @property {Vif.Method.I18n} i18n Function used to define locales, update locale or display translations
  */
 const Vif = {
     define,
@@ -29,7 +28,6 @@ const Vif = {
     observe,
     navigate,
     route,
-    locales,
     i18n,
 };
 

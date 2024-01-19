@@ -33,7 +33,6 @@ export default formats.map(function ([format, ext]) {
                             "onUnmount",
                             "component",
                             "onMount",
-                            "locales",
                             "handler",
                             "effect",
                             "route",

@@ -1,7 +1,12 @@
-// TODO -> implémenter les locales
+/*
+    TODO -> Explain
+*/
 
 import { reactive, signal } from "../reactivity/signal.js";
 import { VIF } from "../utils/types.js";
+
+/** @type {Array<Function>} */
+let i18nMemo = [];
 
 /**
  * locale signal used to retrieve or define a locale
@@ -16,24 +21,15 @@ const locale = signal(localStorage.getItem("locale") || navigator.language);
 const translations = signal();
 
 /**
- * i18n function used to define locale or display translations
- * @type {Function}
- */
-export const i18n = (newLocale) =>
-    newLocale ? locale(newLocale) : translations();
-
-/** @typedef {()=>import(string)} LocaleFunction */
-/** @typedef {{identifier: LocaleFunction|LocaleObject}} LocaleObject */
-/**
  * Function used to setup locales and imports
- * @param {LocaleObject} languages
+ * @param {VIF.Locale.Definition} languages
  */
-export const locales = (languages) => {
+const locales = (languages) => {
     /**
      * Function used to retrieve a locale import function
-     * @param {LocaleObject} object
+     * @param {VIF.Locale.Definition} object
      * @param {string} localeKey
-     * @returns {LocaleObject|LocaleFunction}
+     * @returns {VIF.Locale.Definition|VIF.Locale.Action}
      */
     const localeFromObject = (object, localeKey) =>
         object[localeKey] || object[object.default];
@@ -43,21 +39,54 @@ export const locales = (languages) => {
         // "fr-FR" -> ["fr", "FR"] "fr" -> ["fr"]
         const [country, province] = locale().split("-");
 
-        // retrieve the callback from the localeObject
-        let callback = localeFromObject(
+        // we keep the province even if the country is incorrect because
+        // for example, if "fr" doesn't exist, "fr-CA" input will be tranform
+        // into "en-CA" which make more sense than "en-EN". However if "en-CA"
+        // doesn't exist the function will retreive the default locale "en-EN".
+        const result = localeFromObject(
             localeFromObject(languages, country),
             province
         );
 
-        // execute the callback, and after promise.resolve
+        // execute the result, and after promise.resolve
         // trigger the translations signal
-        // TODO -> si objet a la place que faire
-        // TODO -> que faire pendant le pending time ? comme undefined throw errors
-        // TODO -> export i18n seulement ? plus judicieux que locales + i18n ?
-        if (callback) {
-            callback().then((exportedModule) =>
-                translations(exportedModule.default)
-            );
+        if (result) {
+            result().then((exportedModule) => {
+                // update the translation signal
+                translations(exportedModule.default);
+                // execute all pending callbacks and set the memo to undefined
+                // by doing this we prevent future useless executions
+                i18nMemo &&
+                    (i18nMemo = i18nMemo.forEach((callback) => callback()));
+            });
         }
     });
 };
+
+/**
+ * Execute a callback after translations have been loaded
+ * @param {Function} callback Function called after translations have been loaded
+ */
+const i18nOnLoad = (callback) => {
+    // if translation is already loaded, execute the callback
+    if (translations()) {
+        callback();
+    }
+    // else push the callback into the queue
+    else {
+        i18nMemo.push(callback);
+    }
+};
+
+/**
+ * Function used to define locales, update locale or display translations
+ * @type {VIF.Method.I18n}
+ */
+export const i18n = (param) =>
+    typeof param === "string"
+        ? locale(param)
+        : param
+        ? locales(param)
+        : translations();
+
+i18n.onload = i18nOnLoad;

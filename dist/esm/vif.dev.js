@@ -124,6 +124,16 @@
  * @returns {any} Returns the variable value
  */
 
+// Locales
+// -- Action
+/**
+ * @typedef {()=>import(string)} VIF.Locale.Action Function used to import a .js locale file
+ */
+// -- Definition
+/**
+ * @typedef {{identifier: VIF.Locale.Action|VIF.Locale.Definition}} VIF.Locale.Definition Object containing locales as keys and Functions or Objects as values
+ */
+
 // Methods
 // -- Define
 /**
@@ -181,6 +191,13 @@
  * Function used to observe the first addition of an x-element to the DOM
  * @callback VIF.Method.Observe
  * @param {{elementTag: function}} actions Object with tagNames as keys and functions as values
+ */
+// -- i18n
+/**
+ * Function used to define locales, update locale or display translations
+ * @callback VIF.Method.I18n
+ * @param {undefined|string|VIF.Locale.Definition} param "undefined" return the current translations | "string" update the current locale | "VIF.Locale.Definition" setup the locales definitions
+ * @property {Function} onload Execute a callback after translations have been loaded
  */
 
 export const VIF = {};
@@ -1626,6 +1643,97 @@ const define = (name, renderFunction) => {
 };
 
 /*
+    TODO -> Explain
+*/
+
+
+/** @type {Array<Function>} */
+let i18nMemo = [];
+
+/**
+ * locale signal used to retrieve or define a locale
+ * @type {VIF.Signal}
+ */
+const locale = signal(localStorage.getItem("locale") || navigator.language);
+
+/**
+ * translations signal used to retreive or define translations object
+ * @type {VIF.Signal}
+ */
+const translations = signal();
+
+/**
+ * Function used to setup locales and imports
+ * @param {VIF.Locale.Definition} languages
+ */
+const locales = (languages) => {
+    /**
+     * Function used to retrieve a locale import function
+     * @param {VIF.Locale.Definition} object
+     * @param {string} localeKey
+     * @returns {VIF.Locale.Definition|VIF.Locale.Action}
+     */
+    const localeFromObject = (object, localeKey) =>
+        object[localeKey] || object[object.default];
+
+    reactive(() => {
+        // get the country name and province name from string
+        // "fr-FR" -> ["fr", "FR"] "fr" -> ["fr"]
+        const [country, province] = locale().split("-");
+
+        // we keep the province even if the country is incorrect because
+        // for example, if "fr" doesn't exist, "fr-CA" input will be tranform
+        // into "en-CA" which make more sense than "en-EN". However if "en-CA"
+        // doesn't exist the function will retreive the default locale "en-EN".
+        const result = localeFromObject(
+            localeFromObject(languages, country),
+            province
+        );
+
+        // execute the result, and after promise.resolve
+        // trigger the translations signal
+        if (result) {
+            result().then((exportedModule) => {
+                // update the translation signal
+                translations(exportedModule.default);
+                // execute all pending callbacks and set the memo to undefined
+                // by doing this we prevent future useless executions
+                i18nMemo &&
+                    (i18nMemo = i18nMemo.forEach((callback) => callback()));
+            });
+        }
+    });
+};
+
+/**
+ * Execute a callback after translations have been loaded
+ * @param {Function} callback Function called after translations have been loaded
+ */
+const i18nOnLoad = (callback) => {
+    // if translation is already loaded, execute the callback
+    if (translations()) {
+        callback();
+    }
+    // else push the callback into the queue
+    else {
+        i18nMemo.push(callback);
+    }
+};
+
+/**
+ * Function used to define locales, update locale or display translations
+ * @type {VIF.Method.I18n}
+ */
+const i18n = (param) =>
+    typeof param === "string"
+        ? locale(param)
+        : param
+        ? locales(param)
+        : translations();
+
+i18n.onload = i18nOnLoad;
+
+/*
     export Vif {
         define: define a new customElement
         signal: create a Vif signal
@@ -1641,6 +1749,7 @@ const define = (name, renderFunction) => {
  * @property {VIF.Method.Observe} observe Function used to observe the first addition of an x-element to the DOM
  * @property {VIF.Method.Navigate} navigate Function used to navigate between routes with browser history
  * @property {VIF.Signal} route Signal related to the current route
+ * @property {Vif.Method.I18n} i18n Function used to define locales, update locale or display translations
  */
 const Vif = {
     define,
@@ -1648,6 +1757,7 @@ const Vif = {
     observe,
     navigate,
     route,
+    i18n,
 };
 
 export { Vif as default };

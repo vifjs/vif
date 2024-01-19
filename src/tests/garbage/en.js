@@ -1,5 +1,5 @@
 export default {
     global: {
-        name: "Nom",
+        name: "Name",
     },
 };
