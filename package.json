@@ -3,10 +3,12 @@
     "scripts": {
         "watch": "rollup --config rollup.config.js --watch",
         "build": "rollup --config rollup.config.js",
+        "jsdoc": "jsdoc ./src --destination ./doc/jsdoc --package ./dist/package.json --recurse",
         "publish": "rollup --config rollup.config.js"
     },
     "devDependencies": {
         "@rollup/plugin-terser": "^0.4.4",
+        "jsdoc": "^4.0.2",
         "rollup": "^4.9.5"
     }
 }

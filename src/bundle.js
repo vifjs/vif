@@ -20,7 +20,7 @@ import { VIF } from "./utils/types.js";
  * @property {VIF.Method.Observe} observe Function used to observe the first addition of an x-element to the DOM
  * @property {VIF.Method.Navigate} navigate Function used to navigate between routes with browser history
  * @property {VIF.Signal} route Signal related to the current route
- * @property {Vif.Method.I18n} i18n Function used to define locales, update locale or display translations
+ * @property {VIF.Method.I18n} i18n Function used to define locales, update locale or display translations
  */
 const Vif = {
     define,

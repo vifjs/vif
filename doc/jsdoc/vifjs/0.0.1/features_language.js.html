@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: features/language.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: features/language.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+    TODO -> Explain
+    {
+        en: {
+            EN: () => import('en.js'),
+            default: 'EN'
+        },
+        fr: {
+            FR: () => import('fr.js'),
+            default: 'FR'
+        },
+        default: 'en'
+    }
+*/
+
+import { reactive, signal } from "../reactivity/signal.js";
+import { VIF } from "../utils/types.js";
+
+/** @type {Array&lt;Function>} */
+let i18nMemo = [];
+
+/**
+ * locale signal used to retrieve or define a locale
+ * @type {VIF.Signal}
+ */
+const locale = signal();
+
+/**
+ * translations signal used to retreive or define translations object
+ * @type {VIF.Signal}
+ */
+const translations = signal();
+
+/**
+ * Function used to setup locales and imports
+ * @param {VIF.Locale.Definition} languages
+ */
+const locales = (languages) => {
+    /**
+     * Function used to retrieve a locale import function
+     * @param {VIF.Locale.Definition} object
+     * @param {string} localeKey
+     * @returns {VIF.Locale.Definition|VIF.Locale.Action}
+     */
+    const localeFromObject = (object, localeKey) =>
+        object[localeKey] || object[object.default];
+
+    // setup locale value
+    locale(localStorage.getItem("locale") || navigator.language);
+
+    reactive(() => {
+        // get the country name and province name from string
+        // "fr-FR" -> ["fr", "FR"] "fr" -> ["fr"]
+        const [country, province] = locale().split("-");
+
+        // we keep the province even if the country is incorrect because
+        // for example, if "fr" doesn't exist, "fr-CA" input will be tranform
+        // into "en-CA" which make more sense than "en-EN". However if "en-CA"
+        // doesn't exist the function will retreive the default locale "en-EN".
+        const result = localeFromObject(
+            localeFromObject(languages, country),
+            province
+        );
+
+        // execute the result, and after promise.resolve
+        // trigger the translations signal
+        if (result) {
+            result().then((exportedModule) => {
+                // update the translation signal
+                translations(exportedModule.default);
+                // execute all pending callbacks and set the memo to undefined
+                // by doing this we prevent future useless executions
+                i18nMemo &amp;&amp;
+                    (i18nMemo = i18nMemo.forEach((callback) => callback()));
+            });
+        }
+    });
+};
+
+/**
+ * Execute a callback after translations have been loaded
+ * @param {Function} callback Function called after translations have been loaded
+ */
+const i18nOnLoad = (callback) => {
+    // if translation is already loaded, execute the callback
+    if (translations()) {
+        callback();
+    }
+    // else push the callback into the queue
+    else {
+        i18nMemo.push(callback);
+    }
+};
+
+/**
+ * Function used to define locales, update locale or display translations
+ * @type {VIF.Method.I18n}
+ */
+export const i18n = (param) => (param ? locales(param) : translations());
+
+i18n.locale = locale;
+i18n.onload = i18nOnLoad;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="xHandler.html">xHandler</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Vif">Vif</a></li><li><a href="global.html#attributeDirective">attributeDirective</a></li><li><a href="global.html#createCssSelector">createCssSelector</a></li><li><a href="global.html#createCssTemplateOrSelector">createCssTemplateOrSelector</a></li><li><a href="global.html#createEmptyTemplate">createEmptyTemplate</a></li><li><a href="global.html#createFlag">createFlag</a></li><li><a href="global.html#createLiteralTemplate">createLiteralTemplate</a></li><li><a href="global.html#createPart">createPart</a></li><li><a href="global.html#createReferenceArray">createReferenceArray</a></li><li><a href="global.html#createTemplateFragmentFromNodeList">createTemplateFragmentFromNodeList</a></li><li><a href="global.html#createTemplateFragmentFromString">createTemplateFragmentFromString</a></li><li><a href="global.html#createTemplateSchema">createTemplateSchema</a></li><li><a href="global.html#cssDirective">cssDirective</a></li><li><a href="global.html#cssNextId">cssNextId</a></li><li><a href="global.html#currentReactive">currentReactive</a></li><li><a href="global.html#dataDirective">dataDirective</a></li><li><a href="global.html#defaultDirective">defaultDirective</a></li><li><a href="global.html#define">define</a></li><li><a href="global.html#defineMemo">defineMemo</a></li><li><a href="global.html#disconnectReactive">disconnectReactive</a></li><li><a href="global.html#evaluatorMemo">evaluatorMemo</a></li><li><a href="global.html#eventDirective">eventDirective</a></li><li><a href="global.html#generateFunctionFromString">generateFunctionFromString</a></li><li><a href="global.html#i18n">i18n</a></li><li><a href="global.html#i18nMemo">i18nMemo</a></li><li><a href="global.html#i18nOnLoad">i18nOnLoad</a></li><li><a href="global.html#isDefined">isDefined</a></li><li><a href="global.html#isXAttribute">isXAttribute</a></li><li><a href="global.html#isXElement">isXElement</a></li><li><a href="global.html#isXEventAttribute">isXEventAttribute</a></li><li><a href="global.html#isXTemplate">isXTemplate</a></li><li><a href="global.html#locale">locale</a></li><li><a href="global.html#locales">locales</a></li><li><a href="global.html#navigate">navigate</a></li><li><a href="global.html#observe">observe</a></li><li><a href="global.html#observerDispacther">observerDispacther</a></li><li><a href="global.html#observerMemo">observerMemo</a></li><li><a href="global.html#reactive">reactive</a></li><li><a href="global.html#reconcile">reconcile</a></li><li><a href="global.html#refDirective">refDirective</a></li><li><a href="global.html#removePart">removePart</a></li><li><a href="global.html#showDirective">showDirective</a></li><li><a href="global.html#signal">signal</a></li><li><a href="global.html#templateDirective">templateDirective</a></li><li><a href="global.html#textDirective">textDirective</a></li><li><a href="global.html#translations">translations</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Jan 19 2024 14:29:38 GMT+0100 (heure normale d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

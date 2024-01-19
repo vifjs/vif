@@ -23,7 +23,7 @@ export const createCssSelector = (selector, indicator) =>
 /**
  * Used to create CSS templates or CSS selectors from components renderFunction
  * and also append style tag into document's head
- * @param {[string]|string} strings
+ * @param {Array<string>|string} strings
  * @param {...any} values
  * @returns {string}
  */

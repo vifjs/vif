@@ -15,8 +15,8 @@ import {
  * reconcile algorithm implementation
  * @param {VIF.Element.Datas} context
  * @param {HTMLTemplateElement} element
- * @param {[any]} prevList
- * @param {[any]} nextList
+ * @param {Array} prevList
+ * @param {Array} nextList
  * @param {string} key
  */
 const reconcile = (context, element, prevList, nextList, key) => {
@@ -59,7 +59,7 @@ const reconcile = (context, element, prevList, nextList, key) => {
 export const forDirective = (context, element, expression) => {
     setupTemplateDirective(element);
 
-    /** @type {[any]} */
+    /** @type {Array} */
     let prevList = [];
 
     /** @type {string} */

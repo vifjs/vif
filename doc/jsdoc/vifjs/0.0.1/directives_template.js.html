@@ -1,4 +1,32 @@
-/*
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: directives/template.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: directives/template.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
     What append in a directive function ?
     1 - the directive function is stored inside component's schema
     2 - during the hydration process the directive function run with the following parameters
@@ -39,7 +67,7 @@ export const createPart = (context, index, key, value) => {
      * create a signal for the current array value
      * @type {VIF.Signal}
      */
-    const property = key && signal(value);
+    const property = key &amp;&amp; signal(value);
 
     // add index to property
     if (property) {
@@ -59,7 +87,7 @@ export const createPart = (context, index, key, value) => {
 };
 
 export const addPart = (element, context, index, key, value) => {
-    /** @type {Array<VIF.Part>} */
+    /** @type {Array&lt;VIF.Part>} */
     const parts = element.templateParts;
 
     /** @type {VIF.Part} */
@@ -75,13 +103,13 @@ export const addPart = (element, context, index, key, value) => {
     // store the context and the hydration methods
     // if the part already exist, update the property value
     if (part) {
-        part.property && part.property(value);
+        part.property &amp;&amp; part.property(value);
     } else {
         part = parts[index + 1] = createPart(context, index, key, value);
     }
 
     // if there is a cached schema, hydrate the fragment
-    element.immutableSchema &&
+    element.immutableSchema &amp;&amp;
         part.manager.hydrate(childrenOf(fragment), element.immutableSchema);
 
     // replace the current flag by himself plus fragment
@@ -95,11 +123,11 @@ export const updatePart = (element, index, value) => {
 
 /**
  * remove a DOM part from the DOM and disconnect it
- * @param {Array<VIF.Part>} parts
+ * @param {Array&lt;VIF.Part>} parts
  * @param {number} index
  */
 export const removePart = (element, index) => {
-    /** @type {Array<VIF.Part>} */
+    /** @type {Array&lt;VIF.Part>} */
     const parts = element.templateParts;
 
     /**
@@ -129,12 +157,12 @@ export const removePart = (element, index) => {
 
 // setup template directives basics as element properties
 export const setupTemplateDirective = (element) => {
-    /** @type {Array<VIF.Part>} */
+    /** @type {Array&lt;VIF.Part>} */
     element.templateParts = [{ flag: createFlag() }];
 
     /** @type {VIF.Element.DisconnectCallback} */
     element.disconnectCallback = () => {
-        for (let x = 1; x < element.templateParts.length; x++) {
+        for (let x = 1; x &lt; element.templateParts.length; x++) {
             element.templateParts[x].manager.disconnectCallback();
         }
     };
@@ -156,3 +184,26 @@ export const templateDirective = (attributeName) => {
         return routeDirective;
     }
 };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="xHandler.html">xHandler</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Vif">Vif</a></li><li><a href="global.html#attributeDirective">attributeDirective</a></li><li><a href="global.html#createCssSelector">createCssSelector</a></li><li><a href="global.html#createCssTemplateOrSelector">createCssTemplateOrSelector</a></li><li><a href="global.html#createEmptyTemplate">createEmptyTemplate</a></li><li><a href="global.html#createFlag">createFlag</a></li><li><a href="global.html#createLiteralTemplate">createLiteralTemplate</a></li><li><a href="global.html#createPart">createPart</a></li><li><a href="global.html#createReferenceArray">createReferenceArray</a></li><li><a href="global.html#createTemplateFragmentFromNodeList">createTemplateFragmentFromNodeList</a></li><li><a href="global.html#createTemplateFragmentFromString">createTemplateFragmentFromString</a></li><li><a href="global.html#createTemplateSchema">createTemplateSchema</a></li><li><a href="global.html#cssDirective">cssDirective</a></li><li><a href="global.html#cssNextId">cssNextId</a></li><li><a href="global.html#currentReactive">currentReactive</a></li><li><a href="global.html#dataDirective">dataDirective</a></li><li><a href="global.html#defaultDirective">defaultDirective</a></li><li><a href="global.html#define">define</a></li><li><a href="global.html#defineMemo">defineMemo</a></li><li><a href="global.html#disconnectReactive">disconnectReactive</a></li><li><a href="global.html#evaluatorMemo">evaluatorMemo</a></li><li><a href="global.html#eventDirective">eventDirective</a></li><li><a href="global.html#generateFunctionFromString">generateFunctionFromString</a></li><li><a href="global.html#i18n">i18n</a></li><li><a href="global.html#i18nMemo">i18nMemo</a></li><li><a href="global.html#i18nOnLoad">i18nOnLoad</a></li><li><a href="global.html#isDefined">isDefined</a></li><li><a href="global.html#isXAttribute">isXAttribute</a></li><li><a href="global.html#isXElement">isXElement</a></li><li><a href="global.html#isXEventAttribute">isXEventAttribute</a></li><li><a href="global.html#isXTemplate">isXTemplate</a></li><li><a href="global.html#locale">locale</a></li><li><a href="global.html#locales">locales</a></li><li><a href="global.html#navigate">navigate</a></li><li><a href="global.html#observe">observe</a></li><li><a href="global.html#observerDispacther">observerDispacther</a></li><li><a href="global.html#observerMemo">observerMemo</a></li><li><a href="global.html#reactive">reactive</a></li><li><a href="global.html#reconcile">reconcile</a></li><li><a href="global.html#refDirective">refDirective</a></li><li><a href="global.html#removePart">removePart</a></li><li><a href="global.html#showDirective">showDirective</a></li><li><a href="global.html#signal">signal</a></li><li><a href="global.html#templateDirective">templateDirective</a></li><li><a href="global.html#textDirective">textDirective</a></li><li><a href="global.html#translations">translations</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Jan 19 2024 14:29:38 GMT+0100 (heure normale d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

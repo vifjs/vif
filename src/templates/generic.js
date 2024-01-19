@@ -1,12 +1,12 @@
 /**
  * Used to avoid template evaluation and improve performances
- * @returns
+ * @returns {undefined}
  */
 export const createEmptyTemplate = () => {};
 
 /**
  * Used to return HTML and CSS templates from components renderFunction
- * @param {[string]} strings
+ * @param {Array<string>} strings
  * @param {...any} values
  * @returns {string}
  */
