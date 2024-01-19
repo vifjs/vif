@@ -196,7 +196,8 @@ import { xManager } from "../classes/manager.js";
 /**
  * Function used to define locales, update locale or display translations
  * @callback VIF.Method.I18n
- * @param {undefined|string|VIF.Locale.Definition} param "undefined" return the current translations | "string" update the current locale | "VIF.Locale.Definition" setup the locales definitions
+ * @param {undefined|VIF.Locale.Definition} param "undefined" return the current translations | "VIF.Locale.Definition" setup the locales definitions
+ * @property {VIF.Signal} locale Signal used tu retrieve or update the current locale
  * @property {Function} onload Execute a callback after translations have been loaded
  */
 

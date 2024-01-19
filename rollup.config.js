@@ -34,6 +34,7 @@ export default formats.map(function ([format, ext]) {
                             "component",
                             "onMount",
                             "handler",
+                            "locale",
                             "effect",
                             "route",
                             "data",

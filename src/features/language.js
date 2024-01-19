@@ -96,11 +96,7 @@ const i18nOnLoad = (callback) => {
  * Function used to define locales, update locale or display translations
  * @type {VIF.Method.I18n}
  */
-export const i18n = (param) =>
-    typeof param === "string"
-        ? locale(param)
-        : param
-        ? locales(param)
-        : translations();
+export const i18n = (param) => (param ? locales(param) : translations());
 
+i18n.locale = locale;
 i18n.onload = i18nOnLoad;

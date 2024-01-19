@@ -196,7 +196,8 @@
 /**
  * Function used to define locales, update locale or display translations
  * @callback VIF.Method.I18n
- * @param {undefined|string|VIF.Locale.Definition} param "undefined" return the current translations | "string" update the current locale | "VIF.Locale.Definition" setup the locales definitions
+ * @param {undefined|VIF.Locale.Definition} param "undefined" return the current translations | "VIF.Locale.Definition" setup the locales definitions
+ * @property {VIF.Signal} locale Signal used tu retrieve or update the current locale
  * @property {Function} onload Execute a callback after translations have been loaded
  */
 
@@ -1644,6 +1645,17 @@ const define = (name, renderFunction) => {
 
 /*
     TODO -> Explain
+    {
+        en: {
+            EN: () => import('en.js'),
+            default: 'EN'
+        },
+        fr: {
+            FR: () => import('fr.js'),
+            default: 'FR'
+        },
+        default: 'en'
+    }
 */
 
 
@@ -1654,7 +1666,7 @@ let i18nMemo = [];
  * locale signal used to retrieve or define a locale
  * @type {VIF.Signal}
  */
-const locale = signal(localStorage.getItem("locale") || navigator.language);
+const locale = signal();
 
 /**
  * translations signal used to retreive or define translations object
@@ -1675,6 +1687,9 @@ const locales = (languages) => {
      */
     const localeFromObject = (object, localeKey) =>
         object[localeKey] || object[object.default];
+
+    // setup locale value
+    locale(localStorage.getItem("locale") || navigator.language);
 
     reactive(() => {
         // get the country name and province name from string
@@ -1724,13 +1739,9 @@ const i18nOnLoad = (callback) => {
  * Function used to define locales, update locale or display translations
  * @type {VIF.Method.I18n}
  */
-const i18n = (param) =>
-    typeof param === "string"
-        ? locale(param)
-        : param
-        ? locales(param)
-        : translations();
+const i18n = (param) => (param ? locales(param) : translations());
 
+i18n.locale = locale;
 i18n.onload = i18nOnLoad;
 
 /*
