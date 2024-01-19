@@ -21,7 +21,8 @@
  */
 // -- Element.References.Array
 /**
- * @typedef {[Function, signal: VIF.Signal]} VIF.Element.References.Array Array containing reference callback list
+ * @typedef {Array<Function>} VIF.Element.References.Array Array containing reference callback list
+ * @property {VIF.Signal} signal
  */
 // -- Element.Datas.Reference
 /**
@@ -39,7 +40,7 @@
 /**
  * Function used to clear signals dependencies: enabled on xManager, xElement and xReactive
  * @callback VIF.Element.DisconnectCallback
- * @param {VIF.Element.Datas} [datas] Datas of the element
+ * @param {VIF.Element.Datas} datas Datas of the element
  */
 // Element static representation
 // -- Template
@@ -48,7 +49,7 @@
  */
 // -- Schema
 /**
- * @typedef {[VIF.Definition]} VIF.Schema Array of definitions
+ * @typedef {Array<VIF.Definition>} VIF.Schema Array of definitions
  */
 // -- Part
 /**
@@ -58,7 +59,7 @@
 // Hydration
 // -- Definition
 /**
- * @typedef {{pos: number schema: VIF.Schema, reactive: boolean, attrs: VIF.Attributes}} VIF.Definition Object representing the definition of a HTMLElement
+ * @typedef {{pos: number, schema: VIF.Schema, reactive: boolean, attrs: VIF.Attributes}} VIF.Definition Object representing the definition of a HTMLElement
  */
 // -- Attributes
 /**
@@ -127,7 +128,9 @@
 // Locales
 // -- Action
 /**
- * @typedef {()=>import(string)} VIF.Locale.Action Function used to import a .js locale file
+ * Function used to import a .js locale file
+ * @callback VIF.Locale.Action
+ * @returns {Promise} Promise returning a javascript Object on resolve
  */
 // -- Definition
 /**
@@ -417,7 +420,7 @@ const xAbstract = {
             if (!trail) {
                 /**
                  * loop over all hydratable attributes
-                 * @type {[string, VIF.Action]}
+                 * @type {Array<string, VIF.Action>}
                  */
                 for (const [name, action] of definition.attrs) {
                     // apply the corresponding directive
@@ -623,13 +626,13 @@ const createTemplateFragmentFromNodeList = (nodeList) => {
 
 /**
  * Used to avoid template evaluation and improve performances
- * @returns
+ * @returns {undefined}
  */
 const createEmptyTemplate = () => {};
 
 /**
  * Used to return HTML and CSS templates from components renderFunction
- * @param {[string]} strings
+ * @param {Array<string>} strings
  * @param {...any} values
  * @returns {string}
  */
@@ -662,7 +665,7 @@ const createCssSelector = (selector, indicator) =>
 /**
  * Used to create CSS templates or CSS selectors from components renderFunction
  * and also append style tag into document's head
- * @param {[string]|string} strings
+ * @param {Array<string>|string} strings
  * @param {...any} values
  * @returns {string}
  */
@@ -954,8 +957,8 @@ const generateFunctionFromString = (expression) => {
  * reconcile algorithm implementation
  * @param {VIF.Element.Datas} context
  * @param {HTMLTemplateElement} element
- * @param {[any]} prevList
- * @param {[any]} nextList
+ * @param {Array} prevList
+ * @param {Array} nextList
  * @param {string} key
  */
 const reconcile = (context, element, prevList, nextList, key) => {
@@ -998,7 +1001,7 @@ const reconcile = (context, element, prevList, nextList, key) => {
 const forDirective = (context, element, expression) => {
     setupTemplateDirective(element);
 
-    /** @type {[any]} */
+    /** @type {Array} */
     let prevList = [];
 
     /** @type {string} */
@@ -1200,7 +1203,7 @@ const createPart = (context, index, key, value) => {
 };
 
 const addPart = (element, context, index, key, value) => {
-    /** @type {[VIF.Part]} */
+    /** @type {Array<VIF.Part>} */
     const parts = element.templateParts;
 
     /** @type {VIF.Part} */
@@ -1236,11 +1239,11 @@ const updatePart = (element, index, value) => {
 
 /**
  * remove a DOM part from the DOM and disconnect it
- * @param {[VIF.Part]} parts
+ * @param {Array<VIF.Part>} parts
  * @param {number} index
  */
 const removePart = (element, index) => {
-    /** @type {[VIF.Part]} */
+    /** @type {Array<VIF.Part>} */
     const parts = element.templateParts;
 
     /**
@@ -1270,7 +1273,7 @@ const removePart = (element, index) => {
 
 // setup template directives basics as element properties
 const setupTemplateDirective = (element) => {
-    /** @type {[VIF.Part]} */
+    /** @type {Array<VIF.Part>} */
     element.templateParts = [{ flag: createFlag() }];
 
     /** @type {VIF.Element.DisconnectCallback} */
@@ -1760,7 +1763,7 @@ i18n.onload = i18nOnLoad;
  * @property {VIF.Method.Observe} observe Function used to observe the first addition of an x-element to the DOM
  * @property {VIF.Method.Navigate} navigate Function used to navigate between routes with browser history
  * @property {VIF.Signal} route Signal related to the current route
- * @property {Vif.Method.I18n} i18n Function used to define locales, update locale or display translations
+ * @property {VIF.Method.I18n} i18n Function used to define locales, update locale or display translations
  */
 const Vif = {
     define,
