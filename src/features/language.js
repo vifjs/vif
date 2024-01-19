@@ -1,5 +1,16 @@
 /*
     TODO -> Explain
+    {
+        en: {
+            EN: () => import('en.js'),
+            default: 'EN'
+        },
+        fr: {
+            FR: () => import('fr.js'),
+            default: 'FR'
+        },
+        default: 'en'
+    }
 */
 
 import { reactive, signal } from "../reactivity/signal.js";
@@ -12,7 +23,7 @@ let i18nMemo = [];
  * locale signal used to retrieve or define a locale
  * @type {VIF.Signal}
  */
-const locale = signal(localStorage.getItem("locale") || navigator.language);
+const locale = signal();
 
 /**
  * translations signal used to retreive or define translations object
@@ -33,6 +44,9 @@ const locales = (languages) => {
      */
     const localeFromObject = (object, localeKey) =>
         object[localeKey] || object[object.default];
+
+    // setup locale value
+    locale(localStorage.getItem("locale") || navigator.language);
 
     reactive(() => {
         // get the country name and province name from string
