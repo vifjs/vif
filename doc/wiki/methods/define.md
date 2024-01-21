@@ -99,6 +99,8 @@ Vif.define("counter", function (signal, html, css) {
 <x-counter></x-counter>
 ```
 
+---
+
 # Next
 
 [Explore signals](../concepts/signals.md)

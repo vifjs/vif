@@ -144,7 +144,6 @@
  * @callback VIF.Method.Define
  * @param {VIF.Method.Define.Name} name The name of the customElement without x- prefix
  * @param {VIF.Method.Define.Render} renderFunction Function used to render the component
- * @param {VIF.Method.Define.Options} options Object used to change component's behavior
  * @returns {VIF.Element} The customElement class
  */
 // -- Define.Name
