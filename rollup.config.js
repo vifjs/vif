@@ -30,6 +30,7 @@ export default formats.map(function ([format, ext]) {
                     properties: {
                         reserved: [
                             "connectedCallback",
+                            "handleEvent",
                             "onUnmount",
                             "component",
                             "onMount",
