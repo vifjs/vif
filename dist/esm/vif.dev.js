@@ -186,6 +186,7 @@
  * Function used to navigate between routes with browser history
  * @callback VIF.Method.Navigate
  * @param {string|Event} data String representing an absolute or relative URL | Event triggered by an element with href attribute
+ * @property {VIF.Signal} route Signal related to the current route
  * @returns {string} String representing the updated URL
  */
 // -- Observe
@@ -1074,10 +1075,7 @@ addEventListener("popstate", () => {
     route(getFormattedRoute());
 });
 
-/**
- * function used to navigate between routes
- * @param {string|Event} data
- */
+/** @type {VIF.Method.Navigate} */
 const navigate = (data) => {
     // if the argument is a string, navigate to the route
     if (typeof data === "string") {
@@ -1109,6 +1107,8 @@ const navigate = (data) => {
         }
     }
 };
+
+navigate.route = route;
 
 /*
     Route directive for templates
@@ -1747,12 +1747,7 @@ i18n.locale = locale;
 i18n.onload = i18nOnLoad;
 
 /*
-    export Vif {
-        define: define a new customElement
-        signal: create a Vif signal
-        observe: execute an action the first time we find the element in the DOM
-        navigate: update the current route, history and url global signal
-    }
+    export Vif {}
 */
 
 
@@ -1761,7 +1756,6 @@ i18n.onload = i18nOnLoad;
  * @property {VIF.Method.Signal} signal Function used to create a signal that can trigger changes through reactives functions
  * @property {VIF.Method.Observe} observe Function used to observe the first addition of an x-element to the DOM
  * @property {VIF.Method.Navigate} navigate Function used to navigate between routes with browser history
- * @property {VIF.Signal} route Signal related to the current route
  * @property {VIF.Method.I18n} i18n Function used to define locales, update locale or display translations
  */
 const Vif = {
@@ -1769,7 +1763,6 @@ const Vif = {
     signal,
     observe,
     navigate,
-    route,
     i18n,
 };
 

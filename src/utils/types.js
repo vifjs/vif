@@ -186,6 +186,7 @@ import { xManager } from "../classes/manager.js";
  * Function used to navigate between routes with browser history
  * @callback VIF.Method.Navigate
  * @param {string|Event} data String representing an absolute or relative URL | Event triggered by an element with href attribute
+ * @property {VIF.Signal} route Signal related to the current route
  * @returns {string} String representing the updated URL
  */
 // -- Observe

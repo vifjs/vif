@@ -4,7 +4,7 @@ How to create a SPA (Single Page Application) ?
 
 To create a single page application you will need a router. A router is a component that displays content conditionally according to the url provided by the browser.
 
-# The x-route directive
+## The x-route directive
 
 Conditionally displaying content can be done using the x-route directive, like bellow :
 
@@ -22,7 +22,7 @@ Conditionally displaying content can be done using the x-route directive, like b
 </x-app>
 ```
 
-# The navigate method
+## The navigate method
 
 The navigate method is provided by Vif and can be used to change the current route in history. This method can be used in components as follows :
 
@@ -34,9 +34,9 @@ Vif.define("app", function () {
 });
 ```
 
-Vif also expose a [global route signal](./route.md).
+The navigate method also expose the current route signal with `navigate.route()`.
 
-# The links
+## The links
 
 To create links between routes without reloading the page while preserving SEO we still need the navigate method, as it can be used effectively on event directives attached to links
 

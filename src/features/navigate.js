@@ -3,6 +3,7 @@
 */
 
 import { signal } from "../reactivity/signal.js";
+import { VIF } from "../utils/types.js";
 
 let currentLocation = location;
 
@@ -20,10 +21,7 @@ addEventListener("popstate", () => {
     route(getFormattedRoute());
 });
 
-/**
- * function used to navigate between routes
- * @param {string|Event} data
- */
+/** @type {VIF.Method.Navigate} */
 export const navigate = (data) => {
     // if the argument is a string, navigate to the route
     if (typeof data === "string") {
@@ -55,3 +53,5 @@ export const navigate = (data) => {
         }
     }
 };
+
+navigate.route = route;
