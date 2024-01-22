@@ -4,22 +4,28 @@ Use Vif as IIFE or ESModule
 
 ## ESM
 
+> Javascript module system with "import" and "export"
+
 ```js
-import Vif from "https://raw.githubusercontent.com/vifjs/vif/main/dist/esm/vif.dev.js";
-/* or ... */
-import Vif from "https://raw.githubusercontent.com/vifjs/vif/main/dist/esm/vif.js";
+// development version
+import Vif from "https://cdn.jsdelivr.net/gh/vifjs/vif/dist/esm/vif.dev.js";
+// production version
+import Vif from "https://cdn.jsdelivr.net/gh/vifjs/vif/dist/esm/vif.js";
 ```
 
 ## IIFE
 
+> An IIFE (Immediately Invoked Function Expression) is a JavaScript function that runs as soon as it is defined.
+
 ```html
+<!-- development version -->
 <script
-    src="https://raw.githubusercontent.com/vifjs/vif/main/dist/iife/vif.dev.js"
+    src="https://cdn.jsdelivr.net/gh/vifjs/vif/dist/iife/vif.dev.js"
     defer
 ></script>
-<!-- or ... -->
+<!-- production version -->
 <script
-    src="https://raw.githubusercontent.com/vifjs/vif/main/dist/iife/vif.js"
+    src="https://cdn.jsdelivr.net/gh/vifjs/vif/dist/iife/vif.js"
     defer
 ></script>
 ```

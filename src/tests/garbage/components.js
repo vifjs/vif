@@ -1,4 +1,4 @@
-import Vif from "../../bundle.js";
+import Vif from "https://cdn.jsdelivr.net/gh/vifjs/vif/dist/esm/vif.dev.js";
 
 // import {
 //     LitElement,
@@ -104,7 +104,7 @@ Vif.i18n({
     default: "fr",
 });
 
-Vif.i18n.onLoad(() => {
+Vif.i18n.onload(() => {
     Vif.define("app", function (signal) {
         this.navigate = Vif.navigate;
         this.i18n = Vif.i18n;
@@ -112,7 +112,7 @@ Vif.i18n.onLoad(() => {
         return this.component;
     });
     setTimeout(() => {
-        Vif.i18n("en-FR");
+        Vif.i18n.locale("en-FR");
     }, 1500);
 });
 
