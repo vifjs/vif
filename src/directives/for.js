@@ -74,6 +74,6 @@ export const forDirective = (context, element, expression) => {
         reconcile(context, element, prevList, nextList, key);
 
         // update prevList value to nextList
-        prevList = nextList;
+        prevList = nextList.slice();
     });
 };

@@ -1019,7 +1019,7 @@ var Vif = (function () {
             reconcile(context, element, prevList, nextList, key);
 
             // update prevList value to nextList
-            prevList = nextList;
+            prevList = nextList.slice();
         });
     };
 
