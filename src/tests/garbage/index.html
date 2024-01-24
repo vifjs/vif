@@ -17,7 +17,9 @@
 
         <main>
             <x-app>
-                <a href="?name=jack" x-on:click="navigate">nav NAME</a>
+                <a x-ref="button" href="?name=jack" x-on:click="navigate"
+                    >nav NAME</a
+                >
                 <a href="?id=5" x-on:click="navigate">nav ID</a>
                 <template x-route="name=([a-z]+)">
                     correct route for

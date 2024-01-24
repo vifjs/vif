@@ -1,4 +1,4 @@
-import Vif from "https://cdn.jsdelivr.net/gh/vifjs/vif/dist/esm/vif.dev.js";
+import Vif from "../../bundle.js";
 
 // import {
 //     LitElement,
@@ -108,6 +108,14 @@ Vif.i18n.onload(() => {
     Vif.define("app", function (signal) {
         this.navigate = Vif.navigate;
         this.i18n = Vif.i18n;
+
+        setTimeout(() => {
+            this.ref("button", (el) => console.log(el), true);
+            setTimeout(() => {
+                this.ref("button", (el) => console.log(el), true);
+                console.log(this.ref("button").data);
+            }, 1000);
+        }, 1000);
 
         return this.component;
     });
