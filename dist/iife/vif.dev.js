@@ -17,12 +17,11 @@
  */
 // -- Element.References
 /**
- * @typedef {{name: VIF.Element.References.Array}} VIF.Element.References Object containing component's relative references with callback list
+ * @typedef {{name: VIF.Element.References.Callbacks}} VIF.Element.References Object containing component's relative references with callback list
  */
-// -- Element.References.Array
+// -- Element.References.Callbacks
 /**
- * @typedef {Array<Function>} VIF.Element.References.Array Array containing reference callback list
- * @property {VIF.Signal} signal
+ * @typedef {VIF.Signal} VIF.Element.References.Callbacks Signal returning an array containing reference callbacks
  */
 // -- Element.Datas.Reference
 /**
@@ -30,6 +29,7 @@
  * @callback VIF.Element.Datas.Reference
  * @param {string} name The matching name of the DOM references
  * @param {VIF.Element.Datas.Reference.Callback} callback Function to play when the reference is found in the DOM
+ * @param {boolean} erase If we want to overwrite the last callback in array, used for unique actions
  */
 // -- Element.Datas.Reference.Callback
 /**
@@ -710,18 +710,6 @@ var Vif = (function () {
     };
 
     /**
-     * Function used to create an array with a signal property
-     * this is usefull to trigger references updates
-     * @returns {VIF.Element.References.Array}
-     */
-    const createReferenceArray = () => {
-        const referenceArray = [];
-        // add a signal as property of the array
-        referenceArray.signalGetter = signal([]);
-        return referenceArray;
-    };
-
-    /**
      * Apply reference callbacks based on attribute value
      * @type {VIF.Directive}
      */
@@ -729,15 +717,15 @@ var Vif = (function () {
         /** @type {string} */
         const referenceName = expression;
 
-        /** @type {VIF.Element.References.Array} */
-        const referenceArray = context.ref(referenceName);
+        /** @type {VIF.Element.References.Callbacks} */
+        const referenceCallbacks = context.ref(referenceName);
 
         // used to determine if it's necessary to run the last callback only
         let primaryHydration = true;
 
         return reactive(() => {
-            /** @type {VIF.Element.References.Array} */
-            const array = referenceArray.signalGetter();
+            /** @type {VIF.Element.References.Callbacks} */
+            const array = referenceCallbacks();
 
             // apply all callbacks first time
             if (primaryHydration) {
@@ -1587,26 +1575,33 @@ var Vif = (function () {
          * reference function used in context.ref
          * @type {VIF.Element.Datas.Reference}
          */
-        reference(name, callback) {
-            const componentReferences = this.component.references;
+        reference(referenceName, callback, erase) {
+            const referencesObject = this.component.references;
             /**
-             * get the reference's callback array or create it
-             * @type {VIF.Element.References.Array}
+             * get the reference callbacks array or create it
+             * this is usefull to trigger references updates
+             * @type {VIF.Element.References.Callbacks}
              */
-            const referenceArray =
-                componentReferences[name] ||
-                (componentReferences[name] = createReferenceArray());
+            const referenceCallbacks =
+                referencesObject[referenceName] ||
+                (referencesObject[referenceName] = signal([]));
 
             if (callback) {
-                // we push the callback into the reference array
-                referenceArray.push(callback);
+                // get the array from the signal data property
+                const array = referenceCallbacks.data;
 
-                // we trigger the signal associated at the reference
-                referenceArray.signalGetter(referenceArray);
+                // we push the callback into the reference callbacks array
+                // or overwrite the last array element in case of erase
+                !erase
+                    ? array.push(callback)
+                    : (array[(array.length || 1) - 1] = callback);
+
+                // we trigger the signal associated to the reference
+                referenceCallbacks(array);
             } else {
                 // if there is no callback we return the reference array
                 // this is usefull in refDirective to retrieve the signal
-                return referenceArray;
+                return referenceCallbacks;
             }
         }
     }

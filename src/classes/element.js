@@ -10,7 +10,6 @@ import {
 } from "../templates/html.js";
 import { createTemplateSchema } from "../templates/schema.js";
 import { VIF } from "../utils/types.js";
-import { createReferenceArray } from "../directives/ref.js";
 import {
     createEmptyTemplate,
     createLiteralTemplate,
@@ -194,26 +193,33 @@ export class xElement extends HTMLElement {
      * reference function used in context.ref
      * @type {VIF.Element.Datas.Reference}
      */
-    reference(name, callback) {
-        const componentReferences = this.component.references;
+    reference(referenceName, callback, erase) {
+        const referencesObject = this.component.references;
         /**
-         * get the reference's callback array or create it
-         * @type {VIF.Element.References.Array}
+         * get the reference callbacks array or create it
+         * this is usefull to trigger references updates
+         * @type {VIF.Element.References.Callbacks}
          */
-        const referenceArray =
-            componentReferences[name] ||
-            (componentReferences[name] = createReferenceArray());
+        const referenceCallbacks =
+            referencesObject[referenceName] ||
+            (referencesObject[referenceName] = signal([]));
 
         if (callback) {
-            // we push the callback into the reference array
-            referenceArray.push(callback);
+            // get the array from the signal data property
+            const array = referenceCallbacks.data;
 
-            // we trigger the signal associated at the reference
-            referenceArray.signalGetter(referenceArray);
+            // we push the callback into the reference callbacks array
+            // or overwrite the last array element in case of erase
+            !erase
+                ? array.push(callback)
+                : (array[(array.length || 1) - 1] = callback);
+
+            // we trigger the signal associated to the reference
+            referenceCallbacks(array);
         } else {
             // if there is no callback we return the reference array
             // this is usefull in refDirective to retrieve the signal
-            return referenceArray;
+            return referenceCallbacks;
         }
     }
 }
