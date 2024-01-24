@@ -2,7 +2,7 @@
     "name": "vifjs",
     "type": "module",
     "version": "0.0.1",
-    "description": "The 2kb full featured reactive components library",
+    "description": "The 5kb full featured reactive components library",
     "homepage": "https://vifjs.dev",
     "bugs": "https://github.com/vifjs/vif/issues",
     "keywords": [
@@ -14,7 +14,7 @@
         "revif",
         "components",
         "web-components",
-        "es6 components",
+        "es6",
         "attribute"
     ],
     "main": "esm/vif.js",
