@@ -17,12 +17,11 @@ import { xManager } from "../classes/manager.js";
  */
 // -- Element.References
 /**
- * @typedef {{name: VIF.Element.References.Array}} VIF.Element.References Object containing component's relative references with callback list
+ * @typedef {{name: VIF.Element.References.Callbacks}} VIF.Element.References Object containing component's relative references with callback list
  */
-// -- Element.References.Array
+// -- Element.References.Callbacks
 /**
- * @typedef {Array<Function>} VIF.Element.References.Array Array containing reference callback list
- * @property {VIF.Signal} signal
+ * @typedef {VIF.Signal} VIF.Element.References.Callbacks Signal returning an array containing reference callbacks
  */
 // -- Element.Datas.Reference
 /**
@@ -30,6 +29,7 @@ import { xManager } from "../classes/manager.js";
  * @callback VIF.Element.Datas.Reference
  * @param {string} name The matching name of the DOM references
  * @param {VIF.Element.Datas.Reference.Callback} callback Function to play when the reference is found in the DOM
+ * @param {boolean} erase If we want to overwrite the last callback in array, used for unique actions
  */
 // -- Element.Datas.Reference.Callback
 /**
