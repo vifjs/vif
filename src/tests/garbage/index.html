@@ -17,15 +17,7 @@
 
         <main>
             <x-app>
-                <a x-ref="button" href="?name=jack" x-on:click="navigate"
-                    >nav NAME</a
-                >
-                <a href="?id=5" x-on:click="navigate">nav ID</a>
-                <template x-route="name=([a-z]+)">
-                    correct route for
-                    <span x-text="i18n().global.name"></span> :
-                    <span x-text="params()[1]"></span>
-                </template>
+                <p>NAME trad : <span x-text="i18n().global.name"></span></p>
             </x-app>
             <x-p></x-p>
             <basic-element></basic-element>

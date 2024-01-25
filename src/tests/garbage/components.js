@@ -86,12 +86,6 @@ setTimeout(() => {
     // });
 }, 1000);
 
-Vif.observe({
-    "X-ONE": () => console.log("x-one found"),
-    "X-TWO": () => console.log("x-two found"),
-    "X-THREE": () => console.log("x-three found"),
-});
-
 Vif.i18n({
     fr: {
         FR: () => import("./fr.js"),
@@ -121,6 +115,22 @@ Vif.i18n.onload(() => {
     });
     setTimeout(() => {
         Vif.i18n.locale("en-FR");
+        setTimeout(() => {
+            Vif.i18n.locale("fr-FR");
+        }, 200);
+        setTimeout(() => {
+            Vif.i18n({
+                fr: {
+                    FR: () => import("./fr.bis.js"),
+                    default: "FR",
+                },
+                en: {
+                    EN: () => import("./en.js"),
+                    default: "EN",
+                },
+                default: "fr",
+            });
+        }, 1000);
     }, 1500);
 });
 
