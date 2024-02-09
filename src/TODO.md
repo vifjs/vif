@@ -1,35 +1,43 @@
-# Etat final de la librairie
+# Final desired state
 
--   [ ] Aussi performant que Lit
--   [ ] Moins de 4kb minifié avec ESBuild
--   [ ] Version ESM compatible ES modules pour dev nodeJs (un seul export Vif)
--   [ ] Version IIFE compatible script DOM (une seule variable Vif)
--   [ ] Versions :
-    -   [ ] source (all bundled no minification)
-    -   [ ] development (all minified and mangle but keep comments)
-    -   [ ] normal (.js) (all minified and mangle without comments)
--   [ ] Avec un routeur + lazy load
--   [ ] Avec composants dynamiques
-
-Lorsqu'il y a plus de 3 appels à `this` dans une même fonction, alors l'option `let self = this` est plus rentable.
+-   [x] Performant as litjs
+-   [x] Less than ~~4kb~~ **6kb** (minify + terser)
+-   [x] ESM and IIFE versions :
+    -   [x] production (all minified and mangled)
+    -   [x] development (all minified and mangled but keep comments)
+-   [x] Built-in features :
+    -   [x] Observer (for lazy-load and more)
+    -   [x] Router
+    -   [x] i18n
+-   [x] Render methods :
+    -   [x] template litterals
+    -   [x] nodeList
+    -   [x] self
 
 # Documentation
 
--   [ ] Mettre à jour la documentation
--   [ ] Mettre en place des exemples intéractifs
--   [ ] Mettre à jour le codepen
+-   [x] Create a markdown wiki
+-   [-] Create a JSdoc wiki
+-   [ ] Create a website with dedicated documentation
 
-# Rebrand la présentation
+# Publish command
 
-The first 4kb reactive componant librairie !
+-   [ ] Create a bunch of unit tests
+-   [ ] Use `np` for deploy process
+    -   Run tests
+    -   Update version in package.json according to Semver
+    -   Create a git tag according to Semver
+    -   Push the package to Github
+    -   Push the package to npm
+    -   Create release notes for every update
 
-A smooth mix of Alpine, Lit and Sjs. Including lazy loading and router. With a ridiculous size of 4kb.
+# Next steps
 
-# Publish commande
+-   [ ] Investigate utility of cache control on schema (for dynamic components)
+-   [ ] Investigate for SEO friendly SSR without duplication
 
--   Run tests (if there are any)
--   Update version in package.json according to Semver
--   Create a git tag according to Semver
--   Push the package to Github
--   Push the package to npm
--   Create release notes for every update
+# Rebranding
+
+_A 5kb full featured reactive components library_
+
+A smooth mix of Lit, Alpine and Sjs. Including lazy loading and router. With a ridiculous size of 5kb.

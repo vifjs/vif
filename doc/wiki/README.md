@@ -36,7 +36,6 @@ import Vif from "https://cdn.jsdelivr.net/gh/vifjs/vif/dist/esm/vif.js";
 -   `signal` used to create a global signal
 -   `observe` used to create lazy actions based on component hydration
 -   `navigate` used to navigate between routes
--   `route` used to retreive the current route
 -   `i18n` used to create and use locales translations
 
 ---
