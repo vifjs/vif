@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/element.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/element.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+    xElement is a class that extends xCore and HTMLElement to create
+    customElements with their own lifecycles and directives.
+*/
+
+import { signal } from "../reactivity/signal.js";
+import {
+    createTemplateFragmentFromNodeList,
+    createTemplateFragmentFromString,
+} from "../templates/html.js";
+import { createTemplateSchema } from "../templates/schema.js";
+import { VIF } from "../utils/types.js";
+import {
+    createEmptyTemplate,
+    createLiteralTemplate,
+} from "../templates/generic.js";
+import { createCssTemplateOrSelector, cssNextId } from "../templates/css.js";
+import {
+    attributeNameSubstring,
+    childrenOf,
+    elementCloneNode,
+} from "../utils/shortcuts.js";
+import { xCore } from "./core.js";
+import { isXAttribute } from "../utils/tests.js";
+
+export class xElement extends HTMLElement {
+    constructor() {
+        super();
+        this.setup();
+        /**
+         * store every references with the callback list
+         * @type {VIF.Element.References}
+         */
+        this.references = {};
+    }
+
+    onMount() {}
+    connectedCallback() {
+        let self = this;
+        let datas = self.datas;
+        /**
+         * hydrate datas with (non x) attributes values
+         * create signals for every x- attributes
+         * @type {HTMLElement.attribute}
+         */
+        for (const attribute of self.attributes) {
+            // if the attribute is an x- attribute, create the corresponding signal
+            if (isXAttribute(attribute)) {
+                const dataName = attributeNameSubstring(attribute, 2);
+                datas[dataName] = signal(datas[dataName]);
+            }
+            // else add the attribute value to the corresponding datas property
+            else {
+                datas[attribute.name] = attribute.value || true;
+            }
+        }
+
+        /**
+         * define the component property
+         * @type {VIF.Element}
+         */
+        datas.component = self;
+
+        /**
+         * create the context.ref method
+         * @type {VIF.Element.Datas.Reference}
+         */
+        datas.ref = self.reference;
+
+        /**
+         * onMount is an user custom function defined with :
+         * myClassReturnedByDefine.prototype.onMount = function(){ stuff here... }
+         * @type {Function}
+         */
+        self.onMount.call(datas);
+
+        // render the component logic
+        self.render();
+    }
+
+    // we use this instead of disconnectedCallback because
+    // the element is immediatly disconnected after being initialized
+    onUnmount() {}
+    disconnectCallback() {
+        let self = this;
+        /**
+         * onUnmount is an user custom function defined with :
+         * myClassReturnedByDefine.prototype.onUnmount = function(){ stuff here... }
+         * @type {Function}
+         */
+        self.onUnmount.call(self.datas);
+
+        self.unHydrate();
+    }
+
+    render() {
+        let self = this;
+
+        /** @type {VIF.Definition} */
+        const definition = self.static;
+
+        /** @type {VIF.Template} */
+        let template = definition.template;
+        /** @type {VIF.Schema} */
+        let schema = definition.schema;
+        /** @type {number} */
+        let indicator = definition.indicator;
+
+        /** @type {VIF.Method.Define.Render.HTML} */
+        const html = template ? createEmptyTemplate : createLiteralTemplate;
+        /** @type {VIF.Method.Define.Render.CSS} */
+        const css = indicator
+            ? createEmptyTemplate
+            : createCssTemplateOrSelector;
+
+        /** @type {VIF.Method.Define.Render} */
+        const renderFunction = definition.renderFunction;
+
+        /**
+         * Execute the renderFunction to get the template and hydrate this.datas
+         * @type {string|NodeList}
+         */
+        const renderResult = renderFunction.call(self.datas, signal, html, css);
+
+        // trigger render logic only if renderFunction return a template
+        if (renderResult) {
+            // if renderResult came from templateLiteral
+            if (typeof renderResult === "string") {
+                // we update the template value and also the static.template
+                template = definition.template =
+                    createTemplateFragmentFromString(renderResult);
+
+                // we create the schema based on template children
+                schema = definition.schema = createTemplateSchema(
+                    childrenOf(template)
+                );
+            }
+
+            // else we consider renderResult as a NodeList, if renderResult is
+            // equal to "this" we don't want to build a new fragment
+            // in both case we update the template value without changing static.template
+            else {
+                template =
+                    renderResult === self
+                        ? self
+                        : createTemplateFragmentFromNodeList(renderResult);
+
+                // we create the schema equal to immutableSchema
+                // or based on template immutableChildren or current children
+                schema =
+                    self.immutableSchema ||
+                    createTemplateSchema(
+                        self.immutableChildren || childrenOf(template)
+                    );
+            }
+        }
+
+        // if there is no indicator we add it to the definition
+        // and to the context.component property (used in cssDirective)
+        // and finaly increment the cssSelectorsId if necessary
+        self.indicator = definition.indicator = indicator || cssNextId();
+
+        // if the template is stored (cache or static)
+        // we want to clone it before hydration
+        if (definition.template) {
+            template = elementCloneNode(template, true);
+        }
+
+        // hydrate template schema
+        if (schema) {
+            self.hydrate(
+                self.immutableChildren || childrenOf(template),
+                schema
+            );
+        }
+
+        if (template !== self) {
+            // store the immutableChildren as parentNode property
+            // by doing this in case of defered hydration we can retrieve
+            // the original DOM structure
+            const parent = self.parentNode;
+
+            if (!parent.immutableChildren) {
+                parent.immutableChildren = [].slice.call(childrenOf(parent));
+            }
+
+            // replace xElement by template
+            self.replaceWith(template);
+        }
+    }
+
+    /**
+     * reference function used in context.ref
+     * @type {VIF.Element.Datas.Reference}
+     */
+    reference(referenceName, callback, erase) {
+        const referencesObject = this.component.references;
+        /**
+         * get the reference callbacks array or create it
+         * this is usefull to trigger references updates
+         * @type {VIF.Element.References.Callbacks}
+         */
+        const referenceCallbacks =
+            referencesObject[referenceName] ||
+            (referencesObject[referenceName] = signal([]));
+
+        if (callback) {
+            // get the array from the signal data property
+            const array = referenceCallbacks.data;
+
+            // we push the callback into the reference callbacks array
+            // or overwrite the last array element in case of erase
+            !erase
+                ? array.push(callback)
+                : (array[(array.length || 1) - 1] = callback);
+
+            // we trigger the signal associated to the reference
+            referenceCallbacks(array);
+        } else {
+            // if there is no callback we return the reference array
+            // this is usefull in refDirective to retrieve the signal
+            return referenceCallbacks;
+        }
+    }
+}
+
+Object.assign(xElement.prototype, xCore);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="xHandler.html">xHandler</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Vif">Vif</a></li><li><a href="global.html#attributeDirective">attributeDirective</a></li><li><a href="global.html#createCssSelector">createCssSelector</a></li><li><a href="global.html#createCssTemplateOrSelector">createCssTemplateOrSelector</a></li><li><a href="global.html#createEmptyTemplate">createEmptyTemplate</a></li><li><a href="global.html#createFlag">createFlag</a></li><li><a href="global.html#createLiteralTemplate">createLiteralTemplate</a></li><li><a href="global.html#createPart">createPart</a></li><li><a href="global.html#createTemplateFragmentFromNodeList">createTemplateFragmentFromNodeList</a></li><li><a href="global.html#createTemplateFragmentFromString">createTemplateFragmentFromString</a></li><li><a href="global.html#createTemplateSchema">createTemplateSchema</a></li><li><a href="global.html#cssDirective">cssDirective</a></li><li><a href="global.html#cssNextId">cssNextId</a></li><li><a href="global.html#currentReactive">currentReactive</a></li><li><a href="global.html#dataDirective">dataDirective</a></li><li><a href="global.html#defaultDirective">defaultDirective</a></li><li><a href="global.html#define">define</a></li><li><a href="global.html#defineMemo">defineMemo</a></li><li><a href="global.html#disconnectReactive">disconnectReactive</a></li><li><a href="global.html#evaluatorMemo">evaluatorMemo</a></li><li><a href="global.html#eventDirective">eventDirective</a></li><li><a href="global.html#forDirective">forDirective</a></li><li><a href="global.html#generateFunctionFromString">generateFunctionFromString</a></li><li><a href="global.html#i18n">i18n</a></li><li><a href="global.html#i18nMemo">i18nMemo</a></li><li><a href="global.html#i18nOnLoad">i18nOnLoad</a></li><li><a href="global.html#ifDirective">ifDirective</a></li><li><a href="global.html#isDefined">isDefined</a></li><li><a href="global.html#isXAttribute">isXAttribute</a></li><li><a href="global.html#isXElement">isXElement</a></li><li><a href="global.html#isXEventAttribute">isXEventAttribute</a></li><li><a href="global.html#isXTemplate">isXTemplate</a></li><li><a href="global.html#locale">locale</a></li><li><a href="global.html#localeFromDefinition">localeFromDefinition</a></li><li><a href="global.html#locales">locales</a></li><li><a href="global.html#localesMemo">localesMemo</a></li><li><a href="global.html#navigate">navigate</a></li><li><a href="global.html#observe">observe</a></li><li><a href="global.html#observerDispacther">observerDispacther</a></li><li><a href="global.html#observerMemo">observerMemo</a></li><li><a href="global.html#reactive">reactive</a></li><li><a href="global.html#reactiveMemo">reactiveMemo</a></li><li><a href="global.html#reconcile">reconcile</a></li><li><a href="global.html#refDirective">refDirective</a></li><li><a href="global.html#removePart">removePart</a></li><li><a href="global.html#routeDirective">routeDirective</a></li><li><a href="global.html#showDirective">showDirective</a></li><li><a href="global.html#signal">signal</a></li><li><a href="global.html#templateDirective">templateDirective</a></li><li><a href="global.html#textDirective">textDirective</a></li><li><a href="global.html#translations">translations</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Feb 09 2024 14:46:18 GMT+0100 (heure normale d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
