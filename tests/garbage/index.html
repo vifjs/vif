@@ -17,7 +17,14 @@
 
         <main>
             <x-app>
-                <p>NAME trad : <span x-text="i18n().global.name"></span></p>
+                <template x-for="[false, true, false, true]">
+                    <template x-if="item()">
+                        <p>
+                            NAME trad :
+                            <span x-text="i18n().global.name"></span>
+                        </p>
+                    </template>
+                </template>
             </x-app>
             <x-p></x-p>
             <basic-element></basic-element>

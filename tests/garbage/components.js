@@ -1,4 +1,4 @@
-import Vif from "../../bundle.js";
+import Vif from "../../src/bundle.js";
 
 // import {
 //     LitElement,
