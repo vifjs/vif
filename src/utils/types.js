@@ -3,13 +3,13 @@
 */
 
 import { xHandler } from "../directives/event.js";
-import { xElement } from "../classes/element.js";
-import { xManager } from "../classes/manager.js";
+import { xElement } from "../controllers/element.js";
+import { xAbstractElement } from "../controllers/abstract.js";
 
 // Element prototype
 // -- Element
 /**
- * @typedef {xManager|xElement} VIF.Element Interactive element class
+ * @typedef {xAbstractElement|xElement} VIF.Element Interactive element class
  */
 // -- Element.Datas
 /**
@@ -38,7 +38,7 @@ import { xManager } from "../classes/manager.js";
  */
 // -- Element.DisconnectCallback
 /**
- * Function used to clear signals dependencies: enabled on xManager, xElement and xReactive
+ * Function used to clear signals dependencies: enabled on xAbstractElement, xElement and xReactive
  * @callback VIF.Element.DisconnectCallback
  * @param {VIF.Element.Datas} datas Datas of the element
  */
@@ -53,7 +53,7 @@ import { xManager } from "../classes/manager.js";
  */
 // -- Part
 /**
- * @typedef {{flag: Comment, property: VIF.Signal, manager: VIF.Element}} VIF.Part Abstract DOM part used to manipulate a fragment
+ * @typedef {{flag: Comment, property: VIF.Signal, abstractElement: VIF.Element}} VIF.Part Core DOM part used to manipulate a fragment
  */
 
 // Hydration
