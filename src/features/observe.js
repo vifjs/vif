@@ -1,5 +1,9 @@
 /*
-    TODO -> explain
+    Lazy actions implementation built in xElements.
+     
+    When hydrating an xElement, all nested xElements will be submitted
+    to the observer, if the tagName matches one of the keys, then the
+    associated function will be executed.
 */
 
 import { VIF } from "../utils/types.js";

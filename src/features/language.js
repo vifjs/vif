@@ -1,5 +1,11 @@
 /*
-    TODO -> Explain
+    Internationalization (i18n) implementation based on browser locale
+    and localStorage. Used to create multilingual applications and websites.
+    
+    Supports lazy-loaded translations, locale persistence, translations as
+    functions, and splited language files.
+
+    i18n definition example :
     {
         en: {
             EN: () => import('en.js'),

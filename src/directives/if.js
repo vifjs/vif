@@ -1,15 +1,11 @@
-/*
-    Directive executée depuis template x-if=""
-    reprend le template.content et s'en sert pour faire du clonnage d'éléments
-    Fait partie des attr directives
-*/
-
 import { reactive } from "../reactivity/signal.js";
 import { addPart, removePart, setupTemplateDirective } from "./template.js";
+import { VIF } from "../utils/types.js";
 
-/*
-    TODO -> explain
-*/
+/**
+ * Append or remove a DOM part based on expression result
+ * @type {VIF.Directive}
+ */
 export const ifDirective = (context, element, expression) => {
     setupTemplateDirective(element);
 

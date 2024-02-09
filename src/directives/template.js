@@ -8,7 +8,11 @@
     4 - the result of the expression based on the context is used to update the directive
 */
 
-import { xManager } from "../classes/manager.js";
+/*
+    The template directives are used to efficiently manipulate DOM parts.
+*/
+
+import { xAbstractElement } from "../controllers/abstract.js";
 import { signal } from "../reactivity/signal.js";
 import { xcomment } from "../templates/html.js";
 import { childrenOf, elementCloneNode } from "../utils/shortcuts.js";
@@ -46,16 +50,16 @@ export const createPart = (context, index, key, value) => {
         property.index = index;
     }
 
-    // create a manager to manage the fragment state and setup its context
+    // create an abstract element to manage the fragment state and setup its context
     // 1 - clone the current context
     // 2 - add a new [key] or "item" property corresponding
     //     to signal of current array value
-    const manager = new xManager(
+    const abstractElement = new xAbstractElement(
         !key ? context : { ...context, [key]: property }
     );
 
     // return the part
-    return { flag, manager, property };
+    return { flag, abstractElement, property };
 };
 
 export const addPart = (element, context, index, key, value) => {
@@ -71,7 +75,7 @@ export const addPart = (element, context, index, key, value) => {
     // we create the part corresponding to the fragment
     // the part will be stored into an array of parts
     // for each part we can retrieve the flag, the signal
-    // for the current array item, and the manager which
+    // for the current array item, and the abstractElement which
     // store the context and the hydration methods
     // if the part already exist, update the property value
     if (part) {
@@ -82,7 +86,10 @@ export const addPart = (element, context, index, key, value) => {
 
     // if there is a cached schema, hydrate the fragment
     element.immutableSchema &&
-        part.manager.hydrate(childrenOf(fragment), element.immutableSchema);
+        part.abstractElement.hydrate(
+            childrenOf(fragment),
+            element.immutableSchema
+        );
 
     // replace the current flag by himself plus fragment
     parts[index].flag.replaceWith(parts[index].flag, fragment, part.flag);
@@ -110,10 +117,10 @@ export const removePart = (element, index) => {
     const tail = parts[index + 1].flag;
 
     /**
-     * disconnect the manager
+     * disconnect the abstractElement
      * @type {VIF.Part}
      */
-    parts[index + 1].manager.disconnectCallback();
+    parts[index + 1].abstractElement.disconnectCallback();
 
     /**
      * Remove all the elements between head and tail
@@ -135,7 +142,7 @@ export const setupTemplateDirective = (element) => {
     /** @type {VIF.Element.DisconnectCallback} */
     element.disconnectCallback = () => {
         for (let x = 1; x < element.templateParts.length; x++) {
-            element.templateParts[x].manager.disconnectCallback();
+            element.templateParts[x].abstractElement.disconnectCallback();
         }
     };
 

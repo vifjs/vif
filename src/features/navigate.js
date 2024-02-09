@@ -1,5 +1,5 @@
 /*
-    TODO -> explain
+    Router implementation based on browser history.
 */
 
 import { signal } from "../reactivity/signal.js";

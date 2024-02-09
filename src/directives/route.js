@@ -1,9 +1,6 @@
-/*
-    Route directive for templates
-*/
-
 import { route } from "../features/navigate.js";
 import { reactive } from "../reactivity/signal.js";
+import { VIF } from "../utils/types.js";
 import {
     addPart,
     removePart,
@@ -11,9 +8,10 @@ import {
     updatePart,
 } from "./template.js";
 
-/*
-    TODO -> explain
-*/
+/**
+ * Append or remove a DOM part based on current url regex match
+ * @type {VIF.Directive}
+ */
 export const routeDirective = (context, element, expression) => {
     setupTemplateDirective(element);
 

@@ -53,9 +53,10 @@ const reconcile = (context, element, prevList, nextList, key) => {
     }
 };
 
-/*
-    TODO -> explain
-*/
+/**
+ * Append or remove DOM parts based on expression result as Array
+ * @type {VIF.Directive}
+ */
 export const forDirective = (context, element, expression) => {
     setupTemplateDirective(element);
 
