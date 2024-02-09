@@ -9,7 +9,7 @@
 // Element prototype
 // -- Element
 /**
- * @typedef {xManager|xElement} VIF.Element Interactive element class
+ * @typedef {xAbstractElement|xElement} VIF.Element Interactive element class
  */
 // -- Element.Datas
 /**
@@ -38,7 +38,7 @@
  */
 // -- Element.DisconnectCallback
 /**
- * Function used to clear signals dependencies: enabled on xManager, xElement and xReactive
+ * Function used to clear signals dependencies: enabled on xAbstractElement, xElement and xReactive
  * @callback VIF.Element.DisconnectCallback
  * @param {VIF.Element.Datas} datas Datas of the element
  */
@@ -53,7 +53,7 @@
  */
 // -- Part
 /**
- * @typedef {{flag: Comment, property: VIF.Signal, manager: VIF.Element}} VIF.Part Abstract DOM part used to manipulate a fragment
+ * @typedef {{flag: Comment, property: VIF.Signal, abstractElement: VIF.Element}} VIF.Part Core DOM part used to manipulate a fragment
  */
 
 // Hydration
@@ -235,7 +235,11 @@ class xHandler {
 }
 
 /*
-    TODO -> explain
+    Lazy actions implementation built in xElements.
+     
+    When hydrating an xElement, all nested xElements will be submitted
+    to the observer, if the tagName matches one of the keys, then the
+    associated function will be executed.
 */
 
 
@@ -332,11 +336,14 @@ const isDefined = (element) =>
     !!defineMemo[element.tagName] || isXTemplate(element);
 
 /*
-    TODO -> explain
+    xCore is an object containing abstract properties intended for customElements
+    it will be merged with the xAbstractElement and xElement prototypes. By doing
+    that we allow xAbstractElement to not extends HTMLElement, increasing DOM parts
+    performances.
 */
 
 
-const xAbstract = {
+const xCore = {
     setup(datas) {
         let self = this;
 
@@ -478,15 +485,16 @@ const xAbstract = {
 };
 
 /*
-    TODO -> explain
+    xAbstractElement is a class used to manage DOM parts through template
+    elements. It can be seen as a lightweight version of xElement.
 */
 
 
-function xManager(datas) {
+function xAbstractElement(datas) {
     this.setup(datas);
 }
 
-xManager.prototype = xAbstract;
+xAbstractElement.prototype = xCore;
 
 /*
     Vif signals implementation based on S.js
@@ -983,9 +991,10 @@ const reconcile = (context, element, prevList, nextList, key) => {
     }
 };
 
-/*
-    TODO -> explain
-*/
+/**
+ * Append or remove DOM parts based on expression result as Array
+ * @type {VIF.Directive}
+ */
 const forDirective = (context, element, expression) => {
     setupTemplateDirective(element);
 
@@ -1008,16 +1017,10 @@ const forDirective = (context, element, expression) => {
     });
 };
 
-/*
-    Directive executée depuis template x-if=""
-    reprend le template.content et s'en sert pour faire du clonnage d'éléments
-    Fait partie des attr directives
-*/
-
-
-/*
-    TODO -> explain
-*/
+/**
+ * Append or remove a DOM part based on expression result
+ * @type {VIF.Directive}
+ */
 const ifDirective = (context, element, expression) => {
     setupTemplateDirective(element);
 
@@ -1043,7 +1046,7 @@ const ifDirective = (context, element, expression) => {
 };
 
 /*
-    TODO -> explain
+    Router implementation based on browser history.
 */
 
 
@@ -1098,14 +1101,10 @@ const navigate = (data) => {
 
 navigate.route = route;
 
-/*
-    Route directive for templates
-*/
-
-
-/*
-    TODO -> explain
-*/
+/**
+ * Append or remove a DOM part based on current url regex match
+ * @type {VIF.Directive}
+ */
 const routeDirective = (context, element, expression) => {
     setupTemplateDirective(element);
 
@@ -1177,16 +1176,16 @@ const createPart = (context, index, key, value) => {
         property.index = index;
     }
 
-    // create a manager to manage the fragment state and setup its context
+    // create an abstract element to manage the fragment state and setup its context
     // 1 - clone the current context
     // 2 - add a new [key] or "item" property corresponding
     //     to signal of current array value
-    const manager = new xManager(
+    const abstractElement = new xAbstractElement(
         !key ? context : { ...context, [key]: property }
     );
 
     // return the part
-    return { flag, manager, property };
+    return { flag, abstractElement, property };
 };
 
 const addPart = (element, context, index, key, value) => {
@@ -1202,7 +1201,7 @@ const addPart = (element, context, index, key, value) => {
     // we create the part corresponding to the fragment
     // the part will be stored into an array of parts
     // for each part we can retrieve the flag, the signal
-    // for the current array item, and the manager which
+    // for the current array item, and the abstractElement which
     // store the context and the hydration methods
     // if the part already exist, update the property value
     if (part) {
@@ -1213,7 +1212,10 @@ const addPart = (element, context, index, key, value) => {
 
     // if there is a cached schema, hydrate the fragment
     element.immutableSchema &&
-        part.manager.hydrate(childrenOf(fragment), element.immutableSchema);
+        part.abstractElement.hydrate(
+            childrenOf(fragment),
+            element.immutableSchema
+        );
 
     // replace the current flag by himself plus fragment
     parts[index].flag.replaceWith(parts[index].flag, fragment, part.flag);
@@ -1241,10 +1243,10 @@ const removePart = (element, index) => {
     const tail = parts[index + 1].flag;
 
     /**
-     * disconnect the manager
+     * disconnect the abstractElement
      * @type {VIF.Part}
      */
-    parts[index + 1].manager.disconnectCallback();
+    parts[index + 1].abstractElement.disconnectCallback();
 
     /**
      * Remove all the elements between head and tail
@@ -1266,7 +1268,7 @@ const setupTemplateDirective = (element) => {
     /** @type {VIF.Element.DisconnectCallback} */
     element.disconnectCallback = () => {
         for (let x = 1; x < element.templateParts.length; x++) {
-            element.templateParts[x].manager.disconnectCallback();
+            element.templateParts[x].abstractElement.disconnectCallback();
         }
     };
 
@@ -1397,8 +1399,8 @@ const createTemplateSchema = (nodeList) => {
 };
 
 /*
-TODO -> traduire
-    xElement est une classe qui étend xAbstract afin de créer des customElements possédant leurs propres cycles de vie définis par les utilisateurs
+    xElement is a class that extends xCore and HTMLElement to create
+    customElements with their own lifecycles and directives.
 */
 
 
@@ -1603,7 +1605,7 @@ class xElement extends HTMLElement {
     }
 }
 
-Object.assign(xElement.prototype, xAbstract);
+Object.assign(xElement.prototype, xCore);
 
 /*
     Function used to define a customElement extending xElement generic class,
@@ -1641,7 +1643,13 @@ const define = (name, renderFunction) => {
 };
 
 /*
-    TODO -> Explain
+    Internationalization (i18n) implementation based on browser locale
+    and localStorage. Used to create multilingual applications and websites.
+    
+    Supports lazy-loaded translations, locale persistence, translations as
+    functions, and splited language files.
+
+    i18n definition example :
     {
         en: {
             EN: () => import('en.js'),
