@@ -1,6 +1,6 @@
 /*
-TODO -> traduire
-    xElement est une classe qui étend xAbstract afin de créer des customElements possédant leurs propres cycles de vie définis par les utilisateurs
+    xElement is a class that extends xCore and HTMLElement to create
+    customElements with their own lifecycles and directives.
 */
 
 import { signal } from "../reactivity/signal.js";
@@ -20,7 +20,7 @@ import {
     childrenOf,
     elementCloneNode,
 } from "../utils/shortcuts.js";
-import { xAbstract } from "./abstract.js";
+import { xCore } from "./core.js";
 import { isXAttribute } from "../utils/tests.js";
 
 export class xElement extends HTMLElement {
@@ -224,4 +224,4 @@ export class xElement extends HTMLElement {
     }
 }
 
-Object.assign(xElement.prototype, xAbstract);
+Object.assign(xElement.prototype, xCore);

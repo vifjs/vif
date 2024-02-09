@@ -1,5 +1,8 @@
 /*
-    TODO -> explain
+    xCore is an object containing abstract properties intended for customElements
+    it will be merged with the xAbstractElement and xElement prototypes. By doing
+    that we allow xAbstractElement to not extends HTMLElement, increasing DOM parts
+    performances.
 */
 
 import { observerDispatch } from "../features/observe.js";
@@ -7,7 +10,7 @@ import { immutableChildrenOf } from "../utils/shortcuts.js";
 import { isDefined } from "../utils/tests.js";
 import { VIF } from "../utils/types.js";
 
-export const xAbstract = {
+export const xCore = {
     setup(datas) {
         let self = this;
 
