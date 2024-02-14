@@ -425,10 +425,6 @@ header .language-switcher input:checked + label {
     transition: transform 200ms ease;
 }
 
-.demo button:hover {
-    transform: scale(1.2);
-}
-
 .demo button:not(:active) {
     cursor: pointer;
     animation: shake-x 750ms ease;
@@ -439,6 +435,12 @@ header .language-switcher input:checked + label {
     height: 2rem;
     stroke: white;
     fill: white;
+}
+
+@media screen and (min-width: 40rem) {
+    .demo button:hover {
+        transform: scale(1.2);
+    }
 }
 
 /* CODE SECTION */
