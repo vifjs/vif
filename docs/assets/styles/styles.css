@@ -149,7 +149,7 @@ h2 {
 
 pre {
     margin-top: var(--margin-v-md);
-    padding: 0 2rem;
+    padding: 1rem 1.5rem;
     background: white;
     border-radius: var(--radius-sm);
     box-shadow: var(--shadow-block);
@@ -158,13 +158,17 @@ pre {
     overflow: auto;
 }
 
+pre > div {
+    width: max-content;
+}
+
 pre i {
     text-shadow: var(--shadow-text);
 }
 
 @media screen and (max-width: 40rem) {
     pre {
-        padding: 0 1rem;
+        padding: 0.65rem 1rem;
     }
 }
 

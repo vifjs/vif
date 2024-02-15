@@ -467,18 +467,8 @@
                         >codepen.io</a
                     >
                 </p>
-                <pre class="cs">
-    <code>
-Vif.define('counter', function(<i>signal</i>, <i>html</i>){
-  <i>this.count</i> = <i>signal</i>(0);
-  
-  return <i>html</i>`
-    &lt;button <i>x-on:click</i>="<i>count(count.data + 1)</i>"&gt; 
-      Count is &lt;b <i>x-text</i>="<i>count()</i>"&gt;0&lt;/b&gt; 
-    &lt;/button&gt;
-  `
-})</code>
-  </pre>
+                <!--prettier-ignore-->
+                <pre class="cs"><div style="color: #5c6166;font-family: monospace;font-weight: normal;font-size: 0.9rem;line-height: 1.8;white-space: pre;"><div><span style="color: #5c6166;">Vif</span><span style="color: #ed9366;">.</span><span style="color: #f2ae49;">define</span><span style="color: #5c6166;">(</span><span style="color: #86b300;">'counter'</span><span style="color: #5c6166;">,</span><span style="color: #5c6166;"> </span><span style="color: #fa8d3e;">function</span><span style="color: #5c6166;">(</span><span style="color: #a37acc;">signal</span><span style="color: #5c6166;">,</span><span style="color: #5c6166;"> </span><span style="color: #a37acc;">html</span><span style="color: #5c6166;">){</span></div><div><span style="color: #5c6166;">&#160; &#160; </span><span style="color: #55b4d4;font-style: italic;">this</span><span style="color: #ed9366;">.</span><span style="color: #5c6166;">count </span><span style="color: #ed9366;">=</span><span style="color: #5c6166;"> </span><span style="color: #f2ae49;">signal</span><span style="color: #5c6166;">(</span><span style="color: #a37acc;">0</span><span style="color: #5c6166;">)</span><span style="color: #5c6166;">;</span></div><div><span style="color: #5c6166;">&#160; &#160; </span></div><div><span style="color: #5c6166;">&#160; &#160; </span><span style="color: #fa8d3e;">return</span><span style="color: #787b80;font-style: italic;"> </span><span style="color: #a37acc;font-style: italic;">html</span><span style="color: #5c6166;">`</span></div><div><span style="color: #5c6166;">&#160; &#160; &#160; </span><span style="color: #55b4d4;">&lt;</span><span style="color: #55b4d4;">button</span><span style="color: #5c6166;"> </span><span style="color: #f2ae49;">x-on:click</span><span style="color: #5c6166;">=</span><span style="color: #86b300;">"count(count.data + 1)"</span><span style="color: #55b4d4;">&gt;</span><span style="color: #5c6166;"> </span></div><div><span style="color: #5c6166;">&#160; &#160; &#160; &#160; Count is </span><span style="color: #55b4d4;">&lt;</span><span style="color: #55b4d4;">b</span><span style="color: #5c6166;"> </span><span style="color: #f2ae49;">x-text</span><span style="color: #5c6166;">=</span><span style="color: #86b300;">"count()"</span><span style="color: #55b4d4;">&gt;</span><span style="color: #5c6166;">0</span><span style="color: #55b4d4;">&lt;/</span><span style="color: #55b4d4;">b</span><span style="color: #55b4d4;">&gt;</span></div><div><span style="color: #5c6166;">&#160; &#160; &#160; </span><span style="color: #55b4d4;">&lt;/</span><span style="color: #55b4d4;">button</span><span style="color: #55b4d4;">&gt;</span></div><div><span style="color: #5c6166;">&#160; &#160; `</span></div><div><span style="color: #5c6166;">})</span></div></div></pre>
             </section>
 
             <!-- SECTION BENCHS -->
@@ -517,12 +507,8 @@ Vif.define('counter', function(<i>signal</i>, <i>html</i>){
                     Currently in beta, Vif is available only via CDN link, npm
                     is coming soon.
                 </p>
-                <pre class="cs">
-    <code>
-import <i>Vif</i> from <i>"https://cdn.jsdelivr.net/gh/vifjs/vif/dist/esm/vif.js"</i>;
-// or as IIFE ...
-&lt;script src=<i>"https://cdn.jsdelivr.net/gh/vifjs/vif/dist/iife/vif.js"</i>&gt;&lt;/script&gt;</code>
-  </pre>
+                <!--prettier-ignore-->
+                <pre class="cs"><div style="color: #5c6166;font-family: monospace;font-weight: normal;font-size: 0.9rem;line-height: 1.8;white-space: pre;"><div><span style="color: #787b80;font-style: italic;">// ESM version</span></div><div><span style="color: #fa8d3e;">import</span><span style="color: #5c6166;"> Vif </span><span style="color: #fa8d3e;">from</span><span style="color: #5c6166;"> </span><span style="color: #86b300;">"https://cdn.jsdelivr.net/gh/vifjs/vif/dist/esm/vif.js"</span><span style="color: #5c6166;">;</span></div><div><span style="color: #787b80;font-style: italic;">// IIFE version</span></div><div><span style="color: #55b4d4;">&lt;</span><span style="color: #55b4d4;">script</span><span style="color: #5c6166;"> </span><span style="color: #f2ae49;">type</span><span style="color: #ed9366;">=</span><span style="color: #86b300;">"module"</span><span style="color: #5c6166;"> </span><span style="color: #f2ae49;">src</span><span style="color: #ed9366;">=</span><span style="color: #86b300;">"https://cdn.jsdelivr.net/gh/vifjs/vif/dist/iife/vif.js"</span><span style="color: #55b4d4;">&gt;&lt;/</span><span style="color: #55b4d4;">script</span><span style="color: #55b4d4;">&gt;</span></div></div></pre>
             </section>
 
             <section class="issues">
