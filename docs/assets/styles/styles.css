@@ -226,7 +226,7 @@ header .language-switcher {
     position: relative;
 }
 
-header .language-switcher span {
+header .language-switcher svg {
     cursor: pointer;
 }
 
@@ -341,24 +341,30 @@ header .language-switcher input:checked + label {
 }
 
 .features article p {
+    display: block;
     padding: 0.3rem 0.1rem;
     border-radius: var(--radius-sm);
 }
 
-.features p span {
+.features p svg {
+    height: 1.5rem;
+    width: 1.5rem;
     vertical-align: text-bottom;
 }
 
 .features p.check {
     color: hsl(100, 80%, 40%);
+    fill: hsl(100, 80%, 40%);
     background-color: hsla(100, 70%, 50%, 0.2);
 }
 .features p.add {
     color: hsl(50, 90%, 40%);
+    fill: hsl(50, 90%, 40%);
     background-color: hsla(50, 70%, 50%, 0.2);
 }
 .features p.cancel {
     color: hsl(0, 70%, 60%);
+    fill: hsl(0, 70%, 60%);
     background-color: hsla(0, 70%, 50%, 0.2);
 }
 
