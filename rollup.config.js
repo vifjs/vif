@@ -1,46 +1,46 @@
 import terser from "@rollup/plugin-terser";
-import fs from "node:fs";
 
-/** @type {[{format: string, ext: string}]} */
-const formats = [
-    ["iife", ""],
-    ["esm", ""],
-    ["iife", ".dev"],
-    ["esm", ".dev"],
-];
+/** @type {[string]} */
+const formats = ["iife", "esm", "cjs", "umd"];
 
-export default formats.map(function ([format, ext]) {
+export default formats.map(function (format) {
     return {
         input: "src/bundle.js",
         output: {
-            file: `dist/${format}/vif${ext}.js`,
+            file: `dist/${format}/vif.js`,
             format: format,
-            name: "Vif",
-            minifyInternalExports: ext !== ".dev",
-            banner:
-                ext === ".dev" &&
-                fs
-                    .readFileSync("src/utils/types.js", "utf-8")
-                    .toString()
-                    .replace(/^import [^;]+;/gm, ""),
+            name: (format === "iife" || format === "umd") && "Vif",
+            minifyInternalExports: true,
         },
-        plugins: ext !== ".dev" && [
+        plugins: [
             terser({
                 mangle: {
                     properties: {
                         reserved: [
+                            // reserved javascript properties
                             "connectedCallback",
                             "handleEvent",
-                            "onUnmount",
-                            "component",
+                            // customElement properties
                             "onMount",
+                            "onUnmount",
+                            "useRef",
+                            // Element properties
                             "handler",
-                            "locale",
+                            // renderFunction params
+                            "props",
+                            "html",
+                            "css",
+                            // signal properties
+                            "value",
                             "effect",
-                            "route",
-                            "data",
-                            "i18n",
-                            "ref",
+                            // global export properties
+                            "useDefine",
+                            "useSignal",
+                            "useObserve",
+                            "useNavigate",
+                            /**/ "route",
+                            "useI18n",
+                            /**/ "locale",
                         ],
                     },
                 },

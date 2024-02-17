@@ -1,4 +1,4 @@
-import Vif from "../../src/bundle.js";
+import { useDefine, useI18n, useNavigate } from "../../dist/esm/vif.js";
 
 // import {
 //     LitElement,
@@ -86,7 +86,7 @@ setTimeout(() => {
     // });
 }, 1000);
 
-Vif.i18n({
+useI18n({
     fr: {
         FR: () => import("./fr.js"),
         default: "FR",
@@ -98,28 +98,30 @@ Vif.i18n({
     default: "fr",
 });
 
-Vif.i18n.onload(() => {
-    Vif.define("app", function (signal) {
-        this.navigate = Vif.navigate;
-        this.i18n = Vif.i18n;
+useI18n.onload(() => {
+    function App({ props }) {
+        props.navigate = useNavigate;
+        props.i18n = useI18n;
 
         setTimeout(() => {
-            this.ref("button", (el) => console.log(el), true);
+            this.useRef("button", (el) => console.log(el), true);
             setTimeout(() => {
-                this.ref("button", (el) => console.log(el), true);
-                console.log(this.ref("button").data);
+                this.useRef("button", (el) => console.log(el), true);
             }, 1000);
         }, 1000);
 
-        return this.component;
-    });
+        return this;
+    }
+
+    useDefine("app", App);
+
     setTimeout(() => {
-        Vif.i18n.locale("en-FR");
+        useI18n.locale("en-FR");
         setTimeout(() => {
-            Vif.i18n.locale("fr-FR");
+            useI18n.locale("fr-FR");
         }, 200);
         setTimeout(() => {
-            Vif.i18n({
+            useI18n({
                 fr: {
                     FR: () => import("./fr.bis.js"),
                     default: "FR",
@@ -132,67 +134,4 @@ Vif.i18n.onload(() => {
             });
         }, 1000);
     }, 1500);
-});
-
-setTimeout(() => {
-    Vif.define("two", function (signal, html, css) {
-        this.text = signal("x-two -> success");
-        this.array = signal([1, 2, 3]);
-
-        setTimeout(() => {
-            this.array([]);
-        }, 50);
-        setTimeout(() => {
-            this.array([1, 2, 3]);
-        }, 500);
-
-        setTimeout(() => {
-            this.text("x-two -> success update");
-        }, 1000);
-
-        css`
-            [${css("bg")}]::before {
-                background: green;
-                content: "(TWO)";
-                margin-right: 10px;
-            }`;
-
-        return this.component.childNodes;
-    });
-}, 500);
-
-setTimeout(() => {
-    Vif.define("three", function (signal, html, css) {
-        this.text = signal("x-three -> success");
-
-        setTimeout(() => {
-            this.text("x-three -> success update");
-        }, 1000);
-
-        css`
-            [${css("bg")}]::before {
-                background: yellow;
-                content: "(THREE)";
-                margin-right: 10px;
-            }`;
-
-        return this.component.childNodes;
-    });
-}, 1000);
-
-Vif.define("one", function (signal, html, css) {
-    this.text = signal("x-one -> success");
-
-    setTimeout(() => {
-        this.text("x-one -> success update");
-    }, 1000);
-
-    css`
-        [${css("bg")}]::before {
-            background: red;
-            content: "(ONE)";
-            margin-right: 10px;
-        }`;
-
-    return this.component.childNodes;
 });

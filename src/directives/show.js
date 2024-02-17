@@ -5,7 +5,7 @@ import { VIF } from "../utils/types.js";
  * Set HTMLElement display from the expression result
  * @type {VIF.Directive}
  */
-export const showDirective = (context, element, expression) => {
+export const showDirective = (component, element, expression) => {
     /**
      * store the initial display value
      * @type {string}
@@ -13,7 +13,7 @@ export const showDirective = (context, element, expression) => {
     const initialValue = element.style.display;
 
     return reactive(() => {
-        const visible = expression(context);
+        const visible = expression(component.datas);
 
         if (visible) {
             // if there was an initial value we restore the value

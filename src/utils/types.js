@@ -13,7 +13,7 @@ import { xAbstractElement } from "../controllers/abstract.js";
  */
 // -- Element.Datas
 /**
- * @typedef {{ref: VIF.Element.Datas.Reference, component: VIF.Element}} VIF.Element.Datas Object containing component's relative datas
+ * @typedef {{ref: VIF.Element.Reference, component: VIF.Element}} VIF.Element.Datas Object containing component's relative datas
  */
 // -- Element.References
 /**
@@ -23,17 +23,17 @@ import { xAbstractElement } from "../controllers/abstract.js";
 /**
  * @typedef {VIF.Signal} VIF.Element.References.Callbacks Signal returning an array containing reference callbacks
  */
-// -- Element.Datas.Reference
+// -- Element.Reference
 /**
  * Function used to apply effects to a DOM reference
- * @callback VIF.Element.Datas.Reference
+ * @callback VIF.Element.Reference
  * @param {string} name The matching name of the DOM references
- * @param {VIF.Element.Datas.Reference.Callback} callback Function to play when the reference is found in the DOM
+ * @param {VIF.Element.Reference.Callback} callback Function to play when the reference is found in the DOM
  * @param {boolean} erase If we want to overwrite the last callback in array, used for unique actions
  */
-// -- Element.Datas.Reference.Callback
+// -- Element.Reference.Callback
 /**
- * @callback VIF.Element.Datas.Reference.Callback
+ * @callback VIF.Element.Reference.Callback
  * @param {HTMLElement} element The element affected by the callback
  */
 // -- Element.DisconnectCallback
@@ -77,7 +77,7 @@ import { xAbstractElement } from "../controllers/abstract.js";
 /**
  * Function creating a reactive function
  * @callback VIF.Directive
- * @param {VIF.Element.Datas} context The context of the expression passed throught "with"
+ * @param {VIF.Element} component The component applying the directive
  * @param {HTMLElement} element The element affected by the directive
  * @param {VIF.Expression|string} expression The expression executed
  * @param {string} attributeName The attribute responsible of the directive
@@ -118,7 +118,7 @@ import { xAbstractElement } from "../controllers/abstract.js";
  * Function used to get or change value rerunning dependencies functions
  * @callback VIF.Signal
  * @param {any?} updatedValue The new value of the signal
- * @property {any} data That property access data without triggering signal
+ * @property {any} value That property access signal value without triggering signal
  * @property {boolean} issignal That property is used to test if a property is a signal
  * @property {VIF.Dependencies.Reactives} reactives All reactives functions in dependencies
  * @property {VIF.Dependencies.Reactives} effect Public access to dependencies
@@ -154,10 +154,10 @@ import { xAbstractElement } from "../controllers/abstract.js";
 /**
  * Function used to hydrate datas and create component template & schema
  * @callback VIF.Method.Define.Render
- * @param {VIF.Method.Signal} signal Function used to create a signal that can trigger changes through reactives functions
+ * @param {VIF.Element.Datas} props Object containing component's relative datas
  * @param {VIF.Method.Define.Render.HTML} html Function used to create html template
  * @param {VIF.Method.Define.Render.CSS} css Function used to create css template
- * @this {VIF.Element.Datas}
+ * @this {VIF.Element} The component
  * @returns {VIF.Template} The final template of the component
  */
 // -- Define.Render.HTML

@@ -19,9 +19,9 @@ import { textDirective } from "./text.js";
  * Set HTMLElement attribute from the expression result
  * @type {VIF.Directive}
  */
-const defaultDirective = (context, element, expression, attributeName) => {
+const defaultDirective = (component, element, expression, attributeName) => {
     return reactive(() =>
-        element.setAttribute(attributeName, expression(context))
+        element.setAttribute(attributeName, expression(component.datas))
     );
 };
 

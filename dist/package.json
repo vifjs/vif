@@ -5,6 +5,25 @@
     "description": "A 5kb full featured reactive components library",
     "homepage": "https://vifjs.dev",
     "bugs": "https://github.com/vifjs/vif/issues",
+    "author": {
+        "name": "Enzo Aicardi",
+        "url": "https://enzo.aicardi.pro"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vifjs/vif"
+    },
+    "main": "./esm/vif.js",
+    "module": "./esm/vif.js",
+    "exports": {
+        ".": {
+            "types": "./index.d.ts",
+            "require": "./cjs/vif.js",
+            "import": "./esm/vif.js",
+            "default": "./esm/vif.js",
+            "browser": "./iife/vif.js"
+        }
+    },
     "keywords": [
         "javascript",
         "reactive",
@@ -17,17 +36,8 @@
         "es6",
         "attribute"
     ],
-    "main": "esm/vif.js",
     "scripts": {
         "test": "echo \"No test specified\""
-    },
-    "author": {
-        "name": "Enzo Aicardi",
-        "url": "https://enzo.aicardi.pro"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/vifjs/vif"
     },
     "license": "GPL-3.0-only"
 }

@@ -12,7 +12,7 @@ import {
  * Append or remove a DOM part based on current url regex match
  * @type {VIF.Directive}
  */
-export const routeDirective = (context, element, expression) => {
+export const routeDirective = (component, element, expression) => {
     setupTemplateDirective(element);
 
     /** @type {RegExp} */
@@ -33,7 +33,7 @@ export const routeDirective = (context, element, expression) => {
             if (params && previousValue) {
                 updatePart(element, 0, params);
             } else if (params) {
-                addPart(element, context, 0, key, params);
+                addPart(element, component.datas, 0, key, params);
             } else {
                 removePart(element, 0);
             }

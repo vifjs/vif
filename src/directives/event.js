@@ -4,7 +4,12 @@ import { VIF } from "../utils/types.js";
  * Set HTMLElement eventListener from the expression result
  * @type {VIF.Directive}
  */
-export const eventDirective = (context, element, expression, attributeName) => {
+export const eventDirective = (
+    component,
+    element,
+    expression,
+    attributeName
+) => {
     /**
      * create the event handler object
      * we store it on the element for memory reasons
@@ -15,7 +20,7 @@ export const eventDirective = (context, element, expression, attributeName) => {
     const eventHandler = element.handler || (element.handler = new xHandler());
 
     // assign the event handler method
-    eventHandler[attributeName] = expression(context);
+    eventHandler[attributeName] = expression(component.datas);
 
     // add the correponding listener to element
     element.addEventListener(attributeName, eventHandler);

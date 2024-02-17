@@ -56,23 +56,16 @@ export class xElement extends HTMLElement {
         }
 
         /**
-         * define the component property
-         * @type {VIF.Element}
+         * @type {VIF.Element.Reference}
          */
-        datas.component = self;
-
-        /**
-         * create the context.ref method
-         * @type {VIF.Element.Datas.Reference}
-         */
-        datas.ref = self.reference;
+        self.useRef = self.reference;
 
         /**
          * onMount is an user custom function defined with :
          * myClassReturnedByDefine.prototype.onMount = function(){ stuff here... }
          * @type {Function}
          */
-        self.onMount.call(datas);
+        self.onMount({ props: datas });
 
         // render the component logic
         self.render();
@@ -88,7 +81,7 @@ export class xElement extends HTMLElement {
          * myClassReturnedByDefine.prototype.onUnmount = function(){ stuff here... }
          * @type {Function}
          */
-        self.onUnmount.call(self.datas);
+        self.onUnmount({ props: self.datas });
 
         self.unHydrate();
     }
@@ -117,10 +110,21 @@ export class xElement extends HTMLElement {
         const renderFunction = definition.renderFunction;
 
         /**
+         * @property {VIF.Method.Define.Render.HTML} html
+         * @property {VIF.Method.Define.Render.CSS} css
+         * @property {VIF.Element.Datas} props
+         */
+        const params = {
+            html,
+            css,
+            props: self.datas,
+        };
+
+        /**
          * Execute the renderFunction to get the template and hydrate this.datas
          * @type {string|NodeList}
          */
-        const renderResult = renderFunction.call(self.datas, signal, html, css);
+        const renderResult = renderFunction.call(self, params);
 
         // trigger render logic only if renderFunction return a template
         if (renderResult) {
@@ -156,7 +160,7 @@ export class xElement extends HTMLElement {
         }
 
         // if there is no indicator we add it to the definition
-        // and to the context.component property (used in cssDirective)
+        // and to the component property (used in cssDirective)
         // and finaly increment the cssSelectorsId if necessary
         self.indicator = definition.indicator = indicator || cssNextId();
 
@@ -190,11 +194,10 @@ export class xElement extends HTMLElement {
     }
 
     /**
-     * reference function used in context.ref
-     * @type {VIF.Element.Datas.Reference}
+     * @type {VIF.Element.Reference}
      */
     reference(referenceName, callback, erase) {
-        const referencesObject = this.component.references;
+        const referencesObject = this.references;
         /**
          * get the reference callbacks array or create it
          * this is usefull to trigger references updates
@@ -205,8 +208,8 @@ export class xElement extends HTMLElement {
             (referencesObject[referenceName] = signal([]));
 
         if (callback) {
-            // get the array from the signal data property
-            const array = referenceCallbacks.data;
+            // get the array from the signal value property
+            const array = referenceCallbacks.value;
 
             // we push the callback into the reference callbacks array
             // or overwrite the last array element in case of erase

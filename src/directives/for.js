@@ -57,7 +57,7 @@ const reconcile = (context, element, prevList, nextList, key) => {
  * Append or remove DOM parts based on expression result as Array
  * @type {VIF.Directive}
  */
-export const forDirective = (context, element, expression) => {
+export const forDirective = (component, element, expression) => {
     setupTemplateDirective(element);
 
     /** @type {Array} */
@@ -69,10 +69,10 @@ export const forDirective = (context, element, expression) => {
 
     return reactive(() => {
         /** @type {Array} */
-        const nextList = expression(context);
+        const nextList = expression(component.datas);
 
         // apply reconcile algorithm
-        reconcile(context, element, prevList, nextList, key);
+        reconcile(component.datas, element, prevList, nextList, key);
 
         // update prevList value to nextList
         prevList = nextList.slice();

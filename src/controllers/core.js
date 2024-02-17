@@ -100,7 +100,7 @@ export const xCore = {
                     // apply the corresponding directive
                     /** @type {VIF.Reactive|undefined} */
                     const reactiveFunction = action.directive(
-                        self.datas,
+                        self,
                         element,
                         action.expression,
                         name

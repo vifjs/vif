@@ -61,7 +61,9 @@ const locales = (languages) => {
     localesMemo = languages;
 
     // setup locale value
-    locale(locale.data || localStorage.getItem("locale") || navigator.language);
+    locale(
+        locale.value || localStorage.getItem("locale") || navigator.language
+    );
 
     // if the reactive signal isn't defined yet we update it
     // we do that because in case of SPA with multifile languages (because you

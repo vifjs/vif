@@ -24,7 +24,7 @@ export const signal = (value) => {
         // if new data is sent
         if (dataUpdated !== undefined) {
             // update the value
-            currentSignal.data = dataUpdated;
+            currentSignal.value = dataUpdated;
             // run all the dependencies
             for (const callback of currentSignal.reactives) {
                 callback();
@@ -37,11 +37,11 @@ export const signal = (value) => {
         }
 
         // return the value
-        return currentSignal.data;
+        return currentSignal.value;
     };
 
-    // use this to access data without triggering signal
-    currentSignal.data = value;
+    // use this to access value without triggering signal
+    currentSignal.value = value;
 
     // use this to check if a variable is a signal
     currentSignal.issignal = true;

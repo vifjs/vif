@@ -15,7 +15,12 @@ import { VIF } from "../utils/types.js";
  * Set Vif component datas from the expression result
  * @type {VIF.Directive}
  */
-export const dataDirective = (context, element, expression, attributeName) => {
+export const dataDirective = (
+    component,
+    element,
+    expression,
+    attributeName
+) => {
     /** @type {VIF.Element.Datas} */
     element.datas || (element.datas = {});
 
@@ -42,7 +47,7 @@ export const dataDirective = (context, element, expression, attributeName) => {
 
     const reactiveFunction = reactive(() => {
         const property = element.datas[attributeName];
-        const updatedValue = expression(context);
+        const updatedValue = expression(component.datas);
 
         if (property && property.issignal) {
             // we use the mutableSignal function instead of signal(value)

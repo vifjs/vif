@@ -6,7 +6,7 @@ import { VIF } from "../utils/types.js";
  * Append or remove a DOM part based on expression result
  * @type {VIF.Directive}
  */
-export const ifDirective = (context, element, expression) => {
+export const ifDirective = (component, element, expression) => {
     setupTemplateDirective(element);
 
     /** @type {boolean} */
@@ -14,7 +14,7 @@ export const ifDirective = (context, element, expression) => {
 
     return reactive(() => {
         /** @type {boolean} */
-        const value = !!expression(context);
+        const value = !!expression(component.datas);
 
         if (value !== previousValue) {
             // update previousValue
@@ -22,7 +22,7 @@ export const ifDirective = (context, element, expression) => {
 
             // add or remove parts
             if (value) {
-                addPart(element, context, 0);
+                addPart(element, component.datas, 0);
             } else {
                 removePart(element, 0);
             }
