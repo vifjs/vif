@@ -1,7 +1,7 @@
 {
     "name": "vifjs",
     "type": "module",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A 5kb full featured reactive components library",
     "homepage": "https://vifjs.dev",
     "bugs": "https://github.com/vifjs/vif/issues",
@@ -15,13 +15,31 @@
     },
     "main": "./esm/vif.js",
     "module": "./esm/vif.js",
+    "browser": "./esm/vif.js",
+    "types": "./index.d.ts",
     "exports": {
         ".": {
             "types": "./index.d.ts",
             "require": "./cjs/vif.js",
             "import": "./esm/vif.js",
-            "default": "./esm/vif.js",
-            "browser": "./iife/vif.js"
+            "browser": "./esm/vif.js",
+            "default": "./esm/vif.js"
+        },
+        "./esm": {
+            "types": "./index.d.ts",
+            "default": "./esm/vif.js"
+        },
+        "./cjs": {
+            "types": "./index.d.ts",
+            "default": "./cjs/vif.js"
+        },
+        "./umd": {
+            "types": "./index.d.ts",
+            "default": "./umd/vif.js"
+        },
+        "./iife": {
+            "types": "./index.d.ts",
+            "default": "./iife/vif.js"
         }
     },
     "keywords": [

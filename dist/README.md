@@ -1,3 +1,7 @@
-# vif namespace reserved 16/01/2024
+# Vif.js
 
-v0.0.1
+_A 5kb full featured reactive components library_
+
+Check the [website](https://vifjs.dev) !
+
+Check the beta [wiki](./doc/wiki/README.md) !

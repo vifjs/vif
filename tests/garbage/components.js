@@ -1,4 +1,4 @@
-import { useDefine, useI18n, useNavigate } from "../../dist/esm/vif.js";
+const { useDefine, useI18n, useNavigate } = Vif;
 
 // import {
 //     LitElement,
