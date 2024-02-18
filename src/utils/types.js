@@ -178,8 +178,8 @@ import { xAbstractElement } from "../controllers/abstract.js";
 /**
  * Function used to create a signal that can trigger changes through reactives functions
  * @callback VIF.Method.Signal
- * @param {any?} value Default value of signal data
- * @returns {VIF.Signal} A signal that can be used to create reactive variables
+ * @param {any?} value Default value for the signal
+ * @returns {VIF.Signal} A signal that can be used to trigger reactives functions
  */
 // -- Navigate
 /**
@@ -191,7 +191,7 @@ import { xAbstractElement } from "../controllers/abstract.js";
  */
 // -- Observe
 /**
- * Function used to observe the first addition of an x-element to the DOM
+ * Function used to observe a VifElement first hydration
  * @callback VIF.Method.Observe
  * @param {{elementTag: function}} actions Object with tagNames as keys and functions as values
  */
@@ -200,7 +200,7 @@ import { xAbstractElement } from "../controllers/abstract.js";
  * Function used to define locales, update locale or display translations
  * @callback VIF.Method.I18n
  * @param {undefined|VIF.Locale.Definition} param "undefined" return the current translations | "VIF.Locale.Definition" setup the locales definitions
- * @property {VIF.Signal} locale Signal used tu retrieve or update the current locale
+ * @property {VIF.Signal} locale Signal used to retrieve or update the current locale
  * @property {Function} onload Execute a callback after translations have been loaded
  */
 
