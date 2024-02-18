@@ -7,7 +7,7 @@ export default formats.map(function (format) {
     return {
         input: "src/bundle.js",
         output: {
-            file: `dist/${format}/vif.js`,
+            file: `dist/${format}/vif.${format === "cjs" ? "cjs" : "js"}`,
             format: format,
             name: (format === "iife" || format === "umd") && "Vif",
             minifyInternalExports: true,
