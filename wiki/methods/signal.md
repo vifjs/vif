@@ -40,4 +40,4 @@ mySignal.effect.add(myReactiveFunction);
 
 # Next
 
-[Explore directives](./directives.md)
+[Explore directives](../concepts/directives.md)
