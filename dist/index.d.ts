@@ -1,72 +1,72 @@
 declare module "vifjs" {
-    type VifTemplateMethod = (string: string) => string;
-
-    type VifProps = Object;
-
-    type VifRenderProperties = {
-        props: VifProps;
-        html?: VifTemplateMethod;
-        css?: VifTemplateMethod;
-    };
-
-    type VifLifecycleMethod = (args: VifRenderProperties) => void;
-
-    type VifRenderFunction = (
-        args: VifRenderProperties
-    ) => VifElement | NodeList | void;
-
-    type VifRefCallback = (element: Element) => void;
-
-    type useRef = (
-        name: string,
-        callback: VifRefCallback,
-        erase?: boolean
-    ) => void;
-
     interface VifElement extends HTMLElement {
-        onMount: VifLifecycleMethod;
-        onUnmount: VifLifecycleMethod;
-        useRef: useRef;
+        onMount(args: { props: Object }): void;
+        onUnmount(args: { props: Object }): void;
+        useRef: (
+            name: string,
+            callback: (element: Element) => void,
+            erase?: boolean
+        ) => void;
     }
 
-    type VifSignalValue = any;
-
-    type VifSignalDependencies = Set<Function>;
+    type VifRenderFunction = (args: {
+        props: Object;
+        html: (string: string) => string;
+        css: (string: string) => string;
+    }) => VifElement | NodeList | void;
 
     interface VifSignal {
-        (updatedValue?: VifSignalValue): VifSignalValue;
-        value: VifSignalValue;
-        effect: VifSignalDependencies;
-    }
-
-    interface VifNavigate {
-        (data: string | Event): string;
-        route: VifSignal;
-    }
-
-    type VifObserved = {
-        [tagName: string]: Function;
-    };
-
-    type VifLocales = {
-        [country: string]: {
-            [province: string]: () => Promise<Object>;
-        };
-    };
-
-    interface VifI18n {
-        (locales?: VifLocales): void;
-        locale: VifSignal;
-        onload: (callback: Function) => any;
+        (updatedValue?: any): [updatedValue: any];
+        value: [updatedValue: any];
+        effect: [dependencies: Set<Function>];
     }
 
     // declarations
-    declare function useDefine(
+
+    /**
+     * Function used to define a customElement
+     * @returns {VifElement} The customElement class instance
+     * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/define.md}
+     */
+    function useDefine(
         name: string,
         renderFunction: VifRenderFunction
     ): VifElement;
-    declare function useSignal(initialValue: any): VifSignal;
-    declare function useObserve(object: VifObserved): void;
-    declare var useNavigate: VifNavigate;
-    declare var useI18n: VifI18n;
+
+    /**
+     * Function used to create a signal that can trigger changes through reactives functions
+     * @returns {VifSignal} A signal that can be used to trigger reactives functions
+     * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/signal.md}
+     */
+    function useSignal(initialValue: any): VifSignal;
+
+    /**
+     * Function used to observe a VifElement first hydration
+     * @returns {void}
+     * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/observe.md}
+     */
+    function useObserve(options: {
+        [tagName: string]: [action: Function];
+    }): void;
+
+    /**
+     * Function used to navigate between routes with browser history
+     * @property {VifSignal} route - Signal related to the current route
+     * @returns {string} String representing the updated URL
+     * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/navigate.md}
+     */
+    function useNavigate(data: string | Event): string;
+
+    /**
+     * Function used to define locales, update locale or display translations
+     * @property {VifSignal} locale - Signal used to retrieve or update the current locale
+     * @property {Function} onload - Execute a callback after translations have been loaded
+     * @returns {string} String representing the updated URL
+     * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/i18n.md}
+     */
+    function useI18n(locales?: {
+        [country: string]: {
+            [province: string]: () => Promise<Object>;
+        };
+    }): void;
 }
