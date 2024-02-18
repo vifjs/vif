@@ -6,32 +6,19 @@ A signal is an object that represents a changing value over time that will be ab
 
 ## Use a signal
 
-Inside of component
+Signals can be used inside and outside of components, that can be usefull to manipulate multiple contexts.
 
 ```js
-Vif.define("signal-example", function (signal) {
+useDefine("signal-example", function ({ props }) {
     // inside of component
-    this.mySignal = signal(initialValue);
+    const mySignal = (props.mySignal = useSignal("initialValue"));
 
     // to get the signal value
-    console.log(this.mySignal());
+    console.log(mySignal());
 
     // to change the signal value
-    this.mySignal(newValue);
+    mySignal("newValue");
 });
-```
-
-Outside of components (can be used for global contexts)
-
-```js
-// outside of components
-const mySignal = Vif.signal(initialValue);
-
-// to get the signal value
-console.log(mySignal());
-
-// to change the signal value
-mySignal(newValue);
 ```
 
 ## Dependencies
@@ -39,12 +26,11 @@ mySignal(newValue);
 Each signal has a dependencies array (Set), and you can add or delete dependencies manually :
 
 ```js
-const mySignal = Vif.signal(false);
+const mySignal = useSignal(false);
 const myReactiveFunction = () => console.log("working");
 
 mySignal.effect.add(myReactiveFunction);
-// don't forget to run :
-// > mySignal.effect.delete(myReactiveFunction)
+// don't forget to run => mySignal.effect.delete(myReactiveFunction)
 // during onUnmount if you are doing that inside of a component
 ```
 

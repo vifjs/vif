@@ -2,12 +2,12 @@
 
 What is a directive ?
 
-A directive is usually a javascript expression executed inside a template through a `x-` attribute. They will be familiar to you if you have used Alpinejs. A directive context `this` is equivalent to render function context.
+A directive is usually a javascript expression executed inside a template through a `x-` attribute. They will be familiar to you if you have used Alpinejs. A directive context is equivalent to render function `props`.
 
 ```js
-Vif.define("example", function (signal) {
-    this.text = "Hello World!";
-    return this.component;
+useDefine("example", function ({ props }) {
+    props.text = "Hello World!";
+    return this;
 });
 ```
 
@@ -21,14 +21,14 @@ Vif.define("example", function (signal) {
 Directives are very powerful when they are combined with signals.
 
 ```js
-Vif.define("example", function (signal) {
-    this.text = signal("Hello World!");
+useDefine("example", function ({ props }) {
+    const text = (props.text = useSignal("Hello World!"));
 
     setTimeout(() => {
-        this.text("Thank you for visiting our website!");
+        text("Thank you for visiting our website!");
     }, 1000);
 
-    return this.component;
+    return this;
 });
 ```
 
@@ -48,7 +48,7 @@ Theses directives should be used on standard HTMLElements only.
 
 -   `x-text` change textContent
 -   `x-show` change style.display based on value
--   `x-ref` (no javascript) used to reference an element ([see this.ref method](./context.md))
+-   `x-ref` (no javascript) used to reference an element ([see this.useRef method](./context.md))
 -   `x-css` (no javascript) used to reference an element for scoped style ([see examples](../methods/define.md))
 -   `x-on:...` used to add an event handler to the element
 -   `x-...` used to define every attribute value
@@ -67,8 +67,8 @@ Theses directives should be used on `<template>...</template>` elements only.
 
 Theses directives should be used on components only.
 
--   `...` (no javascript) used to dynamicaly create variable in component context
--   `x-...` used to dynamicaly create variable in component context
+-   `...` (no javascript) used to dynamicaly create props in component context
+-   `x-...` used to dynamicaly create props in component context
 
 ---
 

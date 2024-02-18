@@ -5,17 +5,17 @@ The life cycle of a Vif component when it's found in DOM is as follows:
 -   create the `datas` property
 -   execute the `connectedCallback` function
     -   add static and dynamic datas passed through attributes into `datas`
-    -   define the `.component` and `.ref` methods into `datas`
+    -   define the `props` variable
     -   execute the `onMount` method
     -   execute the `render` method
-        -   execute the renderFunction with `datas` as context
+        -   execute the renderFunction with `datas as props`, `html` and `css` as parameter
         -   use the result to create template and schema (if not exist)
         -   bind the unique css indicator
         -   execute the `hydrate` method
             -   loop on schema and for each element execute the directives
         -   replace the element by the template from renderFunction (if not exist)
 
-The life cycle of a Vif component when it's removed in an other component
+The life cycle of a Vif component when it's removed by a directive
 
 -   loop on the `trail` and for each property run the `disconnectCallback` if exist
     -   if component :
@@ -31,13 +31,13 @@ The life cycle of a Vif component when it's removed in an other component
 ## Using onMount and onUnmount (rare usage)
 
 ```js
-const componentClass = Vif.define("my-component", function(){...})
+const componentClass = useDefine("my-component", function(){...})
 
-componentClass.prototype.onMount = function(){
+componentClass.prototype.onMount = function({ props }){
     // do something before component initilisation
 }
 
-componentClass.prototype.onUnmount = function(){
+componentClass.prototype.onUnmount = function({ props }){
     // remove intervals, timeout, global signals, extra listeners, dependencies...
 }
 ```

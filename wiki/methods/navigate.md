@@ -22,29 +22,28 @@ Conditionally displaying content can be done using the x-route directive, like b
 </x-app>
 ```
 
-## The navigate method
+## The useNavigate method
 
-The navigate method is provided by Vif and can be used to change the current route in history. This method can be used in components as follows :
+The useNavigate method is provided by Vif and can be used to change the current route in history. This method can be used in components as follows :
 
 ```js
-Vif.define("app", function () {
+useDefine("app", function () {
     if (!userLoggedIn) {
-        Vif.navigate("/home");
+        useNavigate("/home");
     }
 });
 ```
 
-The navigate method also expose the current route signal with `navigate.route()`.
+The useNavigate method also expose the current route signal with `useNavigate.route()`.
 
 ## The links
 
-To create links between routes without reloading the page while preserving SEO we still need the navigate method, as it can be used effectively on event directives attached to links
+To create links between routes without reloading the page while preserving SEO we still need the navigate method, as it can be used effectively on event directives attached to links.
 
 ```js
-Vif.define("app", function () {
-    this.navigate = Vif.navigate;
-
-    return this.component;
+useDefine("app", function ({ props }) {
+    props.navigate = useNavigate;
+    return this;
 });
 ```
 
