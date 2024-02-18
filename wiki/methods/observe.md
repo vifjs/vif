@@ -11,16 +11,16 @@ When hydrating an x-element, all nested x-elements will be submitted to the obse
 Observers are used a lot for lazy loading, so here their is an example of Vif lazy loading.
 
 ```js
-const observerImport = import;
+const observerImport = (url) => import(url);
 
 useObserve({
     // don't forget CAPS
-    "X-MY-COMPONENT": () => observerImport("./my-component.js")
-})
+    "X-MY-COMPONENT": () => observerImport("./my-component.js"),
+});
 
-useDefine("app", function(){
-    return this
-})
+useDefine("app", function () {
+    return this;
+});
 ```
 
 ```html
