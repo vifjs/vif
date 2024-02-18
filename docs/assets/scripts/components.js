@@ -1,4 +1,8 @@
-import Vif from "https://cdn.jsdelivr.net/gh/vifjs/vif/dist/esm/vif.js";
+import {
+    useDefine,
+    useI18n,
+    useSignal,
+} from "https://cdn.jsdelivr.net/npm/vifjs@latest/esm/vif.js";
 
 // update <html> lang attribute
 const importLocale = (src, locale) => {
@@ -13,23 +17,24 @@ const languages = [
     ["es-ES", "Español", "es"],
 ];
 
-Vif.i18n.onload(() => {
-    function App(signal) {
-        this.t = Vif.i18n;
-        this.count = signal(0);
-        this.languages = languages;
-        this.showLanguages = signal(false);
-        this.switchLocale = (e) =>
-            Vif.i18n.locale(e.currentTarget.value) && this.showLanguages(false);
-        this.flagFromLocale = (l) =>
-            `https://raw.githubusercontent.com/jackiboy/flagpack/master/flags/4x3/${l}.svg`;
-        return this.component;
-    }
+function App({ props }) {
+    props.t = useI18n;
+    props.count = useSignal(0);
+    props.languages = languages;
+    props.showLanguages = useSignal(false);
+    props.switchLocale = (e) =>
+        useI18n.locale(e.currentTarget.value) && props.showLanguages(false);
+    props.flagFromLocale = (l) =>
+        `https://raw.githubusercontent.com/jackiboy/flagpack/master/flags/4x3/${l}.svg`;
 
-    Vif.define("app", App);
+    return this;
+}
+
+useI18n.onload(() => {
+    useDefine("app", App);
 });
 
-Vif.i18n({
+useI18n({
     en: {
         GB: () => importLocale("../locales/en.js", "en-GB"),
         default: "GB",

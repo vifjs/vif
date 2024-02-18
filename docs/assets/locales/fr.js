@@ -41,7 +41,7 @@ export default {
     },
     installation: {
         title: "Processus d'installation",
-        desc: "Actuellement en phase beta, Vif n'est disponible que via CDN, npm arrive bientôt.",
+        desc: "Vif est disponible via NPM, CDN et en version IIFE.",
     },
     issues: {
         title: "Nous avons besoin de vos retours",

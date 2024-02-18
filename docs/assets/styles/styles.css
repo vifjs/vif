@@ -154,6 +154,7 @@ pre {
     border-radius: var(--radius-sm);
     box-shadow: var(--shadow-block);
     line-height: 1.6;
+    font-size: 0.9rem;
     max-width: 100%;
     overflow: auto;
 }
