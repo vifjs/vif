@@ -24,7 +24,7 @@ The reference method is a little special and works in a somewhat counter-intuiti
     -   We get the corresponding callback array
     -   We run all the callbacks for the reference
 
-> If you understand props you will realize that `useRef` has nothing to do with a `querySelector` and cannot be used the same way.
+> If you understand this you will realize that `useRef` has nothing to do with a `querySelector` and cannot be used the same way.
 
 ## Props
 
