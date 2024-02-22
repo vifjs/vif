@@ -1,4 +1,6 @@
-const { useDefine, useI18n, useNavigate } = Vif;
+const { useDefine, useI18n, useNavigate, useSignal } = Vif;
+
+// console.log(Vif);
 
 // import {
 //     LitElement,
@@ -103,11 +105,11 @@ useI18n.onload(() => {
         props.navigate = useNavigate;
         props.i18n = useI18n;
 
+        props.signal = useSignal("a");
+        this.useEffect(() => console.log(props.signal()));
+
         setTimeout(() => {
-            this.useRef("button", (el) => console.log(el), true);
-            setTimeout(() => {
-                this.useRef("button", (el) => console.log(el), true);
-            }, 1000);
+            props.signal("b");
         }, 1000);
 
         return this;
@@ -115,23 +117,23 @@ useI18n.onload(() => {
 
     useDefine("app", App);
 
-    setTimeout(() => {
-        useI18n.locale("en-FR");
-        setTimeout(() => {
-            useI18n.locale("fr-FR");
-        }, 200);
-        setTimeout(() => {
-            useI18n({
-                fr: {
-                    FR: () => import("./fr.bis.js"),
-                    default: "FR",
-                },
-                en: {
-                    EN: () => import("./en.js"),
-                    default: "EN",
-                },
-                default: "fr",
-            });
-        }, 1000);
-    }, 1500);
+    // setTimeout(() => {
+    //     useI18n.locale("en-FR");
+    //     setTimeout(() => {
+    //         useI18n.locale("fr-FR");
+    //     }, 200);
+    //     setTimeout(() => {
+    //         useI18n({
+    //             fr: {
+    //                 FR: () => import("./fr.bis.js"),
+    //                 default: "FR",
+    //             },
+    //             en: {
+    //                 EN: () => import("./en.js"),
+    //                 default: "EN",
+    //             },
+    //             default: "fr",
+    //         });
+    //     }, 1000);
+    // }, 1500);
 });
