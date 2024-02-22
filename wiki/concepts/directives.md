@@ -2,7 +2,7 @@
 
 What is a directive ?
 
-A directive is usually a javascript expression executed inside a template through a `x-` attribute. They will be familiar to you if you have used Alpinejs. A directive context is equivalent to render function `props`.
+A directive is usually a javascript expression executed inside a template through a `x-` attribute. They will be familiar to you if you have used AlpineJs. A directive scope is equivalent to renderFunction `props` object.
 
 ```js
 useDefine("example", function ({ props }) {
@@ -18,7 +18,9 @@ useDefine("example", function ({ props }) {
 </x-example>
 ```
 
-Directives are very powerful when they are combined with signals.
+## Directives and reactivity
+
+Directives are reactives functions, like what you saw before with [useEffect](../methods/effect.md), so as you can imagine, they are very powerful when they are combined with [signals](../methods/signal.md).
 
 ```js
 useDefine("example", function ({ props }) {

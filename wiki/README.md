@@ -44,11 +44,12 @@ const { ... } = require("vifjs");
 
 ## Methods
 
--   `useDefine` used to create a reactive we component
--   `useSignal` used to create a global signal
--   `useObserve` used to create lazy actions based on component hydration
--   `useNavigate` used to navigate between routes
--   `useI18n` used to create and use locales translations
+-   [`useDefine`](./methods/define.md) used to create a reactive component
+-   [`useSignal`](./methods/signal.md) used to create a global signal
+-   [`useEffect`](./methods/effect.md) used to create a reactive function
+-   [`useObserve`](./methods/observe.md) used to create lazy actions based on component hydration
+-   [`useNavigate`](./methods/navigate.md) used to navigate between routes
+-   [`useI18n`](./methods/i18n.md) used to create and use locales translations
 
 ---
 

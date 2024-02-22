@@ -1,6 +1,6 @@
 # Lifecycle
 
-The life cycle of a Vif component when it's found in DOM is as follows:
+The life cycle of a Vif component when it's found in DOM is as follows (resume) :
 
 -   create the `datas` property
 -   execute the `connectedCallback` function
@@ -26,7 +26,7 @@ The life cycle of a Vif component when it's removed by a directive
             -   find the reactive function in dependencies
             -   remove the function from dependencies
     -   if template :
-        -   loop on `templateParts` and execute the `disconnectedCallback`
+        -   loop on `templateParts` and execute the `disconnectedCallback` for each part
 
 ## Using onMount and onUnmount (rare usage)
 
@@ -38,7 +38,7 @@ componentClass.prototype.onMount = function({ props }){
 }
 
 componentClass.prototype.onUnmount = function({ props }){
-    // remove intervals, timeout, global signals, extra listeners, dependencies...
+    // remove intervals, timeout, global signals, extra listeners, etc...
 }
 ```
 

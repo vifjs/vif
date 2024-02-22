@@ -34,6 +34,7 @@ Vif represents the culmination of this learning.
 import {
     useDefine, // used to create a reactive we component
     useSignal, // used to create a global signal
+    useEffect, // used to create a reactive function
     useObserve, // used to create lazy actions based on component hydration
     useNavigate, // used to navigate between routes
     useI18n, // used to create and use locales translations

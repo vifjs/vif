@@ -23,7 +23,7 @@ useDefine("my-component", MyComponent);
 
 The render function has one argument with three properties:
 
--   `props` [learn more about props](../concepts/context.md)
+-   `props` [learn more about props](../concepts/props.md)
 -   `html` templatelitteral function used to render raw HTML
 -   `css` templatelitteral function used to render raw CSS
 
