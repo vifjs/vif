@@ -3,8 +3,8 @@
     and checks that the element does not already exist in the registry
 */
 
-import { xElement } from "./controllers/element.js";
-import { VIF } from "./utils/types.js";
+import { xElement } from "../controllers/element.js";
+import { VIF } from "../utils/types.js";
 
 /**
  * keep track of defined components

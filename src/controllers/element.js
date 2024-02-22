@@ -3,7 +3,7 @@
     customElements with their own lifecycles and directives.
 */
 
-import { signal } from "../reactivity/signal.js";
+import { signal, reactive } from "../reactivity/signal.js";
 import {
     createTemplateFragmentFromNodeList,
     createTemplateFragmentFromString,
@@ -58,7 +58,7 @@ export class xElement extends HTMLElement {
         /**
          * @type {VIF.Element.Reference}
          */
-        self.useRef = self.reference;
+        // self.useRef
 
         /**
          * onMount is an user custom function defined with :
@@ -194,9 +194,18 @@ export class xElement extends HTMLElement {
     }
 
     /**
+     * Function used to create reactive functions automatically added into dependencies
+     * @type {VIF.Element.Effect}
+     */
+    useEffect(callback) {
+        this.trail.add(reactive(callback));
+    }
+
+    /**
+     * Function used to apply callbacks on targets
      * @type {VIF.Element.Reference}
      */
-    reference(referenceName, callback, erase) {
+    useRef(referenceName, callback, erase) {
         const referencesObject = this.references;
         /**
          * get the reference callbacks array or create it

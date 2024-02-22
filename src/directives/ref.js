@@ -10,7 +10,7 @@ export const refDirective = (component, element, expression) => {
     const referenceName = expression;
 
     /** @type {VIF.Element.References.Callbacks} */
-    const referenceCallbacks = component.reference(referenceName);
+    const referenceCallbacks = component.useRef(referenceName);
 
     // used to determine if it's necessary to run the last callback only
     let primaryHydration = true;

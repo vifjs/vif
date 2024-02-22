@@ -5,7 +5,7 @@
     X- tags
 */
 
-import { defineMemo } from "../define.js";
+import { defineMemo } from "../features/define.js";
 import { VIF } from "../utils/types.js";
 
 /**

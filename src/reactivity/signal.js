@@ -52,12 +52,6 @@ export const signal = (value) => {
      */
     currentSignal.reactives = new Set();
 
-    /**
-     * reference to reactives dependencies
-     * @type {VIF.Dependencies.Reactives}
-     */
-    currentSignal.effect = currentSignal.reactives;
-
     // return the signal setter/getter function
     return currentSignal;
 };
