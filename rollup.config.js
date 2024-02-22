@@ -24,6 +24,7 @@ export default formats.map(function (format) {
                             "onMount",
                             "onUnmount",
                             "useRef",
+                            "useEffect",
                             // Element properties
                             "handler",
                             // renderFunction params
@@ -32,10 +33,10 @@ export default formats.map(function (format) {
                             "css",
                             // signal properties
                             "value",
-                            "effect",
                             // global export properties
                             "useDefine",
                             "useSignal",
+                            "useEffect",
                             "useObserve",
                             "useNavigate",
                             /**/ "route",
