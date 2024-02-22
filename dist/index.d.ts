@@ -2,26 +2,31 @@ declare module "vifjs" {
     interface VifElement extends HTMLElement {
         onMount(args: { props: Object }): void;
         onUnmount(args: { props: Object }): void;
-        useRef: (
+        useRef(
             name: string,
             callback: (element: Element) => void,
             erase?: boolean
-        ) => void;
+        ): void;
+        useEffect(callback: Function): void;
     }
 
-    type VifRenderFunction = (args: {
-        props: Object;
-        html: (string: string) => string;
-        css: (string: string) => string;
-    }) => VifElement | NodeList | void;
+    type VifRenderFunction = (
+        this: VifElement,
+        args: {
+            props: Object;
+            html: (string: string) => string;
+            css: (string: string) => string;
+        }
+    ) => VifElement | NodeList | void;
 
     interface VifSignal {
         (updatedValue?: any): [updatedValue: any];
         value: [updatedValue: any];
-        effect: [dependencies: Set<Function>];
     }
 
-    // declarations
+    type VifReactive = Function;
+
+    // --- declarations ---
 
     /**
      * Function used to define a customElement
@@ -39,6 +44,13 @@ declare module "vifjs" {
      * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/signal.md}
      */
     function useSignal(initialValue: any): VifSignal;
+
+    /**
+     * Function used to create a reactive function played every time the value of a signal inside changes
+     * @returns {VifReactive} The reactive function
+     * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/effect.md}
+     */
+    function useEffect(callback: Function): VifReactive;
 
     /**
      * Function used to observe a VifElement first hydration

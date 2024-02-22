@@ -36,6 +36,12 @@ import { xAbstractElement } from "../controllers/abstract.js";
  * @callback VIF.Element.Reference.Callback
  * @param {HTMLElement} element The element affected by the callback
  */
+// -- Element.Effect
+/**
+ * Function used to create reactive functions automatically added into dependencies
+ * @callback VIF.Element.Effect
+ * @param {Function} callback Function to play every time the value of a signal inside changes
+ */
 // -- Element.DisconnectCallback
 /**
  * Function used to clear signals dependencies: enabled on xAbstractElement, xElement and xReactive
@@ -108,7 +114,7 @@ import { xAbstractElement } from "../controllers/abstract.js";
  */
 // -- Reactive
 /**
- * Function running everytime a containing signal value change
+ * Function running every time a containing signal value change
  * @callback VIF.Reactive
  * @property {VIF.Dependencies.Signals} signals All signals dependencies containing that reactive function
  * @returns {any}
@@ -121,7 +127,6 @@ import { xAbstractElement } from "../controllers/abstract.js";
  * @property {any} value That property access signal value without triggering signal
  * @property {boolean} issignal That property is used to test if a property is a signal
  * @property {VIF.Dependencies.Reactives} reactives All reactives functions in dependencies
- * @property {VIF.Dependencies.Reactives} effect Public access to dependencies
  * @returns {any} Returns the variable value
  */
 
@@ -154,9 +159,7 @@ import { xAbstractElement } from "../controllers/abstract.js";
 /**
  * Function used to hydrate datas and create component template & schema
  * @callback VIF.Method.Define.Render
- * @param {VIF.Element.Datas} props Object containing component's relative datas
- * @param {VIF.Method.Define.Render.HTML} html Function used to create html template
- * @param {VIF.Method.Define.Render.CSS} css Function used to create css template
+ * @param {{props: VIF.Element.Datas, html: VIF.Method.Define.Render.HTML, css: VIF.Method.Define.Render.CSS}} object
  * @this {VIF.Element} The component
  * @returns {VIF.Template} The final template of the component
  */
