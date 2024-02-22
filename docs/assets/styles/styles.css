@@ -505,25 +505,36 @@ header .language-switcher input:checked + label {
     background-color: var(--color-gray);
 }
 
-.benchs article div:nth-child(2)::before {
-    width: 51.8%;
-    content: "~259ms";
+/* 500ms base reference */
+.benchs article div.solid::before {
+    width: 37.6%;
+    content: "~188ms";
+    background-color: #436a9e;
+}
+.benchs article div.vif::before {
+    width: 51.6%;
+    content: "~258ms";
     background-color: var(--color-secondary);
 }
-.benchs article div:nth-child(4)::before {
-    width: 76.4%;
-    content: "~382ms";
-    background-color: #324fff;
-}
-.benchs article div:nth-child(6)::before {
+.benchs article div.vue::before {
     width: 53.8%;
     content: "~269ms";
     background-color: #42b883;
 }
-.benchs article div:nth-child(8)::before {
+.benchs article div.alpine::before {
     width: 67.6%;
     content: "~338ms";
     background-color: #48a9c1;
+}
+.benchs article div.lit::before {
+    width: 76.4%;
+    content: "~382ms";
+    background-color: #324fff;
+}
+.benchs article div.preact::before {
+    width: 87.2%;
+    content: "~436ms";
+    background-color: #673ab8;
 }
 
 /* INSTALLATION SECTION */
