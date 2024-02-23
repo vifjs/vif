@@ -8,6 +8,7 @@
     },
     "devDependencies": {
         "@rollup/plugin-terser": "^0.4.4",
+        "cypress": "^13.6.6",
         "jsdoc": "^4.0.2",
         "rollup": "^4.9.5"
     }
