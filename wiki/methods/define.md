@@ -30,9 +30,11 @@ The render function has one argument with three properties:
 The render function should return one of theses types:
 
 -   `string` representing an HTML template
--   `this` representing the current component
+-   `this || undefined` representing the current component
 -   `this.children` reprensenting the current component's children
 -   `this.childNodes` reprensenting the current component's childNodes
+
+Due to performance reasons you should not render arbitrary NodeLists.
 
 # Examples
 

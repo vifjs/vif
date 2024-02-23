@@ -56,6 +56,11 @@ export class xElement extends HTMLElement {
         }
 
         /**
+         * @type {VIF.Element.Effect}
+         */
+        // self.useEffect
+
+        /**
          * @type {VIF.Element.Reference}
          */
         // self.useRef
@@ -126,37 +131,38 @@ export class xElement extends HTMLElement {
          */
         const renderResult = renderFunction.call(self, params);
 
-        // trigger render logic only if renderFunction return a template
-        if (renderResult) {
-            // if renderResult came from templateLiteral
-            if (typeof renderResult === "string") {
-                // we update the template value and also the static.template
-                template = definition.template =
-                    createTemplateFragmentFromString(renderResult);
+        // if renderResult came from templateLiteral
+        // we add it to static.template for future usages
+        if (typeof renderResult === "string") {
+            // we update the template value and also the static.template
+            template = definition.template =
+                createTemplateFragmentFromString(renderResult);
 
-                // we create the schema based on template children
-                schema = definition.schema = createTemplateSchema(
-                    childrenOf(template)
+            // we create the schema based on template children
+            schema = definition.schema = createTemplateSchema(
+                childrenOf(template)
+            );
+        }
+
+        // if there is no static.template registred  yet, that mean
+        // we can override the template value by the renderResult
+        // without changing static.template
+        else if (!template) {
+            // if renderResult is nullish or equal to the component
+            // we return the component itself, else we create a new fragment
+            // from the given NodeList
+            template =
+                !renderResult || renderResult === self
+                    ? self
+                    : createTemplateFragmentFromNodeList(renderResult);
+
+            // we create the schema equal to immutableSchema
+            // or based on template immutableChildren or current children
+            schema =
+                self.immutableSchema ||
+                createTemplateSchema(
+                    self.immutableChildren || childrenOf(template)
                 );
-            }
-
-            // else we consider renderResult as a NodeList, if renderResult is
-            // equal to "this" we don't want to build a new fragment
-            // in both case we update the template value without changing static.template
-            else {
-                template =
-                    renderResult === self
-                        ? self
-                        : createTemplateFragmentFromNodeList(renderResult);
-
-                // we create the schema equal to immutableSchema
-                // or based on template immutableChildren or current children
-                schema =
-                    self.immutableSchema ||
-                    createTemplateSchema(
-                        self.immutableChildren || childrenOf(template)
-                    );
-            }
         }
 
         // if there is no indicator we add it to the definition

@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Garbage testing</title>
         <!-- <script src="../../../dist/vif.js"></script> -->
-        <script src="../../dist/iife/vif.js" defer></script>
-        <script src="./components.js" defer></script>
+        <!-- <script src="../../dist/iife/vif.js" defer></script> -->
+        <script type="module" src="./components.js" defer></script>
     </head>
     <body>
         <h1>Primary tests here</h1>
@@ -17,7 +17,7 @@
         <div class="freezer"></div>
 
         <main>
-            <x-app>
+            <!-- <x-app>
                 <template x-for="[false, true, false, true]">
                     <template x-if="item()">
                         <p>
@@ -26,7 +26,13 @@
                         </p>
                     </template>
                 </template>
-            </x-app>
+            </x-app> -->
+            <x-first>
+                <button x-text="button">BUTTON</button>
+                <x-second x-text="button">
+                    <p x-text="paragraphe">PARAGRAPHE</p>
+                </x-second>
+            </x-first>
         </main>
     </body>
 </html>
