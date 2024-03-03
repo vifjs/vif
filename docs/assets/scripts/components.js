@@ -2,8 +2,8 @@ import {
     useDefine,
     useI18n,
     useSignal,
-    // } from "https://cdn.jsdelivr.net/npm/vifjs@latest/esm/vif.js";
-} from "../../../dist/esm/vif.js";
+} from "https://cdn.jsdelivr.net/npm/vifjs@latest/esm/vif.js";
+// } from "../../../dist/esm/vif.js";
 
 // update <html> lang attribute
 const importLocale = (src, locale) => {
