@@ -28,9 +28,9 @@
                 </template>
             </x-app> -->
             <x-first>
-                <button x-text="button">BUTTON</button>
-                <x-second x-text="button">
-                    <p x-text="paragraphe">PARAGRAPHE</p>
+                <button x-text="t() && t().button">BUTTON</button>
+                <x-second>
+                    <p x-text="t() && t().p">PARAGRAPHE</p>
                 </x-second>
             </x-first>
         </main>

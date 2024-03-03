@@ -1,15 +1,35 @@
 declare module "vifjs" {
     interface VifElement extends HTMLElement {
+        /**
+         * @see {@link https://github.com/vifjs/vif/blob/main/wiki/concepts/lifecycle.md}
+         */
         onMount(args: { props: Object }): void;
+        /**
+         * @see {@link https://github.com/vifjs/vif/blob/main/wiki/concepts/lifecycle.md}
+         */
         onUnmount(args: { props: Object }): void;
+        /**
+         * Function used to apply actions to a DOM reference
+         * @returns {void}
+         * @see {@link https://github.com/vifjs/vif/tree/main/wiki/concepts/context.md}
+         */
         useRef(
             name: string,
             callback: (element: Element) => void,
             erase?: boolean
         ): void;
+        /**
+         * Function used to create a reactive function played every time the value of a signal inside changes
+         * @returns {VifReactive} The reactive function
+         * @see {@link https://github.com/vifjs/vif/tree/main/wiki/concepts/context.md}
+         */
         useEffect(callback: Function): void;
     }
 
+    /**
+     * Function used to hydrate datas and create component template & schema
+     * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/define.md}
+     */
     type VifRenderFunction = (
         this: VifElement,
         args: {
@@ -25,6 +45,15 @@ declare module "vifjs" {
     }
 
     type VifReactive = Function;
+
+    interface VifTranslations extends VifSignal {
+        /**
+         * Execute a callback after translations have been loaded
+         * @param {Function} callback Function called after translations have been loaded
+         * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/i18n.md}
+         */
+        onload(callback: Function): void;
+    }
 
     // --- declarations ---
 
@@ -70,15 +99,14 @@ declare module "vifjs" {
     function useNavigate(data: string | Event): string;
 
     /**
-     * Function used to define locales, update locale or display translations
+     * Function used to retrieve translations signal from translations definition
      * @property {VifSignal} locale - Signal used to retrieve or update the current locale
-     * @property {Function} onload - Execute a callback after translations have been loaded
-     * @returns {string} String representing the updated URL
+     * @returns {VifTranslations} Signal containing all the translations for the current locale
      * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/i18n.md}
      */
-    function useI18n(locales?: {
+    function useI18n(locales: {
         [country: string]: {
             [province: string]: () => Promise<Object>;
         };
-    }): void;
+    }): VifTranslations;
 }

@@ -25,7 +25,7 @@ import { xAbstractElement } from "../controllers/abstract.js";
  */
 // -- Element.Reference
 /**
- * Function used to apply effects to a DOM reference
+ * Function used to apply actions to a DOM reference
  * @callback VIF.Element.Reference
  * @param {string} name The matching name of the DOM references
  * @param {VIF.Element.Reference.Callback} callback Function to play when the reference is found in the DOM
@@ -200,11 +200,11 @@ import { xAbstractElement } from "../controllers/abstract.js";
  */
 // -- i18n
 /**
- * Function used to define locales, update locale or display translations
+ * Function used to retrieve translations signal from translations definition
  * @callback VIF.Method.I18n
- * @param {undefined|VIF.Locale.Definition} param "undefined" return the current translations | "VIF.Locale.Definition" setup the locales definitions
+ * @param {VIF.Locale.Definition} definition Object defining imports methods for each locale
  * @property {VIF.Signal} locale Signal used to retrieve or update the current locale
- * @property {Function} onload Execute a callback after translations have been loaded
+ * @returns {VIF.Signal} Signal containing all the translations for the current locale
  */
 
 export const VIF = {};

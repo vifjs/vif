@@ -5,7 +5,7 @@
     Supports lazy-loaded translations, locale persistence, translations as
     functions, and splited language files.
 
-    i18n definition example :
+    # i18n definition example :
     {
         en: {
             EN: () => import('en.js'),
@@ -17,31 +17,22 @@
         },
         default: 'en'
     }
+
+    # i18n translations file example : 
+    export default {
+        something: "Quelque chose (this is french btw)"
+        ...
+    }
 */
 
 import { reactive, signal } from "../reactivity/signal.js";
 import { VIF } from "../utils/types.js";
 
-/** @type {Array<Function>} */
-let i18nMemo = [];
-
-/** @type {VIF.Locale.Definition|undefined} */
-let localesMemo;
-
-/** @type {VIF.Reactive|undefined} */
-let reactiveMemo;
-
 /**
  * locale signal used to retrieve or define a locale
  * @type {VIF.Signal}
  */
-const locale = signal();
-
-/**
- * translations signal used to retreive or define translations object
- * @type {VIF.Signal}
- */
-const translations = signal();
+const locale = signal(localStorage.getItem("locale") || navigator.language);
 
 /**
  * Function used to retrieve a locale import function
@@ -53,74 +44,67 @@ const localeFromDefinition = (definition, localeKey) =>
     definition[localeKey] || definition[definition.default];
 
 /**
- * Function used to setup locales and imports
- * @param {VIF.Locale.Definition} languages
- */
-const locales = (languages) => {
-    // update the localeMemo value
-    localesMemo = languages;
-
-    // setup locale value
-    locale(
-        locale.value || localStorage.getItem("locale") || navigator.language
-    );
-
-    // if the reactive signal isn't defined yet we update it
-    // we do that because in case of SPA with multifile languages (because you
-    // maybe don't want all translations in the same file in large apps) we don't
-    // want to recreate a reactive funtion, so we do that as a singleton.
-    if (!reactiveMemo) {
-        // create the reactive function
-        reactiveMemo = reactive(() => {
-            // get the country name and province name from string
-            // "fr-FR" -> ["fr", "FR"] "fr" -> ["fr"]
-            const [country, province] = locale().split("-");
-
-            // we keep the province even if the country is incorrect because
-            // for example, if "fr" doesn't exist, "fr-CA" input will be tranform
-            // into "en-CA" which make more sense than "en-EN". However if "en-CA"
-            // doesn't exist the function will retreive the default locale "en-EN".
-            const result = localeFromDefinition(
-                localeFromDefinition(localesMemo, country),
-                province
-            );
-
-            // execute the result, and after promise.resolve
-            // trigger the translations signal
-            if (result) {
-                result().then((exportedModule) => {
-                    // update the translation signal
-                    translations(exportedModule.default);
-                    // execute all pending callbacks and set the memo to undefined
-                    // by doing this we prevent future useless executions
-                    i18nMemo &&
-                        (i18nMemo = i18nMemo.forEach((callback) => callback()));
-                });
-            }
-        });
-    }
-};
-
-/**
- * Execute a callback after translations have been loaded
- * @param {Function} callback Function called after translations have been loaded
- */
-const i18nOnLoad = (callback) => {
-    // if translations are already loaded, execute the callback
-    if (translations()) {
-        callback();
-    }
-    // else push the callback into the queue
-    else {
-        i18nMemo.push(callback);
-    }
-};
-
-/**
- * Function used to define locales, update locale or display translations
+ * Function used to retrieve translations signal from translations definition
  * @type {VIF.Method.I18n}
  */
-export const i18n = (param) => (param ? locales(param) : translations());
+export const i18n = (definition) => {
+    /**
+     * translations signal used to retreive or define translations object
+     * @type {VIF.Signal}
+     * @property {Function} onload Execute a callback after translations have been loaded
+     */
+    const translations = signal();
 
+    /** @type {Array<Function>} */
+    let onloadMemo = [];
+
+    /**
+     * Execute a callback after translations have been loaded
+     * @param {Function} callback Function called after translations have been loaded
+     */
+    translations.onload = (callback) => {
+        // if translations are already loaded, execute the callback
+        if (translations()) {
+            callback();
+        }
+        // else push the callback into the queue
+        else {
+            onloadMemo.push(callback);
+        }
+    };
+
+    // create the reactive function
+    reactive(() => {
+        // get the country name and province name from string
+        // "fr-FR" -> ["fr", "FR"] "fr" -> ["fr"]
+        const [country, province] = locale().split("-");
+
+        // we keep the province even if the country is incorrect because
+        // for example, if "fr" doesn't exist, "fr-CA" input will be tranform
+        // into "en-CA" which make more sense than "en-EN". However if "en-CA"
+        // doesn't exist the function will retreive the default locale "en-EN".
+        const result = localeFromDefinition(
+            localeFromDefinition(definition, country),
+            province
+        );
+
+        // execute the result, and after promise.resolve
+        // trigger the translations signal
+        if (result) {
+            result().then((exportedModule) => {
+                // update the translation signal
+                translations(exportedModule.default);
+
+                // execute all pending callbacks and set the memo to undefined
+                // by doing this we prevent future useless executions
+                onloadMemo &&
+                    (onloadMemo = onloadMemo.forEach((callback) => callback()));
+            });
+        }
+    });
+
+    return translations;
+};
+
+/** @type {VIF.Signal} */
 i18n.locale = locale;
-i18n.onload = i18nOnLoad;
