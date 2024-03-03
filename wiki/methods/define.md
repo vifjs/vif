@@ -30,7 +30,7 @@ The render function has one argument with three properties:
 The render function should return one of theses types:
 
 -   `string` representing an HTML template
--   `this || undefined` representing the current component
+-   `this | undefined` representing the current component (you can simply omit the return statement)
 -   `this.children` reprensenting the current component's children
 -   `this.childNodes` reprensenting the current component's childNodes
 
@@ -64,7 +64,7 @@ function Counter({ props }) {
     const count = (props.count = useSignal(0));
     props.increment = () => count(count.value + 1);
 
-    return this;
+    return this; // optionnal
 }
 
 useDefine("counter", Counter);
