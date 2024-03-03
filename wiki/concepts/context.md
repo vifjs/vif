@@ -18,7 +18,7 @@ Tthe `this.useRef()` method takes three arguments :
 -   `name` the value of `x-ref="name"` attribute
 -   `callback` the callback executed during the element hydration
     -   the callback take one argument `element` corresponding to the target
--   `erase` (optionnal) to overwrite the last callback in array, used for unique actions
+-   `erase` (optional) to overwrite the last callback in array, used for unique actions
 
 ```js
 useDefine("ref-example", function ({ html }) {

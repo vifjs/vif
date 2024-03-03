@@ -64,7 +64,7 @@ function Counter({ props }) {
     const count = (props.count = useSignal(0));
     props.increment = () => count(count.value + 1);
 
-    return this; // optionnal
+    return this; // optional
 }
 
 useDefine("counter", Counter);
