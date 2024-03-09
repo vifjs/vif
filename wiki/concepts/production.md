@@ -4,7 +4,7 @@ Vif allows you to publish your site or application without any build step, this 
 
 However, in order to preserve bandwidth and thus help reduce the ecological impact of the web while making your application more accessible and quick to load, we advise you to go through a process of building your application.
 
-There are many tools to do this like [SWC](https://swc.rs/), [Rollup](https://rollupjs.org/), or [Vite](https://vitejs.dev /).
+There are many tools to do this like [SWC](https://swc.rs/), [Rollup](https://rollupjs.org/), or [Vite](https://vitejs.dev).
 
 The different steps to carry out are as follows:
 
