@@ -10,52 +10,108 @@ The different steps to carry out are as follows:
 
 -   minify your javascript files
     -   mangle some property names
+        -   prefer using regex like `/^_/` over exclude
+        -   do not mangle `props.<property>` because they are also in your html templates
     -   minify template literals of type `html...`
 -   minify your css style sheets
 -   minify your html documents
 -   compress your images and svg
 
+## Vite config
+
+If you are using Vite you can take this configuration as a basis:
+
+```bash
+npm i -D terser
+npm i -D rollup-plugin-html-literals
+```
+
+```js
+import { defineConfig } from "vite";
+import templateLiterals from "rollup-plugin-html-literals";
+
+export default defineConfig({
+    build: {
+        target: "esnext",
+        minify: "terser",
+        rollupOptions: {
+            /*  // (optional) if you want multiple outputs
+                output: {
+                    preserveModules: true,
+                    preserveModulesRoot: "src",
+                },
+            */
+            // minify HTML template literals
+            plugins: [templateLiterals()],
+            // (optional) mark all http imports as external
+            external: [/^https?:/],
+            // preserve all import names
+            preserveEntrySignatures: "strict",
+        },
+        /*  // (careful) if you want to mangle properties
+            terserOptions: {
+                mangle: {
+                    properties: {
+                        regex: /^_/
+                    }
+                }
+            },
+        */
+        // avoid the module preload polyfill
+        modulePreload: false,
+    },
+});
+```
+
 ## Rollup config
 
 If you use Rollup you can use this configuration as a basis:
 
+```bash
+npm i -D @rollup/plugin-terser
+npm i -D @rollup/plugin-node-resolve
+npm i -D rollup-plugin-html-literals
+```
+
 ```js
 // Import rollup plugins
-import resolve from "@rollup/plugin-node-resolve";
-import minifyHTML from "rollup-plugin-minify-html-literals";
 import { terser } from "@rollup/plugin-terser";
-import summary from "rollup-plugin-summary";
+import { nodeResolve } from "@rollup/plugin-node-resolve";
+import templateLiterals from "rollup-plugin-html-literals";
 
 export default {
     // Setup input files
-    input: {
-        "first-component": "src/first-component.js",
-        "second-component": "src/second-component.js",
-    }
+    input: "src/bundle.js",
     // Setup output directory
     output: {
         dir: "dist",
         format: "esm",
+        /*  // (optional) if you want multiple outputs
+            output: {
+                preserveModules: true,
+                preserveModulesRoot: "src",
+            },
+        */
     },
     plugins: [
-        // Resolve bare module specifiers to relative paths
-        resolve(),
-        // Minify HTML template literals
-        minifyHTML(),
-        // Minify JS and mangle properties starting by "_"
+        // minify HTML template literals
+        templateLiterals(),
+        // resolve imported node modules
+        nodeResolve(),
+        // minify javascript with terser
         terser({
-            mangle: {
-                properties: {
-                    regex: /^_/,
-                },
-            },
+            /*  // (careful) if you want to mangle properties
+                mangle: {
+                    properties: {
+                        regex: /^_/
+                    }
+                }
+            */
         }),
-        // Print bundle summary
-        summary(),
     ],
-    // Mark vif and web-imported modules as external
-    // so they are not included into the bundle
-    external: ["vifjs", /^https:/],
+    // (optional) mark all http imports as external
+    external: [/^https?:/],
+    // preserve all import names
     preserveEntrySignatures: "strict",
 };
 ```

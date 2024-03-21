@@ -13,7 +13,7 @@ Inside of the render function, the context `this` expose two useful methods :
 
 ### useRef
 
-Tthe `this.useRef()` method takes three arguments :
+The `this.useRef()` method takes three arguments :
 
 -   `name` the value of `x-ref="name"` attribute
 -   `callback` the callback executed during the element hydration
