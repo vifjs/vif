@@ -8,8 +8,8 @@
     # i18n definition example :
     {
         en: {
-            EN: () => import('en.js'),
-            default: 'EN'
+            GB: () => import('en.js'),
+            default: 'GB'
         },
         fr: {
             FR: () => import('fr.js'),
