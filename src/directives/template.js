@@ -14,30 +14,31 @@
 
 import { xAbstractElement } from "../controllers/abstract.js";
 import { signal } from "../reactivity/signal.js";
-import { xcomment } from "../templates/html.js";
+import { cleanupTemplateFragment, xcomment } from "../templates/html.js";
 import { childrenOf, elementCloneNode } from "../utils/shortcuts.js";
 import { VIF } from "../utils/types.js";
 import { forDirective } from "./for.js";
 import { ifDirective } from "./if.js";
 import { routeDirective } from "./route.js";
 
-/** @returns {Comment} */
-export const createFlag = () => elementCloneNode(xcomment);
-
 /**
  * create an abstract DOM part to manipulate a fragment
+ * @param {DocumentFragment} fragment
  * @param {VIF.Element.Datas} context
  * @param {number} index
  * @param {string} key
  * @param {any} value
  * @returns {VIF.Part}
  */
-export const createPart = (context, index, key, value) => {
+export const createPart = (fragment, context, index, key, value) => {
+    /** @type {NodeList} */
+    const nodes = fragment.childNodes;
+
     /**
-     * create a flag to identify the head and tail of the fragment
+     * get the comment flag to identify the head and tail of the fragment
      * @type {Comment}
      */
-    const flag = createFlag();
+    const flag = nodes[nodes.length - 1];
 
     /**
      * create a signal for the current array value
@@ -62,15 +63,23 @@ export const createPart = (context, index, key, value) => {
     return { flag, abstractElement, property };
 };
 
-export const addPart = (element, context, index, key, value) => {
+/**
+ * create an abstract DOM part and add it into the DOM
+ * @param {HTMLTemplateElement} template
+ * @param {VIF.Element.Datas} context
+ * @param {number} index
+ * @param {string} key
+ * @param {any} value
+ */
+export const addPart = (template, context, index, key, value) => {
     /** @type {Array<VIF.Part>} */
-    const parts = element.templateParts;
+    const parts = template.templateParts;
 
     /** @type {VIF.Part} */
     let part = parts[index + 1];
 
     /** @type {DocumentFragment} */
-    const fragment = elementCloneNode(element.content, true);
+    const fragment = elementCloneNode(template.content, true);
 
     // we create the part corresponding to the fragment
     // the part will be stored into an array of parts
@@ -81,33 +90,45 @@ export const addPart = (element, context, index, key, value) => {
     if (part) {
         part.property && part.property(value);
     } else {
-        part = parts[index + 1] = createPart(context, index, key, value);
+        part = parts[index + 1] = createPart(
+            fragment,
+            context,
+            index,
+            key,
+            value
+        );
     }
 
     // if there is a cached schema, hydrate the fragment
-    element.immutableSchema &&
+    template.immutableSchema &&
         part.abstractElement.hydrate(
             childrenOf(fragment),
-            element.immutableSchema
+            template.immutableSchema
         );
 
     // replace the current flag by himself plus fragment
-    parts[index].flag.replaceWith(parts[index].flag, fragment, part.flag);
+    parts[index].flag.replaceWith(parts[index].flag, fragment);
 };
 
-export const updatePart = (element, index, value) => {
+/**
+ * update a DOM part property value
+ * @param {HTMLTemplateElement} template
+ * @param {number} index
+ * @param {string} value
+ */
+export const updatePart = (template, index, value) => {
     // find the part matching to the index and update the signal value
-    element.templateParts[index + 1].property(value);
+    template.templateParts[index + 1].property(value);
 };
 
 /**
  * remove a DOM part from the DOM and disconnect it
- * @param {Array<VIF.Part>} parts
+ * @param {HTMLTemplateElement} template
  * @param {number} index
  */
-export const removePart = (element, index) => {
+export const removePart = (template, index) => {
     /** @type {Array<VIF.Part>} */
-    const parts = element.templateParts;
+    const parts = template.templateParts;
 
     /**
      * get the head and tail flags
@@ -134,20 +155,30 @@ export const removePart = (element, index) => {
     }
 };
 
-// setup template directives basics as element properties
-export const setupTemplateDirective = (element) => {
+/**
+ * setup template directives basics as template properties
+ * @param {HTMLTemplateElement} template
+ */
+export const setupTemplateDirective = (template) => {
+    // cleanup template
+    cleanupTemplateFragment(template);
+
     /** @type {Array<VIF.Part>} */
-    element.templateParts = [{ flag: createFlag() }];
+    template.templateParts = [{ flag: elementCloneNode(xcomment) }];
+
+    // append a flag at the end of the template
+    // so we don't have to clone it manually anymore
+    template.content.append(elementCloneNode(xcomment));
 
     /** @type {VIF.Element.DisconnectCallback} */
-    element.disconnectCallback = () => {
-        for (let x = 1; x < element.templateParts.length; x++) {
-            element.templateParts[x].abstractElement.disconnectCallback();
+    template.disconnectCallback = () => {
+        for (let x = 1; x < template.templateParts.length; x++) {
+            template.templateParts[x].abstractElement.disconnectCallback();
         }
     };
 
-    // replace the current element by the main flag
-    element.replaceWith(element.templateParts[0].flag);
+    // replace the current template by the main flag
+    template.replaceWith(template.templateParts[0].flag);
 };
 
 /**

@@ -14,25 +14,13 @@
             Here we do the primary testings, all files in this folder must be
             deleted after theses tests.
         </p>
-        <div class="freezer"></div>
 
         <main>
-            <!-- <x-app>
-                <template x-for="[false, true, false, true]">
-                    <template x-if="item()">
-                        <p>
-                            NAME trad :
-                            <span x-text="i18n().global.name"></span>
-                        </p>
-                    </template>
+            <x-app>
+                <template x-for="array()">
+                    <p x-text="item().label">number</p>
                 </template>
-            </x-app> -->
-            <x-first>
-                <button x-text="t() && t().button">BUTTON</button>
-                <x-second>
-                    <p x-text="t() && t().p">PARAGRAPHE</p>
-                </x-second>
-            </x-first>
+            </x-app>
         </main>
     </body>
 </html>
