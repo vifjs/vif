@@ -1,7 +1,9 @@
 import {
+    contentOf,
     documentCreateElement,
     dom,
     elementCloneNode,
+    nextSiblingOf,
 } from "../utils/shortcuts.js";
 
 export let xcomment = dom.createComment("");
@@ -13,19 +15,19 @@ export let xfragment = dom.createDocumentFragment();
  * @param {HTMLTemplateElement} template
  */
 export const cleanupTemplateFragment = (template) => {
-    /** @type {NodeList} */
-    const nodes = template.content.childNodes;
-
-    /** @type {number} */
-    let index = nodes.length;
+    /** @type {Node} */
+    let node = contentOf(template).firstChild;
 
     // explore childNodes
-    while (index--) {
+    while (node) {
         /** @type {Node} */
-        const node = nodes[index];
+        const next = nextSiblingOf(node);
 
         // remove node if it's not ELEMENT_NODE
         node.nodeType !== 1 && node.remove();
+
+        // update node value
+        node = next;
     }
 };
 
@@ -44,7 +46,7 @@ export const createTemplateFragmentFromString = (string) => {
     cleanupTemplateFragment(template);
 
     // return the template DocumentFragment
-    return template.content;
+    return contentOf(template);
 };
 
 /**

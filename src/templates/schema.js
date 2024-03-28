@@ -17,6 +17,7 @@ import { VIF } from "../utils/types.js";
 import { templateDirective } from "../directives/template.js";
 import {
     attributeNameSubstring,
+    contentOf,
     immutableChildrenOf,
 } from "../utils/shortcuts.js";
 
@@ -96,7 +97,7 @@ export const createTemplateSchema = (nodeList) => {
 
         // get the first of element.content.children | element.immutableChildren | element.children
         const childs = immutableChildrenOf(
-            (element = element.content || element)
+            (element = contentOf(element) || element)
         );
 
         if (childs.length) {

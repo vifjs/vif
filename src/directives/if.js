@@ -1,5 +1,5 @@
 import { reactive } from "../reactivity/signal.js";
-import { addPart, removePart, setupTemplateDirective } from "./template.js";
+import { addPart, removeParts, setupTemplateDirective } from "./template.js";
 import { VIF } from "../utils/types.js";
 
 /**
@@ -24,7 +24,7 @@ export const ifDirective = (component, element, expression) => {
             if (value) {
                 addPart(element, component.datas, 0);
             } else {
-                removePart(element, 0);
+                removeParts(element, 0);
             }
         }
     });

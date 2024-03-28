@@ -6,7 +6,7 @@ import { reactive } from "../reactivity/signal.js";
 import { VIF } from "../utils/types.js";
 import {
     addPart,
-    removePart,
+    removeParts,
     setupTemplateDirective,
     updatePart,
 } from "./template.js";
@@ -35,6 +35,7 @@ const reconcile = (context, element, prevList, nextList, key) => {
             // we update the signal value with the nextList value
             updatePart(element, index, nextList[index]);
         }
+        // update the global index
         index++;
     }
 
@@ -46,10 +47,8 @@ const reconcile = (context, element, prevList, nextList, key) => {
     }
 
     // REMOVE ELEMENTS
-    while (gap < 0) {
-        removePart(element, index);
-        gap++;
-        index++;
+    if (gap < 0) {
+        removeParts(element, index);
     }
 };
 

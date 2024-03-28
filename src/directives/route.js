@@ -3,7 +3,7 @@ import { reactive } from "../reactivity/signal.js";
 import { VIF } from "../utils/types.js";
 import {
     addPart,
-    removePart,
+    removeParts,
     setupTemplateDirective,
     updatePart,
 } from "./template.js";
@@ -35,7 +35,7 @@ export const routeDirective = (component, element, expression) => {
             } else if (params) {
                 addPart(element, component.datas, 0, key, params);
             } else {
-                removePart(element, 0);
+                removeParts(element, 0);
             }
         }
 

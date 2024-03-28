@@ -79,13 +79,13 @@ function buildData(count = 1000) {
 function App({ props }) {
     props.array = useSignal([]);
     setTimeout(() => {
-        props.array(props.array.value.length ? [] : buildData(10));
+        props.array(props.array.value.length ? [] : buildData(10000));
     }, 1000);
     setTimeout(() => {
-        props.array(props.array.value.length ? [] : buildData(10));
+        props.array(props.array.value.length ? [] : buildData(10000));
     }, 2000);
     setTimeout(() => {
-        props.array(props.array.value.length ? [] : buildData(10));
+        props.array(props.array.value.length ? [] : buildData(10000));
     }, 3000);
 }
 

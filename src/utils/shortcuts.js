@@ -10,6 +10,10 @@ export const elementCloneNode = (element, bool) => element.cloneNode(bool);
 
 export const childrenOf = (element) => element.children;
 
+export const contentOf = (template) => template.content;
+
+export const nextSiblingOf = (element) => element.nextSibling;
+
 export const immutableChildrenOf = (element) =>
     element.immutableChildren || element.children;
 
