@@ -35,7 +35,7 @@ export const isXElement = (element) => element.tagName.indexOf("X-") === 0;
  * @param {HTMLTemplateElement} element
  * @returns {boolean}
  */
-export const isXTemplate = (element) => !!element.content;
+export const isXTemplate = (element) => element.tagName === "TEMPLATE";
 
 /**
  * Test if an element is already defined
