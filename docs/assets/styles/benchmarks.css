@@ -1,0 +1,17 @@
+@import url("./base.css");
+
+/* PAGE CHOICE */
+section.choice .list {
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+section.choice .button,
+section.benchmark .button {
+    min-width: 8rem;
+}
+
+/* PAGE BENCHMARK */
+section.benchmark .chip {
+    width: 100px;
+}

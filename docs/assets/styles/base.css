@@ -1,0 +1,262 @@
+@import url("https://cdn.jsdelivr.net/gh/enzoaicardi/codepen/patterns/columns.css");
+@import url("https://cdn.jsdelivr.net/gh/enzoaicardi/codepen/skeletons/base.css");
+@import url("https://cdn.jsdelivr.net/gh/enzoaicardi/codepen/skeletons/scrollbar.css");
+
+:root {
+    --color-gradient: transparent;
+    --color-background: #f3f3f3;
+    --color-dark: hsl(220, 30%, 20%);
+    --color-gray: hsl(220, 20%, 50%);
+    --color-light: hsl(20, 30%, 98%);
+    --color-primary: hsl(20, 100%, 55%);
+    --color-secondary: hsl(45, 100%, 50%);
+    --color-shadow: hsla(0, 0%, 0%, 0.1);
+
+    --color-vif: var(--color-secondary);
+    --color-solid: #436a9e;
+    --color-vue: #42b883;
+    --color-alpine: #48a9c1;
+    --color-lit: #324fff;
+    --color-preact: #673ab8;
+
+    --size-pattern: 20rem;
+    --width-max: 1280px;
+    --radius-sm: 5px;
+    --font-h2: clamp(1.4rem, 3.4vw, 2rem);
+    --font-sm: 0.9rem;
+    --font-xs: 0.8rem;
+    --margin-v-md: 5vh;
+
+    --gradient-light-bottom: linear-gradient(
+        to top,
+        var(--color-light),
+        transparent
+    );
+    --gradient-light-top: linear-gradient(
+        to bottom,
+        var(--color-light),
+        transparent
+    );
+
+    --shadow-block: 0 0 1rem var(--color-shadow);
+    --shadow-text: 0 0 0.5rem var(--color-primary);
+}
+
+.vif {
+    --color-current-primary: var(--color-vif) !important;
+}
+.solid {
+    --color-current-primary: var(--color-solid) !important;
+}
+.vue {
+    --color-current-primary: var(--color-vue) !important;
+}
+.alpine {
+    --color-current-primary: var(--color-alpine) !important;
+}
+.lit {
+    --color-current-primary: var(--color-lit) !important;
+}
+.preact {
+    --color-current-primary: var(--color-preact) !important;
+}
+
+body {
+    background-position: center;
+    color: var(--color-dark);
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+section p,
+h2 {
+    text-align: center;
+    max-width: 40rem;
+}
+
+@media screen and (max-width: 40rem) {
+    :root {
+        --size-pattern: 10rem;
+    }
+}
+
+/* UTILITY */
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.self-center {
+    align-self: center;
+}
+
+.auto {
+    margin: auto;
+}
+
+.auto-left {
+    margin-left: auto;
+}
+
+.auto-right {
+    margin-right: auto;
+}
+
+.gap-1 {
+    gap: 1rem;
+}
+
+.gap-2 {
+    gap: 2rem;
+}
+
+a {
+    transition: color 200ms ease;
+}
+
+a:hover {
+    cursor: pointer;
+    color: var(--color-primary);
+}
+
+p {
+    line-height: 1.4;
+}
+
+h2 {
+    font-weight: 600;
+    font-size: var(--font-h2);
+}
+
+.sub-title {
+    color: var(--color-gray);
+}
+
+.sub-title a {
+    text-decoration: underline;
+}
+
+.tag {
+    padding: 0.2rem 0.4rem;
+    color: var(--color-primary);
+    font-weight: 400;
+    font-size: var(--font-xs);
+    border: 1px solid var(--color-primary);
+}
+
+.button {
+    --color-current-primary: var(--color-primary);
+
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.2rem;
+
+    padding: 0.5rem 0.5rem 0.5rem 0.8rem;
+    border: 1px solid var(--color-current-primary);
+    color: var(--color-current-primary);
+    border-radius: var(--radius-sm);
+    transition: 200ms ease;
+}
+
+.button::after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 24px;
+    background-color: var(--color-current-primary);
+}
+
+.button:hover {
+    color: var(--color-light);
+    background-color: var(--color-current-primary);
+}
+
+.button:hover::after {
+    background-color: var(--color-light);
+}
+
+.chip {
+    display: block;
+    padding: 0.3rem 0.1rem;
+    border-radius: var(--radius-sm);
+}
+
+.chip svg {
+    height: 1.5rem;
+    width: 1.5rem;
+    vertical-align: text-bottom;
+}
+
+.chip.ok {
+    color: hsl(100, 80%, 40%);
+    fill: hsl(100, 80%, 40%);
+    background-color: hsla(100, 70%, 50%, 0.2);
+}
+
+.chip.warn {
+    color: hsl(50, 90%, 40%);
+    fill: hsl(50, 90%, 40%);
+    background-color: hsla(50, 70%, 50%, 0.2);
+}
+
+.chip.error {
+    color: hsl(0, 70%, 60%);
+    fill: hsl(0, 70%, 60%);
+    background-color: hsla(0, 70%, 50%, 0.2);
+}
+
+.icon {
+    line-height: 0;
+}
+
+pre {
+    margin-top: var(--margin-v-md);
+    padding: 1rem 1.5rem;
+    background: white;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-block);
+    line-height: 1.6;
+    font-size: 0.9rem;
+    max-width: 100%;
+    overflow: auto;
+}
+
+pre > div {
+    width: max-content;
+}
+
+pre i {
+    text-shadow: var(--shadow-text);
+}
+
+@media screen and (max-width: 40rem) {
+    pre {
+        padding: 0.65rem 1rem;
+    }
+}

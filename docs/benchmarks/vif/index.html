@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vif.js | Vif - Benchmark</title>
+
+        <link rel="stylesheet" href="../../assets/styles/benchmarks.css" />
+        <script src="./benchmark.js" type="module"></script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <link rel="shortcut icon" href="/favicon.png" type="image/png" />
+    </head>
+    <body>
+        <!-- SECTION CHOICE -->
+        <section class="benchmark">
+            <h2>Vif - benchmark</h2>
+            <p class="sub-title">
+                Benchmarks must be interpreted from your browser's performance
+                tab
+            </p>
+
+            <br />
+            <h2>1 by 1</h2>
+            <p>1. Create 10000 items</p>
+            <p>2. Update/Move 10000 items</p>
+            <p>3. Delete 10000 items</p>
+            <x-bench-one-by-one></x-bench-one-by-one>
+
+            <br />
+            <h2>10 by 10</h2>
+            <p>1. Create 1000 items x 10 children</p>
+            <p>2. Update/Move 1000 items x 10 children</p>
+            <p>3. Delete 1000 items x 10 children</p>
+            <x-bench-ten-by-ten></x-bench-ten-by-ten>
+
+            <br />
+            <h2>1 by 1 nested</h2>
+            <p>1. Create 10000 items x 1 sub-component x 1 children</p>
+            <p>2. Update/Move 10000 items x 1 sub-component x 1 children</p>
+            <p>3. Delete 10000 items x 1 sub-component x 1 children</p>
+            <x-bench-one-by-one-nested></x-bench-one-by-one-nested>
+
+            <br />
+            <h2>10 by 10 nested</h2>
+            <p>1. Create 1000 items x 1 sub-component x 10 children</p>
+            <p>2. Update/Move 1000 items x 1 sub-component x 10 children</p>
+            <p>3. Delete 1000 items x 1 sub-component x 10 children</p>
+            <x-bench-ten-by-ten-nested></x-bench-ten-by-ten-nested>
+        </section>
+    </body>
+</html>
