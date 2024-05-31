@@ -96,8 +96,9 @@ export const createTemplateSchema = (nodeList) => {
         }
 
         // get the first of element.content.children | element.immutableChildren | element.children
+        // we check if is <template> because on <form> elements contentOf() return a list of HTMLInputElement
         const childs = immutableChildrenOf(
-            (element = contentOf(element) || element)
+            (element = isxtemplate ? contentOf(element) : element)
         );
 
         if (childs.length) {
