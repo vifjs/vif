@@ -123,8 +123,9 @@ export const updatePart = (template, index, value) => {
  * remove a DOM part from the DOM and disconnect it
  * @param {HTMLTemplateElement} template
  * @param {number} index
+ * @param {number} length
  */
-export const removeParts = (template, index) => {
+export const removeParts = (template, index, length) => {
     /** @type {Array<VIF.Part>} */
     const parts = template.templateParts;
 
@@ -133,7 +134,7 @@ export const removeParts = (template, index) => {
     const head = parts[index].flag;
 
     // remove all the nodes between head and tail for all parts
-    while (index++ < parts.length - 1) {
+    while (index++ < length) {
         // get the current comparison node
         let currentNode = nextSiblingOf(head);
         // retrieve the current part tail

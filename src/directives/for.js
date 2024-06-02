@@ -48,7 +48,7 @@ const reconcile = (context, element, prevList, nextList, key) => {
 
     // REMOVE ELEMENTS
     if (gap < 0) {
-        removeParts(element, index);
+        removeParts(element, index, index - gap);
     }
 };
 
