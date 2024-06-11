@@ -26,18 +26,24 @@ declare module "vifjs" {
         useEffect(callback: Function): void;
     }
 
+    interface VifRenderFunctionProps {
+        [key: string]: any;
+    }
+
+    interface VifRenderFunctionProperties {
+        props: VifRenderFunctionProps;
+        html: (string: TemplateStringsArray | string) => string;
+        css: (string: TemplateStringsArray | string) => string;
+    }
+
     /**
      * Function used to hydrate datas and create component template & schema
      * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/define.md}
      */
     type VifRenderFunction = (
         this: VifElement,
-        args: {
-            props: Object;
-            html: (string: string) => string;
-            css: (string: string) => string;
-        }
-    ) => VifElement | NodeList | void;
+        args: VifRenderFunctionProperties
+    ) => VifElement | NodeList | TemplateStringsArray | string | void;
 
     interface VifSignal {
         (updatedValue?: any): [updatedValue: any];
