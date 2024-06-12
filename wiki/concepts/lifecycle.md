@@ -26,7 +26,7 @@ The life cycle of a Vif component when it's removed by a directive
             -   find the reactive function in dependencies
             -   remove the function from dependencies
     -   if template :
-        -   loop on `templateParts` and execute the `disconnectedCallback` for each part
+        -   loop on `templateParts` and execute the `disconnectCallback` for each part
 
 ## Using onMount and onUnmount (rare usage)
 
