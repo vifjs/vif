@@ -4,7 +4,7 @@ What is a component context ?
 
 The context can be represented by the `this` keyword. The context of the render function is the context of the whole component.
 
-## Method
+## Methods
 
 Inside of the render function, the context `this` expose two useful methods :
 
@@ -27,7 +27,7 @@ useDefine("ref-example", function ({ html }) {
         console.log("button found !", element);
     });
 
-    html`<button x-ref="button">My button</button>`;
+    return html`<button x-ref="button">My button</button>`;
 });
 ```
 

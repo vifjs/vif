@@ -51,6 +51,10 @@ const { ... } = require("vifjs");
 -   [`useNavigate`](./methods/navigate.md) used to navigate between routes
 -   [`useI18n`](./methods/i18n.md) used to create and use locales translations
 
+## Demos
+
+You can find demos for all the listed methods on [codepen.io](https://codepen.io/collection/WvPrEb).
+
 ---
 
 # Next

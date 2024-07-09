@@ -19,13 +19,14 @@ Vif is - _again an other_ - javascript pure front-end component library.
 
 For a weight of less than 6kb (3kb gzipped) Vif can do :
 
--   Reusable reactives components
-    -   HTML render
-    -   Javascript Render
-    -   Scoped CSS
--   Routing (SPA & more)
--   Lazy loading
--   Internationalization (i18n)
+-   [x] Reusable reactives components
+    -   [x] HTML render
+    -   [x] Javascript Render
+    -   [x] Signals
+    -   [x] Scoped CSS
+    -   [x] Lazy loaded components
+-   [x] Routing (Single Page App & more)
+-   [x] Internationalization (i18n)
 
 ## Why Vif.js ?
 
@@ -38,7 +39,7 @@ Vif represents the culmination of this learning.
 ```js
 /* script.js */
 import {
-    useDefine, // used to create a reactive we component
+    useDefine, // used to create a reactive web-component
     useSignal, // used to create a global signal
     useEffect, // used to create a reactive function
     useObserve, // used to create lazy actions based on component hydration
@@ -68,7 +69,7 @@ And here is the javascript part to make our **component reactive**.
 /* script.js */
 function Counter({ props }) {
     props.count = useSignal(0);
-    return this;
+    return this; // optional
 }
 
 useDefine("counter", Counter);

@@ -50,8 +50,8 @@ Theses directives should be used on standard HTMLElements only.
 
 -   `x-text` change textContent
 -   `x-show` change style.display based on value
--   `x-ref` (no javascript) used to reference an element ([see this.useRef method](./context.md))
--   `x-css` (no javascript) used to reference an element for scoped style ([see examples](../methods/define.md))
+-   `x-ref` (text) used to reference an element ([see this.useRef method](./context.md))
+-   `x-css` (text) used to reference an element for scoped style ([see examples](../methods/define.md))
 -   `x-on:...` used to add an event handler to the element
 -   `x-...` used to define every attribute value
 
@@ -62,15 +62,47 @@ Theses directives should be used on `<template>...</template>` elements only.
 -   `x-if` used to append content conditionnaly
 -   `x-for` used to append content based on an array of values
     -   `item="itemName"` expose `item()` as signal and `item.index`, `item=` attribute can be used to change the variable name
--   `x-route` (no javascript) used to append content conditionnaly based on current URL, the value should be a RegExp with groups as parameters
+-   `x-route` (text) used to append content conditionnaly based on current URL, the value should be a RegExp with groups as parameters
     -   `params="paramsName"` expose `params()` as signal, `params=` attribute can be used to change the variable name
+
+```js
+useDefine("example-template", function ({ props, html }) {
+    props.list = useSignal(["I'm", "A", "List", "Of", "Elements"]);
+
+    return html`
+        <ul>
+            <template x-for="list()" item="listElement">
+                <li x-text="listElement.index + ' - ' + listElement()">...</li>
+            </template>
+        </ul>
+    `;
+});
+```
 
 ## Component directives
 
 Theses directives should be used on components only.
 
--   `...` (no javascript) used to dynamicaly create props in component context
+-   `...` (text) used to dynamicaly create props in component context
 -   `x-...` used to dynamicaly create props in component context
+
+```html
+<body>
+    <x-my-component firstprop="this is a text value"></x-my-component>
+</body>
+```
+
+```js
+useDefine("example-props-directive", function ({ props, html }) {
+    props.text = useSignal("this is a dynamic value");
+
+    return html`
+        <div>
+            <x-my-component x-secondprop="text()"></x-my-component>
+        </div>
+    `;
+});
+```
 
 ---
 

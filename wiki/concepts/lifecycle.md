@@ -42,6 +42,28 @@ componentClass.prototype.onUnmount = function({ props }){
 }
 ```
 
+## How to extend component ?
+
+Sometimes you will want to extend the behavior of a component, for example by reusing handler methods and keeping the default properties of other component.
+
+As a component is defined using a rendering function, you simply reuse the function of the parent component inside of child component.
+
+```js
+// as an abstract component
+function ParentRenderFunction({ props }) {
+    props.type = "div";
+    props.onClickHandler = (e) =>
+        console.log(`you just clicked a ${props.type}`);
+}
+
+function ChildRenderFunction({ props, html }) {
+    parentRenderFunction({ props });
+    props.type = "button";
+
+    return html`<button x-on:click="onClickHandler" x-text="type"></button>`;
+}
+```
+
 ---
 
 # Next
