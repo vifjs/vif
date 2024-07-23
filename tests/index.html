@@ -4,9 +4,9 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Garbage testing</title>
-        <!-- <script src="../../../dist/vif.js"></script> -->
+        <script src="./data-test.js" type="module"></script>
         <!-- <script src="../../dist/iife/vif.js" defer></script> -->
-        <script type="module" src="./lit.js" defer></script>
+        <!-- <script type="module" src="./lit.js" defer></script> -->
     </head>
     <body>
         <h1>Primary tests here</h1>
@@ -18,11 +18,10 @@
         <main>
             <!-- prettier-ignore -->
             <x-app>
-                <template x-for="array()">
-                    <p x-text="item().label">number</p>
-                </template>
+                <x-button x-count="count()">
+                    <button x-text="'count is : ' + count()" x-on:click="() => count(count.value + 1)"></button>
+                </x-button>
             </x-app>
-            <lit-app></lit-app>
         </main>
     </body>
 </html>

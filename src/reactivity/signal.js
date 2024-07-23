@@ -23,12 +23,18 @@ export const signal = (value) => {
     const currentSignal = (dataUpdated) => {
         // if new data is sent
         if (dataUpdated !== undefined) {
-            // update the value
+            // store the previous reactive value
+            const previousValue = currentReactive;
+            // clear the currentReactive to prevent deep binding
+            currentReactive = null;
+            // update signal value
             currentSignal.value = dataUpdated;
             // run all the dependencies
             for (const callback of currentSignal.reactives) {
                 callback();
             }
+            // set currentReactive value back to previousValue
+            currentReactive = previousValue;
         } else if (currentReactive) {
             // if signal is running inside of a reactive function
             // we create all necessary dependencies
@@ -73,10 +79,10 @@ export const disconnectReactive = (reactive) => () => {
  * @returns {VIF.Reactive}
  */
 export const reactive = (callback) => {
-    // store the previous value
+    // store the previous reactive value
     const previousValue = currentReactive;
 
-    // update currentReactive function and create a dependency Array
+    // update currentReactive function and create a dependency Set
     currentReactive = callback;
     /**
      * setup dependencies
