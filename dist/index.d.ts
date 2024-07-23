@@ -26,39 +26,33 @@ declare module "vifjs" {
         useEffect(callback: Function): void;
     }
 
-    interface VifRenderFunctionProps {
-        [key: string]: any;
-    }
-
-    interface VifRenderFunctionProperties {
-        props: VifRenderFunctionProps;
-        html: (string: TemplateStringsArray | string) => string;
-        css: (string: TemplateStringsArray | string) => string;
-    }
-
     /**
      * Function used to hydrate datas and create component template & schema
      * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/define.md}
      */
     type VifRenderFunction = (
         this: VifElement,
-        args: VifRenderFunctionProperties
-    ) => VifElement | NodeList | TemplateStringsArray | string | void;
+        args: VifArguments
+    ) => VifElement | NodeList | string | void;
 
-    interface VifSignal<Type> {
-        (updatedValue?: Type): [updatedValue: Type];
-        value: [updatedValue: Type];
+    /**
+     * Render function arguments like props, html, css
+     * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/define.md}
+     */
+    type VifArguments = {
+        props?: Object;
+        html?: (string: TemplateStringsArray) => string;
+        css?: (string: TemplateStringsArray) => string;
+    };
+
+    interface VifSignal {
+        (updatedValue?: any): [updatedValue: any];
+        value: [updatedValue: any];
     }
 
     type VifReactive = Function;
 
-    type VifTranslationsObject = {
-        [country: string]: {
-            [province: string]: () => Promise<Object>;
-        };
-    };
-
-    interface VifTranslations<Type> extends VifSignal<Type> {
+    interface VifTranslations extends VifSignal {
         /**
          * Execute a callback after translations have been loaded
          * @param {Function} callback Function called after translations have been loaded
@@ -84,7 +78,7 @@ declare module "vifjs" {
      * @returns {VifSignal} A signal that can be used to trigger reactives functions
      * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/signal.md}
      */
-    function useSignal<Type>(initialValue: Type): VifSignal<Type>;
+    function useSignal(initialValue: any): VifSignal;
 
     /**
      * Function used to create a reactive function played every time the value of a signal inside changes
@@ -116,5 +110,9 @@ declare module "vifjs" {
      * @returns {VifTranslations} Signal containing all the translations for the current locale
      * @see {@link https://github.com/vifjs/vif/tree/main/wiki/methods/i18n.md}
      */
-    function useI18n(locales: VifTranslationsObject): VifTranslations<any>;
+    function useI18n(locales: {
+        [country: string]: {
+            [province: string]: () => Promise<Object>;
+        };
+    }): VifTranslations;
 }
