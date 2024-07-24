@@ -24,7 +24,7 @@ export const ifDirective = (component, element, expression) => {
             if (value) {
                 addPart(element, component.datas, 0);
             } else {
-                removeParts(element, 0);
+                removeParts(element, 0, 1);
             }
         }
     });

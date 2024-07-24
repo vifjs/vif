@@ -1,17 +1,24 @@
 import { useDefine, useSignal } from "../src/bundle.js";
 
 function App({ props }) {
-    props.count = useSignal(10);
+    props.count = useSignal([1, 2, 3]);
 
     setTimeout(() => {
-        props.count(20);
+        props.count([]);
+    }, 1000);
+    setTimeout(() => {
+        props.count([4, 5, 6]);
     }, 2000);
-
-    this.useEffect(() => console.log("app " + props.count()));
+    setTimeout(() => {
+        props.count([7]);
+    }, 3000);
+    setTimeout(() => {
+        props.count([]);
+    }, 4000);
 }
 
 function Button({ props }) {
-    this.useEffect(() => console.log("button " + props.count()));
+    this.useEffect(() => {});
 }
 
 useDefine("button", Button);
