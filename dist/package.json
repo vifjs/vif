@@ -1,7 +1,7 @@
 {
     "name": "vifjs",
     "type": "module",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "A 5kb full featured reactive components library",
     "homepage": "https://vifjs.dev",
     "bugs": "https://github.com/vifjs/vif/issues",
