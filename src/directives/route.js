@@ -35,7 +35,7 @@ export const routeDirective = (component, element, expression) => {
             } else if (params) {
                 addPart(element, component.datas, 0, key, params);
             } else {
-                removeParts(element, 0);
+                removeParts(element, 0, 1);
             }
         }
 

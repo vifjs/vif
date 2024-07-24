@@ -18,14 +18,11 @@
         <main>
             <!-- prettier-ignore -->
             <x-app>
-                before
-                <template x-for="count()" item="count">
-                    <p>inside</p>
+                <template x-route=".*\?route=index">
                     <x-button x-count="count()">
                         <button x-text="'count is : ' + count()" x-on:click="() => count(count.value + 1)"></button>
                     </x-button>
                 </template>
-                after
             </x-app>
         </main>
     </body>

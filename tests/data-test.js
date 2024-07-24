@@ -1,7 +1,8 @@
-import { useDefine, useSignal } from "../src/bundle.js";
+import { useDefine, useNavigate, useSignal } from "../src/bundle.js";
 
 function App({ props }) {
     props.count = useSignal([1, 2, 3]);
+    props.navigate = useNavigate;
 
     setTimeout(() => {
         props.count([]);
