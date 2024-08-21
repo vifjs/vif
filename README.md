@@ -6,6 +6,7 @@ _A 5kb full featured reactive components library_
 
 [![NPM Version](https://img.shields.io/npm/v/vifjs.svg?style=for-the-badge)](https://www.npmjs.com/package/vifjs)
 [![NPM Downloads](https://img.shields.io/npm/dm/vifjs.svg?style=for-the-badge)](https://www.npmjs.com/package/vifjs)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/vifjs)](https://www.npmjs.com/package/vifjs)
 [![JSDelivr Hits](https://img.shields.io/jsdelivr/npm/hm/vifjs?style=for-the-badge)](https://www.jsdelivr.com/package/npm/vifjs)<br>
 [![Website](https://img.shields.io/badge/Website-vifjs.dev-coral?style=for-the-badge)](https://vifjs.dev)
 [![Wiki](https://img.shields.io/badge/Wiki-Documentation-blue?style=for-the-badge)](https://github.com/vifjs/vif/tree/main/wiki/README.md)
